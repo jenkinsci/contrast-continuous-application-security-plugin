@@ -1,20 +1,5 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
   <f:section title="TeamServer Connection Builder Config">
-    <f:entry title="Username" field="username" description="Username of TeamServer credentials">
-      <f:textbox/>
-    </f:entry>
-    <f:entry title="API Key" field="apiKey" description="API key for user">
-      <f:textbox/>
-    </f:entry>
-    <f:entry title="Service Key" field="serviceKey" description="Service key for user">
-      <f:textbox/>
-    </f:entry>
-    <f:entry title="Organization Uuid" field="orgUuid" description="Organization Uuid for user">
-      <f:textbox/>
-    </f:entry>
-    <f:entry title="TeamServer Url" field="teamServerUrl" description="URL of TeamServer instance">
-      <f:textbox/>
-    </f:entry>
   </f:section>
 </j:jelly>

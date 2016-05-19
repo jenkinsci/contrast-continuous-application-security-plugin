@@ -28,15 +28,15 @@ import java.io.IOException;
  */
 public class TeamServerConnectionBuilder extends Builder implements SimpleBuildStep {
 
-    private final String username;
+    private String username;
 
-    private final String apiKey;
+    private String apiKey;
 
-    private final String serviceKey;
+    private String serviceKey;
 
-    private final String orgUuid;
+    private String orgUuid;
 
-    private final String teamServerUrl;
+    private String teamServerUrl;
 
     @DataBoundConstructor
     public TeamServerConnectionBuilder(String username, String apiKey, String serviceKey, String orgUuid, String teamServerUrl) {
@@ -86,6 +86,12 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
         }
     }
 
+    /**
+     * Helper method for logging messages.
+     *
+     * @param listener Listener
+     * @param msg String to log
+     */
     private void logMessage(TaskListener listener, String msg) {
         listener.getLogger().println("[Contrast - TeamServerConnectionBuilder] - " + msg);
     }
@@ -96,11 +102,7 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
     }
 
     /**
-     * Descriptor for {@link TeamServerConnectionBuilder}. Used as a singleton.
-     * The class is marked as public so that it can be accessed from views.
-     * <p>
-     * See <tt>src/main/resources/com/aspectsecurity/contrast/contrastjenkins/TeamServerConnectionBuilder/*.jelly</tt>
-     * for the actual HTML fragment for the configuration screen.
+     * Descriptor for {@link TeamServerConnectionBuilder}.
      */
     @Extension
     public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
@@ -117,7 +119,7 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
          */
         public FormValidation doCheckUsername(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
-                return FormValidation.error("Please set a Username.");
+                return FormValidation.error("Please set a username.");
             return FormValidation.ok();
         }
 
@@ -146,7 +148,7 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
         }
 
         /**
-         * Validation of the 'orgUuid form Field.
+         * Validation of the 'orgUuid' form Field.
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
@@ -183,10 +185,18 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
             return "Test TeamServer Connection";
         }
 
+        /**
+         * Save's the publisher's configuration data.
+         *
+         * @param req StaplerRequest
+         * @param formData Json of the form for this Publisher
+         * @return
+         * @throws FormException
+         */
         @Override
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
 
-            save(); // persist the change
+            save();
 
             return super.configure(req, formData);
         }
