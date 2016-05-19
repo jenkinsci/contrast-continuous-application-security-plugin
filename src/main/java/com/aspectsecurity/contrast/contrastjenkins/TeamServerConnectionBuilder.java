@@ -17,6 +17,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.QueryParameter;
 
+import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
@@ -24,8 +25,6 @@ import java.io.IOException;
  * TeamServer Connection Builder
  *
  * Used to test the connection to TeamServer in the pre-build step of jenkins.
- *
- * @author Justin Leo
  */
 public class TeamServerConnectionBuilder extends Builder implements SimpleBuildStep {
 
@@ -69,21 +68,26 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
     }
 
     @Override
-    public void perform(Run<?, ?> build, FilePath workspace, Launcher launcher, TaskListener listener) throws AbortException {
-        if (getDescriptor().getEnabled()) {
-            listener.getLogger().println("Testing the connection to the configured TeamServer.");
-            ContrastSDK contrastSDK;
+    public void perform(@Nonnull Run<?, ?> build, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener listener) throws AbortException {
+        logMessage(listener, "Testing the connection to the configured TeamServer.");
+        ContrastSDK contrastSDK;
 
-            try {
-                contrastSDK = new ContrastSDK(username, serviceKey, apiKey, teamServerUrl);
+        try {
+            contrastSDK = new ContrastSDK(username, serviceKey, apiKey, teamServerUrl);
 
-                contrastSDK.getProfileDefaultOrganizations();
-            } catch (Exception e) {
-                throw new AbortException("Unable to connect to TeamServer. Failing the build!");
-            }
-        } else {
-            listener.getLogger().println("TeamServer Connection builder is not enabled.");
+            logMessage(listener, "Establishing connection to TeamServer.");
+
+            contrastSDK.getProfileDefaultOrganizations();
+
+            logMessage(listener, "Successfully verified the connection to TeamServer!");
+
+        } catch (Exception e) {
+            throw new AbortException("Unable to connect to TeamServer. Failing the build!");
         }
+    }
+
+    private void logMessage(TaskListener listener, String msg) {
+        listener.getLogger().println("[Contrast - TeamServerConnectionBuilder] - " + msg);
     }
 
     @Override
@@ -94,16 +98,12 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
     /**
      * Descriptor for {@link TeamServerConnectionBuilder}. Used as a singleton.
      * The class is marked as public so that it can be accessed from views.
-
+     * <p>
      * See <tt>src/main/resources/com/aspectsecurity/contrast/contrastjenkins/TeamServerConnectionBuilder/*.jelly</tt>
      * for the actual HTML fragment for the configuration screen.
      */
     @Extension
     public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
-        /**
-         * If you don't want fields to be persisted, use <tt>transient</tt>.
-         */
-        private boolean enabled;
 
         public DescriptorImpl() {
             load();
@@ -169,8 +169,13 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
             return FormValidation.ok();
         }
 
+        /**
+         * Allows this builder to be available for all classes.
+         *
+         * @param aClass Passed in class.
+         * @return true
+         */
         public boolean isApplicable(Class<? extends AbstractProject> aClass) {
-            // FreeStyleProject.class.isAssignableFrom(aClass);
             return true;
         }
 
@@ -180,17 +185,10 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
 
         @Override
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
-            // To persist global configuration information,
-            // set that to properties and call save().
-            enabled = formData.getBoolean("enabled");
-            // ^Can also use req.bindJSON(this, formData);
-            //  (easier when there are many fields; need set* methods for this)
-            save();
+
+            save(); // persist the change
+
             return super.configure(req, formData);
-        }
-        
-        public boolean getEnabled() {
-            return enabled;
         }
     }
 }
