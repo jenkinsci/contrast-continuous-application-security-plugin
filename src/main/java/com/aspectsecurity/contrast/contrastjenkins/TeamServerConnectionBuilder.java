@@ -87,6 +87,8 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
+         * @throws IOException Invalid value
+         * @throws ServletException Jenkins error
          */
         public FormValidation doCheckUsername(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
@@ -99,6 +101,8 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
+         * @throws IOException Invalid value
+         * @throws ServletException Jenkins error
          */
         public FormValidation doCheckApiKey(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
@@ -111,6 +115,8 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
+         * @throws IOException Invalid value
+         * @throws ServletException Jenkins error
          */
         public FormValidation doCheckServiceKey(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
@@ -123,6 +129,8 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
+         * @throws IOException Invalid value
+         * @throws ServletException Jenkins error
          */
         public FormValidation doCheckOrgUuid(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
@@ -135,6 +143,8 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
+         * @throws IOException Invalid value
+         * @throws ServletException Jenkins error
          */
         public FormValidation doCheckTeamServerUrl(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
@@ -161,8 +171,8 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
          *
          * @param req StaplerRequest
          * @param formData Json of the form for this Publisher
-         * @return if the config saved succesfully
-         * @throws FormException
+         * @return if the config saved successfully
+         * @throws FormException invalid form
          */
         @Override
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {

@@ -75,18 +75,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
     @Extension
     public static final class ContrastPluginConfigDescriptor extends JobPropertyDescriptor {
 
-        private String username;
-
-        private String apiKey;
-
-        private String serviceKey;
-
-        private String orgUuid;
-
-        private String teamServerUrl;
-
-        private String applicationId;
-
         public ContrastPluginConfigDescriptor() {
             super(ContrastPluginConfig.class);
             load();
@@ -99,21 +87,13 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             return super.configure(req, formData);
         }
 
-        @DataBoundConstructor
-        public ContrastPluginConfigDescriptor(String username, String apiKey, String serviceKey, String teamServerUrl, String orgUuid, String applicationId) {
-            this.username = username;
-            this.apiKey = apiKey;
-            this.serviceKey = serviceKey;
-            this.teamServerUrl = teamServerUrl;
-            this.orgUuid = orgUuid;
-            this.applicationId = applicationId;
-        }
-
         /**
          * Validation of the 'username' form Field.
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
+         * @throws IOException Invalid value
+         * @throws ServletException Jenkins error
          */
         public FormValidation doCheckUsername(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
@@ -126,6 +106,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
+         * @throws IOException Invalid value
+         * @throws ServletException Jenkins error
          */
         public FormValidation doCheckApiKey(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
@@ -138,6 +120,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
+         * @throws IOException Invalid value
+         * @throws ServletException Jenkins error
          */
         public FormValidation doCheckServiceKey(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
@@ -150,6 +134,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
+         * @throws IOException Invalid value
+         * @throws ServletException Jenkins error
          */
         public FormValidation doCheckOrgUuid(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
@@ -162,6 +148,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
+         * @throws IOException Invalid value
+         * @throws ServletException Jenkins error
          */
         public FormValidation doCheckTeamServerUrl(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
@@ -174,6 +162,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
+         * @throws IOException Invalid value
+         * @throws ServletException Jenkins error
          */
         public FormValidation doCheckApplicationId(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
@@ -185,30 +175,5 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         public String getDisplayName() {
             return "Contrast Plugin Configuration";
         }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public String getApiKey() {
-            return apiKey;
-        }
-
-        public String getServiceKey() {
-            return serviceKey;
-        }
-
-        public String getOrgUuid() {
-            return orgUuid;
-        }
-
-        public String getTeamServerUrl() {
-            return teamServerUrl;
-        }
-
-        public String getApplicationId() {
-            return applicationId;
-        }
-
     }
 }
