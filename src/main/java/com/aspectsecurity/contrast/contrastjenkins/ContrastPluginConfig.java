@@ -15,8 +15,6 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 
 public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
-//public class ContrastPluginConfig extends JobProperty<Job<?, ?>> {
-
     private String username;
 
     private String apiKey;
@@ -92,7 +90,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException Invalid value
+         * @throws IOException      Invalid value
          * @throws ServletException Jenkins error
          */
         public FormValidation doCheckUsername(@QueryParameter String value) throws IOException, ServletException {
@@ -106,7 +104,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException Invalid value
+         * @throws IOException      Invalid value
          * @throws ServletException Jenkins error
          */
         public FormValidation doCheckApiKey(@QueryParameter String value) throws IOException, ServletException {
@@ -120,7 +118,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException Invalid value
+         * @throws IOException      Invalid value
          * @throws ServletException Jenkins error
          */
         public FormValidation doCheckServiceKey(@QueryParameter String value) throws IOException, ServletException {
@@ -134,7 +132,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException Invalid value
+         * @throws IOException      Invalid value
          * @throws ServletException Jenkins error
          */
         public FormValidation doCheckOrgUuid(@QueryParameter String value) throws IOException, ServletException {
@@ -148,7 +146,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException Invalid value
+         * @throws IOException      Invalid value
          * @throws ServletException Jenkins error
          */
         public FormValidation doCheckTeamServerUrl(@QueryParameter String value) throws IOException, ServletException {
@@ -162,7 +160,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException Invalid value
+         * @throws IOException      Invalid value
          * @throws ServletException Jenkins error
          */
         public FormValidation doCheckApplicationId(@QueryParameter String value) throws IOException, ServletException {
