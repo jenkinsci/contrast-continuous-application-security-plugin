@@ -161,7 +161,7 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
          *
          * @param req StaplerRequest
          * @param formData Json of the form for this Publisher
-         * @return
+         * @return if the config saved succesfully
          * @throws FormException
          */
         @Override
