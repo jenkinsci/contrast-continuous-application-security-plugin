@@ -28,49 +28,20 @@ import java.io.IOException;
  */
 public class TeamServerConnectionBuilder extends Builder implements SimpleBuildStep {
 
-    private String username;
-
-    private String apiKey;
-
-    private String serviceKey;
-
-    private String orgUuid;
-
-    private String teamServerUrl;
-
     @DataBoundConstructor
-    public TeamServerConnectionBuilder(String username, String apiKey, String serviceKey, String orgUuid, String teamServerUrl) {
-        this.username = username;
-        this.apiKey = apiKey;
-        this.serviceKey = serviceKey;
-        this.orgUuid = orgUuid;
-        this.teamServerUrl = teamServerUrl;
-    }
+    public TeamServerConnectionBuilder() {
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public String getServiceKey() {
-        return serviceKey;
-    }
-
-    public String getOrgUuid() {
-        return orgUuid;
-    }
-
-    public String getTeamServerUrl() {
-        return teamServerUrl;
     }
 
     @Override
     public void perform(@Nonnull Run<?, ?> build, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener listener) throws AbortException {
         logMessage(listener, "Testing the connection to the configured TeamServer.");
         ContrastSDK contrastSDK;
+
+        String username = build.getParent().getProperty(ContrastPluginConfig.class).getUsername();
+        String apiKey = build.getParent().getProperty(ContrastPluginConfig.class).getApiKey();
+        String serviceKey = build.getParent().getProperty(ContrastPluginConfig.class).getServiceKey();
+        String teamServerUrl = build.getParent().getProperty(ContrastPluginConfig.class).getTeamServerUrl();
 
         try {
             contrastSDK = new ContrastSDK(username, serviceKey, apiKey, teamServerUrl);
@@ -186,7 +157,7 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
         }
 
         /**
-         * Save's the publisher's configuration data.
+         * Save's the builder's configuration data.
          *
          * @param req StaplerRequest
          * @param formData Json of the form for this Publisher

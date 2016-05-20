@@ -16,7 +16,11 @@
             <f:textbox/>
         </f:entry>
 
-        <f:entry title="TeamServer TeamServer Url" field="teamServerUrl">
+        <f:entry title="TeamServer Url" field="teamServerUrl">
+            <f:textbox/>
+        </f:entry>
+
+        <f:entry title="TeamServer Application Id" field="applicationId">
             <f:textbox/>
         </f:entry>
     </f:section>
