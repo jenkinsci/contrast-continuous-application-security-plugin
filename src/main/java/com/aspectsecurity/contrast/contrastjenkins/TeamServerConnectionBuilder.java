@@ -10,16 +10,12 @@ import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
-import hudson.util.FormValidation;
 import jenkins.tasks.SimpleBuildStep;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import javax.annotation.Nonnull;
-import javax.servlet.ServletException;
-import java.io.IOException;
 
 /**
  * TeamServer Connection Builder
@@ -80,76 +76,6 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
 
         public DescriptorImpl() {
             load();
-        }
-
-        /**
-         * Validation of the 'username' form Field.
-         *
-         * @param value This parameter receives the value that the user has typed.
-         * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException      Invalid value
-         * @throws ServletException Jenkins error
-         */
-        public FormValidation doCheckUsername(@QueryParameter String value) throws IOException, ServletException {
-            if (value.length() == 0)
-                return FormValidation.error("Please set a username.");
-            return FormValidation.ok();
-        }
-
-        /**
-         * Validation of the 'apiKey' form Field.
-         *
-         * @param value This parameter receives the value that the user has typed.
-         * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException      Invalid value
-         * @throws ServletException Jenkins error
-         */
-        public FormValidation doCheckApiKey(@QueryParameter String value) throws IOException, ServletException {
-            if (value.length() == 0)
-                return FormValidation.error("Please set an API Key.");
-            return FormValidation.ok();
-        }
-
-        /**
-         * Validation of the 'serviceKey' form Field.
-         *
-         * @param value This parameter receives the value that the user has typed.
-         * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException      Invalid value
-         * @throws ServletException Jenkins error
-         */
-        public FormValidation doCheckServiceKey(@QueryParameter String value) throws IOException, ServletException {
-            if (value.length() == 0)
-                return FormValidation.error("Please set a Service Key.");
-            return FormValidation.ok();
-        }
-
-        /**
-         * Validation of the 'orgUuid' form Field.
-         *
-         * @param value This parameter receives the value that the user has typed.
-         * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException      Invalid value
-         * @throws ServletException Jenkins error
-         */
-        public FormValidation doCheckOrgUuid(@QueryParameter String value) throws IOException, ServletException {
-            if (value.length() == 0)
-                return FormValidation.error("Please set an Organization Uuid.");
-            return FormValidation.ok();
-        }
-
-        /**
-         * Validation of the 'teamServerUrl' form Field.
-         *
-         * @param value This parameter receives the value that the user has typed.
-         * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException      Invalid value
-         * @throws ServletException Jenkins error
-         */
-        public FormValidation doCheckTeamServerUrl(@QueryParameter String value) throws IOException, ServletException {
-            if (value.length() == 0)
-                return FormValidation.error("Please set a TeamServer Url.");
-            return FormValidation.ok();
         }
 
         /**
