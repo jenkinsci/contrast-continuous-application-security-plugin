@@ -11,9 +11,12 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
-import javax.servlet.ServletException;
-import java.io.IOException;
-
+/**
+ * Contrast Plugin Configuration
+ * <p>
+ * Adds the necessary configuration options to a job's properties. Used in TeamServerConnectionBuilder
+ * and VulnerabilityTrendRecorder
+ */
 public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
     private String username;
 
@@ -71,7 +74,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
     }
 
     @Extension
-    public static final class ContrastPluginConfigDescriptor extends JobPropertyDescriptor {
+    public static class ContrastPluginConfigDescriptor extends JobPropertyDescriptor {
 
         public ContrastPluginConfigDescriptor() {
             super(ContrastPluginConfig.class);
@@ -90,10 +93,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException      Invalid value
-         * @throws ServletException Jenkins error
          */
-        public FormValidation doCheckUsername(@QueryParameter String value) throws IOException, ServletException {
+        public FormValidation doCheckUsername(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set a username.");
             return FormValidation.ok();
@@ -104,10 +105,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException      Invalid value
-         * @throws ServletException Jenkins error
          */
-        public FormValidation doCheckApiKey(@QueryParameter String value) throws IOException, ServletException {
+        public FormValidation doCheckApiKey(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set an API Key.");
             return FormValidation.ok();
@@ -118,10 +117,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException      Invalid value
-         * @throws ServletException Jenkins error
          */
-        public FormValidation doCheckServiceKey(@QueryParameter String value) throws IOException, ServletException {
+        public FormValidation doCheckServiceKey(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set a Service Key.");
             return FormValidation.ok();
@@ -132,10 +129,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException      Invalid value
-         * @throws ServletException Jenkins error
          */
-        public FormValidation doCheckOrgUuid(@QueryParameter String value) throws IOException, ServletException {
+        public FormValidation doCheckOrgUuid(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set an Organization Uuid.");
             return FormValidation.ok();
@@ -146,10 +141,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException      Invalid value
-         * @throws ServletException Jenkins error
          */
-        public FormValidation doCheckTeamServerUrl(@QueryParameter String value) throws IOException, ServletException {
+        public FormValidation doCheckTeamServerUrl(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set a TeamServer Url.");
             return FormValidation.ok();
@@ -160,13 +153,24 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
-         * @throws IOException      Invalid value
-         * @throws ServletException Jenkins error
          */
-        public FormValidation doCheckApplicationId(@QueryParameter String value) throws IOException, ServletException {
+        public FormValidation doCheckApplicationId(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set an Application Id");
             return FormValidation.ok();
+        }
+
+        @Override
+        public JobProperty<?> newInstance(StaplerRequest req,
+                                          JSONObject formData) throws FormException {
+            String username = (String) formData.get("username");
+            String apiKey = (String) formData.get("apiKey");
+            String serviceKey = (String) formData.get("serviceKey");
+            String teamServerUrl = (String) formData.get("teamServerUrl");
+            String orgUuid = (String) formData.get("orgUuid");
+            String applicationId = (String) formData.get("applicationId");
+
+            return new ContrastPluginConfig(username, apiKey, serviceKey, teamServerUrl, orgUuid, applicationId);
         }
 
         @Override
