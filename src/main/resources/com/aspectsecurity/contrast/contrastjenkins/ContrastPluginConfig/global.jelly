@@ -8,23 +8,23 @@
                     </f:entry>
                     <f:section title="TeamServer Configuration">
                         <f:entry title="TeamServer Username">
-                            <f:textbox name="ts.username" value="${profile.username}"/>
+                            <f:textbox name="ts.username" value="${profile.username}" checkUrl="'descriptorByName/ContrastPluginConfig/checkUsername?value='+escape(this.value)"/>
                         </f:entry>
                         <f:entry title="TeamServer API Key">
-                            <f:textbox name="ts.apiKey" value="${profile.apiKey}"/>
+                            <f:textbox name="ts.apiKey" value="${profile.apiKey}" checkUrl="'descriptorByName/ContrastPluginConfig/checkApiKey?value='+escape(this.value)"/>
                         </f:entry>
                         <f:entry title="TeamServer Service Key">
-                            <f:textbox name="ts.serviceKey" value="${profile.serviceKey}"/>
+                            <f:textbox name="ts.serviceKey" value="${profile.serviceKey}" checkUrl="'descriptorByName/ContrastPluginConfig/checkServiceKey?value='+escape(this.value)"/>
                         </f:entry>
 
                         <f:entry title="TeamServer Url" >
-                            <f:textbox name="ts.teamServerUrl" value="${profile.teamServerUrl}"/>
+                            <f:textbox name="ts.teamServerUrl" value="${profile.teamServerUrl}" checkUrl="'descriptorByName/ContrastPluginConfig/checkTeamServerUrl?value='+escape(this.value)"/>
                         </f:entry>
                     </f:section>
 
                     <f:section title="Threshold Configuration">
                         <f:entry title="TeamServer Organization Uuid">
-                            <f:textbox name="ts.orgUuid" value="${profile.orgUuid}"/>
+                            <f:textbox name="ts.orgUuid" value="${profile.orgUuid}" />
                         </f:entry>
                         <f:entry title="TeamServer Application Id" >
                             <f:textbox name="ts.applicationId" value="${profile.applicationId}"/>

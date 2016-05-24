@@ -21,31 +21,11 @@ import org.kohsuke.stapler.StaplerRequest;
  * and VulnerabilityTrendRecorder
  */
 public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
-    private String username;
-
-    private String apiKey;
-
-    private String serviceKey;
-
-    private String orgUuid;
-
-    private String teamServerUrl;
-
-    private String applicationId;
-
     private String teamServerProfileName;
 
-    @Extension
-    public static final ContrastPluginConfigDescriptor DESCRIPTOR = new ContrastPluginConfigDescriptor();
-
     @DataBoundConstructor
-    public ContrastPluginConfig(String username, String apiKey, String serviceKey, String teamServerUrl, String orgUuid, String applicationId) {
-        this.username = username;
-        this.apiKey = apiKey;
-        this.serviceKey = serviceKey;
-        this.teamServerUrl = teamServerUrl;
-        this.orgUuid = orgUuid;
-        this.applicationId = applicationId;
+    public ContrastPluginConfig() {
+
     }
 
     @Override
@@ -57,36 +37,12 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         return (ContrastPluginConfigDescriptor) Jenkins.getInstance().getDescriptor(ContrastPluginConfig.class);
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public String getServiceKey() {
-        return serviceKey;
-    }
-
-    public String getOrgUuid() {
-        return orgUuid;
-    }
-
-    public String getTeamServerUrl() {
-        return teamServerUrl;
-    }
-
-    public String getApplicationId() {
-        return applicationId;
-    }
-
     public TeamServerProfile getProfile() {
         return getProfile(teamServerProfileName);
     }
 
     public static TeamServerProfile getProfile(String profileName) {
-        final TeamServerProfile[] profiles = DESCRIPTOR.getTeamServerProfiles();
+        final TeamServerProfile[] profiles = new ContrastPluginConfigDescriptor().getTeamServerProfiles();
 
         if (profileName == null && profiles.length > 0)
             return profiles[0];
@@ -112,13 +68,9 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
             final JSONArray array = json.optJSONArray("profile");
 
-            System.out.println(json.toString());
-
             if (array != null) {
-                System.out.println(array.toString());
                 teamServerProfiles.replaceBy(req.bindJSONToList(TeamServerProfile.class, array));
             } else {
-                System.out.println("here");
                 if (json.keySet().isEmpty()) {
                     teamServerProfiles = new CopyOnWriteList<>();
                 } else {
@@ -217,19 +169,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             if (value.length() == 0)
                 return FormValidation.error("Please set an Application Id");
             return FormValidation.ok();
-        }
-
-        @Override
-        public JobProperty<?> newInstance(StaplerRequest req,
-                                          JSONObject formData) throws FormException {
-            String username = (String) formData.get("username");
-            String apiKey = (String) formData.get("apiKey");
-            String serviceKey = (String) formData.get("serviceKey");
-            String teamServerUrl = (String) formData.get("teamServerUrl");
-            String orgUuid = (String) formData.get("orgUuid");
-            String applicationId = (String) formData.get("applicationId");
-
-            return new ContrastPluginConfig(username, apiKey, serviceKey, teamServerUrl, orgUuid, applicationId);
         }
 
         @Override

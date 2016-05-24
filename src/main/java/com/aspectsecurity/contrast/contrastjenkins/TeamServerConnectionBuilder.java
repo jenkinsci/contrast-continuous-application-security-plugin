@@ -31,23 +31,19 @@ public class TeamServerConnectionBuilder extends Builder implements SimpleBuildS
 
     @Override
     public void perform(@Nonnull Run<?, ?> build, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener listener) throws AbortException {
-        logMessage(listener, "Testing the connection to the configured TeamServer.");
+        logMessage(listener, "Testing the connection to the configured TeamServer. 11");
         ContrastSDK contrastSDK;
 
-        String username = build.getParent().getProperty(ContrastPluginConfig.class).getUsername();
-        String apiKey = build.getParent().getProperty(ContrastPluginConfig.class).getApiKey();
-        String serviceKey = build.getParent().getProperty(ContrastPluginConfig.class).getServiceKey();
-        String teamServerUrl = build.getParent().getProperty(ContrastPluginConfig.class).getTeamServerUrl();
+        TeamServerProfile profile = build.getParent().getProperty(ContrastPluginConfig.class).getProfile();
 
         try {
-            contrastSDK = new ContrastSDK(username, serviceKey, apiKey, teamServerUrl);
+            contrastSDK = new ContrastSDK(profile.getUsername(), profile.getServiceKey(), profile.getApiKey(), profile.getTeamServerUrl());
 
             logMessage(listener, "Establishing connection to TeamServer.");
 
             contrastSDK.getProfileDefaultOrganizations();
 
             logMessage(listener, "Successfully verified the connection to TeamServer!");
-
         } catch (Exception e) {
             throw new AbortException("Unable to connect to TeamServer. Failing the build!");
         }
