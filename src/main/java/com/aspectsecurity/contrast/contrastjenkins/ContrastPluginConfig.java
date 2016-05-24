@@ -4,8 +4,11 @@ import hudson.Extension;
 import hudson.model.AbstractProject;
 import hudson.model.JobProperty;
 import hudson.model.JobPropertyDescriptor;
+import hudson.util.CopyOnWriteList;
 import hudson.util.FormValidation;
+import hudson.util.ListBoxModel;
 import jenkins.model.Jenkins;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
@@ -29,6 +32,11 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
     private String teamServerUrl;
 
     private String applicationId;
+
+    private String teamServerProfileName;
+
+    @Extension
+    public static final ContrastPluginConfigDescriptor DESCRIPTOR = new ContrastPluginConfigDescriptor();
 
     @DataBoundConstructor
     public ContrastPluginConfig(String username, String apiKey, String serviceKey, String teamServerUrl, String orgUuid, String applicationId) {
@@ -73,8 +81,27 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         return applicationId;
     }
 
+    public TeamServerProfile getProfile() {
+        return getProfile(teamServerProfileName);
+    }
+
+    public static TeamServerProfile getProfile(String profileName) {
+        final TeamServerProfile[] profiles = DESCRIPTOR.getTeamServerProfiles();
+
+        if (profileName == null && profiles.length > 0)
+            return profiles[0];
+
+        for (TeamServerProfile profile : profiles) {
+            if (profile.getName().equals(profileName))
+                return profile;
+        }
+        return null;
+    }
+
     @Extension
     public static class ContrastPluginConfigDescriptor extends JobPropertyDescriptor {
+
+        private CopyOnWriteList<TeamServerProfile> teamServerProfiles = new CopyOnWriteList<>();
 
         public ContrastPluginConfigDescriptor() {
             super(ContrastPluginConfig.class);
@@ -82,10 +109,42 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         }
 
         @Override
-        public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
-            req.bindJSON(this, formData);
+        public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
+            final JSONArray array = json.optJSONArray("profile");
+
+            System.out.println(json.toString());
+
+            if (array != null) {
+                System.out.println(array.toString());
+                teamServerProfiles.replaceBy(req.bindJSONToList(TeamServerProfile.class, array));
+            } else {
+                System.out.println("here");
+                if (json.keySet().isEmpty()) {
+                    teamServerProfiles = new CopyOnWriteList<>();
+                } else {
+                    teamServerProfiles.replaceBy(req.bindJSON(TeamServerProfile.class, json.getJSONObject("profile")));
+                }
+            }
+
             save();
-            return super.configure(req, formData);
+
+            return true;
+        }
+
+        public TeamServerProfile[] getTeamServerProfiles() {
+            final TeamServerProfile[] profileArray = new TeamServerProfile[teamServerProfiles.size()];
+            return teamServerProfiles.toArray(profileArray);
+        }
+
+        @SuppressWarnings("unused")
+        public ListBoxModel doFillTeamServerProfileNameItems() {
+            final ListBoxModel model = new ListBoxModel();
+
+            for (TeamServerProfile profile : teamServerProfiles) {
+                model.add(profile.getName(), profile.getName());
+            }
+
+            return model;
         }
 
         /**
