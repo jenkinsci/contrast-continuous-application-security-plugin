@@ -1,5 +1,6 @@
 package com.aspectsecurity.contrast.contrastjenkins;
 
+import com.contrastsecurity.sdk.ContrastSDK;
 import hudson.Extension;
 import hudson.model.AbstractProject;
 import hudson.model.JobProperty;
@@ -13,6 +14,9 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * Contrast Plugin Configuration
@@ -81,6 +85,23 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             save();
 
             return true;
+        }
+
+        public FormValidation doTestTeamServerConnection(@QueryParameter("ts.username") final String username,
+                                                         @QueryParameter("ts.apiKey") final String apiKey,
+                                                         @QueryParameter("ts.serviceKey") final String serviceKey,
+                                                         @QueryParameter("ts.teamServerUrl") final String teamServerUrl) throws IOException, ServletException {
+            ContrastSDK contrastSDK;
+
+            try {
+                contrastSDK = new ContrastSDK(username, serviceKey, apiKey, teamServerUrl);
+
+                contrastSDK.getProfileDefaultOrganizations();
+
+                return FormValidation.ok("Successfully verified the connection to TeamServer!");
+            } catch (Exception e) {
+                return FormValidation.error("TeamServer Connection error: " + e.getMessage());
+            }
         }
 
         public TeamServerProfile[] getTeamServerProfiles() {

@@ -6,6 +6,10 @@
                     <f:entry title="TeamServer Profile Name">
                         <f:textbox name="ts.name" value="${profile.name}"/>
                     </f:entry>
+                    <f:entry title="TeamServer Server Name">
+                        <f:textbox name="ts.serverName" value="${profile.serverName}"/>
+                    </f:entry>
+
                     <f:section title="TeamServer Configuration">
                         <f:entry title="TeamServer Username">
                             <f:textbox name="ts.username" value="${profile.username}" checkUrl="'descriptorByName/ContrastPluginConfig/checkUsername?value='+escape(this.value)"/>
@@ -32,10 +36,16 @@
                     </f:section>
 
                     <f:entry title="">
+                        <f:validateButton title="${%Test TeamServer Connection}" progress="${%Testing Connection...}"
+                                method="testTeamServerConnection" with="ts.username,ts.apiKey,ts.serviceKey,ts.teamServerUrl" />
+                    </f:entry>
+
+                    <f:entry title="">
                         <div align="right">
                             <f:repeatableDeleteButton />
                         </div>
                     </f:entry>
+
                 </table>
             </f:repeatable>
         </f:entry>
