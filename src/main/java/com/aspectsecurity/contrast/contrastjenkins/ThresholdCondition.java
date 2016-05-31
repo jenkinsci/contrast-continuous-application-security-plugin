@@ -39,7 +39,6 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         return thresholdVulnType;
     }
 
-
     /**
      * Descriptor for {@link ThresholdCondition}.
      */
@@ -144,6 +143,6 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
     }
 
     private static final List<String> SEVERITIES = Arrays.asList("Note", "Low", "Medium", "High", "Critical");
-    private static final List<String> VULN_TYPES = Arrays.asList("Sql Injection", "CSRF");
+    private static final List<String> VULN_TYPES = Arrays.asList("sql-injection", "csrf");
     private static final String EMPTY_SELECT = "None";
 }
