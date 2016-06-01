@@ -1,0 +1,15 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <l:layout>
+        <l:main-panel>
+            <div align="center">
+                <h1>Vulnerability Trends Across Builds</h1>
+                <img src="vulnerabilityGraph/png"/>
+            </div>
+
+            <div align="center">
+                <h1>Severity Trends Across Builds</h1>
+                <img src="severityGraph/png"/>
+            </div>
+        </l:main-panel>
+    </l:layout>
+</j:jelly>
