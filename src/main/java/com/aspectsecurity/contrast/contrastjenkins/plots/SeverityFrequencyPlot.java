@@ -29,12 +29,12 @@ public class SeverityFrequencyPlot extends Graph {
     private AbstractProject<?, ?> project;
 
     public SeverityFrequencyPlot(AbstractBuild<?, ?> build) {
-        super(Calendar.getInstance(), 640, 480);
+        super(Calendar.getInstance(), 500, 200);
         this.build = build;
     }
 
     public SeverityFrequencyPlot(AbstractProject<?, ?> project) {
-        super(Calendar.getInstance(), 640, 480);
+        super(Calendar.getInstance(), 500, 200);
         this.project = project;
     }
 
@@ -43,7 +43,7 @@ public class SeverityFrequencyPlot extends Graph {
         DefaultCategoryDataset dataset = createSeverityFrequencyDataset();
 
         JFreeChart chart = ChartFactory.createStackedBarChart(
-                "Severity Frequency", // title
+                null, // title
                 "Build Number", // x axis
                 "Severity Count", // y axis
                 dataset, // data
@@ -60,7 +60,7 @@ public class SeverityFrequencyPlot extends Graph {
         plot.setRangeGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.black);
 
-        CategoryAxis domainAxis = new ShiftedCategoryAxis(null);
+        CategoryAxis domainAxis = new ShiftedCategoryAxis("Build Number");
         plot.setDomainAxis(domainAxis);
         domainAxis.setLowerMargin(0.0);
         domainAxis.setUpperMargin(0.0);
