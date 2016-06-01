@@ -10,7 +10,6 @@ import hudson.util.ShiftedCategoryAxis;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
@@ -18,7 +17,10 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Map;
 
 
 public class SeverityFrequencyPlot extends Graph {
@@ -100,7 +102,7 @@ public class SeverityFrequencyPlot extends Graph {
         for (VulnerabilityFrequencyAction action : actions) {
             Map<String, Integer> result = action.getResult().getSeverityResult();
 
-            for (String severity: result.keySet()) {
+            for (String severity : result.keySet()) {
                 ds.addValue(result.get(severity), severity, Integer.toString(action.getBuildNumber()));
             }
         }

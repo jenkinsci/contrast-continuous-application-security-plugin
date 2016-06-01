@@ -25,7 +25,7 @@ public class ContrastPluginProjectAction implements Action {
 
     @Override
     public String getDisplayName() {
-        return "Contrast Project Project Action";
+        return "Vulnerability Trend Charts";
     }
 
     @Override
@@ -37,11 +37,12 @@ public class ContrastPluginProjectAction implements Action {
         return this.project;
     }
 
-
+    // used in index.jelly
     public Graph getVulnerabilityGraph() {
         return new VulnerabilityFrequencyPlot(project);
     }
 
+    // used in index.jelly
     public Graph getSeverityGraph() {
         return new SeverityFrequencyPlot(project);
     }
@@ -50,6 +51,8 @@ public class ContrastPluginProjectAction implements Action {
         return this.project.getName();
     }
 
+
+    // TODO remove?
     public List<String> getBuildResult() {
         List<String> projectMessages = new ArrayList<String>();
         List<? extends AbstractBuild<?, ?>> builds = project.getBuilds();
