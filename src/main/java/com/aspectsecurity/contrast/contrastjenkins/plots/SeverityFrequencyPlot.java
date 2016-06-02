@@ -1,7 +1,6 @@
 package com.aspectsecurity.contrast.contrastjenkins.plots;
 
 import com.aspectsecurity.contrast.contrastjenkins.VulnerabilityFrequencyAction;
-import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Run;
 import hudson.util.Graph;
@@ -25,13 +24,7 @@ import java.util.Map;
 
 public class SeverityFrequencyPlot extends Graph {
 
-    private AbstractBuild<?, ?> build;
     private AbstractProject<?, ?> project;
-
-    public SeverityFrequencyPlot(AbstractBuild<?, ?> build) {
-        super(Calendar.getInstance(), 500, 200);
-        this.build = build;
-    }
 
     public SeverityFrequencyPlot(AbstractProject<?, ?> project) {
         super(Calendar.getInstance(), 500, 200);
@@ -76,13 +69,7 @@ public class SeverityFrequencyPlot extends Graph {
 
     private DefaultCategoryDataset createSeverityFrequencyDataset() {
         java.util.List<VulnerabilityFrequencyAction> actions = new ArrayList<>();
-        RunList<?> builds;
-
-        if (build != null) {
-            builds = build.getParent().getBuilds().limit(10);
-        } else {
-            builds = project.getBuilds().limit(10);
-        }
+        RunList<?> builds = project.getBuilds().limit(10);
 
         // Get all build actions
         for (Run<?, ?> run : builds) {
