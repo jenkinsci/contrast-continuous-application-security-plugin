@@ -79,9 +79,9 @@ public class SeverityFrequencyPlot extends Graph {
         RunList<?> builds;
 
         if (build != null) {
-            builds = build.getParent().getBuilds();
+            builds = build.getParent().getBuilds().limit(10);
         } else {
-            builds = project.getBuilds();
+            builds = project.getBuilds().limit(10);
         }
 
         // Get all build actions

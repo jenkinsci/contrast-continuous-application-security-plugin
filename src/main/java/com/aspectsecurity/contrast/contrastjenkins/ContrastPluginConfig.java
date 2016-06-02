@@ -133,6 +133,27 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         }
 
         /**
+         * Validation of the 'profile' form Field.
+         *
+         * @param value This parameter receives the value that the user has typed.
+         * @return Indicates the outcome of the validation. This is sent to the browser.
+         */
+        public FormValidation doCheckProfileName(@QueryParameter String value) {
+            if (value.length() == 0)
+                return FormValidation.error("Please set a profile name.");
+
+
+            // TODO check if its already saved?
+            //for (TeamServerProfile profile: teamServerProfiles) {
+            //    if (profile.getName().equals(value)) {
+            //        return FormValidation.error("Profile name is already taken");
+            //    }
+            //}
+
+            return FormValidation.ok();
+        }
+
+        /**
          * Validation of the 'apiKey' form Field.
          *
          * @param value This parameter receives the value that the user has typed.
