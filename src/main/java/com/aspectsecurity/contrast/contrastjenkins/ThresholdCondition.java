@@ -11,10 +11,7 @@ import org.kohsuke.stapler.QueryParameter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class ThresholdCondition extends AbstractDescribableImpl<ThresholdCondition> {
 
@@ -105,7 +102,13 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          */
         public ListBoxModel doFillThresholdVulnTypeItems() throws IOException {
             ListBoxModel items = new ListBoxModel();
-            Properties rules = new Properties();
+            Properties rules = new Properties() {
+                @Override
+                public synchronized Enumeration<Object> keys() {
+                    return Collections.enumeration(new TreeSet<>(super.keySet()));
+                }
+            };
+
             InputStream rulesInputStream = getClass().getResourceAsStream("rules.properties");
 
             try {
