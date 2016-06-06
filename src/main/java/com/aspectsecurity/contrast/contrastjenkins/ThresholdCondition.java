@@ -9,8 +9,12 @@ import hudson.util.ListBoxModel;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 public class ThresholdCondition extends AbstractDescribableImpl<ThresholdCondition> {
 
@@ -94,23 +98,28 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             return SEVERITIES;
         }
 
-        // TODO fix with rules
-        public List<String> getVulnTypes() {
-            return VULN_TYPES;
-        }
-
         /**
          * Fills the Threshold Category select drop down with categories for the configured application.
          *
          * @return ListBoxModel filled with categories.
          */
-        public ListBoxModel doFillThresholdVulnTypeItems() {
+        public ListBoxModel doFillThresholdVulnTypeItems() throws IOException {
             ListBoxModel items = new ListBoxModel();
+            Properties rules = new Properties();
+            InputStream rulesInputStream = getClass().getResourceAsStream("rules.properties");
+
+            try {
+                rules.load(rulesInputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                rulesInputStream.close();
+            }
 
             items.add(EMPTY_SELECT, null);
 
-            for (String type : VULN_TYPES) {
-                items.add(type, type);
+            for (Object rule : rules.keySet()) {
+                items.add((String) rule, (String) rule);
             }
 
             return items;
@@ -143,6 +152,5 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
     }
 
     private static final List<String> SEVERITIES = Arrays.asList("Note", "Low", "Medium", "High", "Critical");
-    private static final List<String> VULN_TYPES = Arrays.asList("sql-injection", "csrf");
     private static final String EMPTY_SELECT = "None";
 }
