@@ -21,8 +21,7 @@ import java.io.IOException;
 /**
  * Contrast Plugin Configuration
  * <p>
- * Adds the necessary configuration options to a job's properties. Used in TeamServerConnectionBuilder
- * and VulnerabilityTrendRecorder
+ * Adds the necessary configuration options to a job's properties. Used in VulnerabilityTrendRecorder
  */
 public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
     private String teamServerProfileName;
@@ -87,6 +86,16 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             return true;
         }
 
+        /** Validates the configured TeamServer profile by attempting to get the default profile for the username.
+         *
+         * @param username      String username for the TeamServer user
+         * @param apiKey        String apiKey for the TeamServer user
+         * @param serviceKey    String serviceKey for the TeamServer user
+         * @param teamServerUrl String TeamServer Url for
+         * @return FormValidation
+         * @throws IOException
+         * @throws ServletException
+         */
         public FormValidation doTestTeamServerConnection(@QueryParameter("ts.username") final String username,
                                                          @QueryParameter("ts.apiKey") final String apiKey,
                                                          @QueryParameter("ts.serviceKey") final String serviceKey,
@@ -141,15 +150,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         public FormValidation doCheckProfileName(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set a profile name.");
-
-
-            // TODO check if its already saved?
-            //for (TeamServerProfile profile: teamServerProfiles) {
-            //    if (profile.getName().equals(value)) {
-            //        return FormValidation.error("Profile name is already taken");
-            //    }
-            //}
-
             return FormValidation.ok();
         }
 

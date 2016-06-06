@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+/**
+ * ThresholdCondition class contains the variables and logic to populate the conditions when verifying for vulnerabilities.
+ */
 public class ThresholdCondition extends AbstractDescribableImpl<ThresholdCondition> {
 
     private String thresholdCount;
@@ -96,9 +99,10 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         }
 
         /**
-         * Fills the Threshold Category select drop down with categories for the configured application.
+         * Fills the Threshold Category select drop down with vulnerability types for the configured application.
+         * These are read in from the static rules.properties file then sorted based on name.
          *
-         * @return ListBoxModel filled with categories.
+         * @return ListBoxModel filled with vulnerability types.
          */
         public ListBoxModel doFillThresholdVulnTypeItems() throws IOException {
             ListBoxModel items = new ListBoxModel();
