@@ -30,8 +30,8 @@
                         <f:entry title="TeamServer Organization Uuid">
                             <f:textbox name="ts.orgUuid" value="${profile.orgUuid}" />
                         </f:entry>
-                        <f:entry title="TeamServer Application Id" >
-                            <f:textbox name="ts.applicationId" value="${profile.applicationId}"/>
+                        <f:entry title="TeamServer Application Name" >
+                            <f:textbox name="ts.applicationName" value="${profile.applicationName}"/>
                         </f:entry>
                     </f:section>
 

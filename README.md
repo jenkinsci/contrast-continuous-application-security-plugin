@@ -4,12 +4,12 @@ Repository for the Contrast Maven plugin. This plugin adds the ability to config
 
 ## Variables
 
-* `username`     : TeamServer user's username
-* `apiKey`       : TeamServer user's apiKey; found in Organization settings
-* `serviceKey`   : TeamServer user's serviceKey; found in Organization settings
-* `orgUuid`      : TeamServer user's orgUUid; found in Organization settings
-* `teamServerUrl`: TeamServer URL; example is 'http://app.contrastsecurity.com/Contrast/api'
-* `applicationId`: ID of application in TeamServer
+* `username`       : TeamServer user's username
+* `apiKey`         : TeamServer user's apiKey; found in Organization settings
+* `serviceKey`     : TeamServer user's serviceKey; found in Organization settings
+* `orgUuid`        : TeamServer user's orgUUid; found in Organization settings
+* `teamServerUrl`  : TeamServer URL; example is 'http://app.contrastsecurity.com/Contrast/api'
+* `applicationName`: Name of application in TeamServer
 
 ## Workflow
 
