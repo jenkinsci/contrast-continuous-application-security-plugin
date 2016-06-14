@@ -38,3 +38,9 @@ Here are two examples of the charts:
 
 ![Vulnerability Trends Across Builds](vuln_trends.png)
 
+## Exported Configurations
+
+[TeamServer Profile Config](contrastPluginConfig.xml)
+
+[Threshold Condition Config](vulnerabilityTrendRecorderConfig.xml)
+
