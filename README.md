@@ -16,20 +16,25 @@ Repository for the Contrast Jenkins plugin. This plugin adds the ability to conf
 
 There are currently 2 build items added by this plugin:
 
-### Test TeamServer Connection
+* #### Test TeamServer Connection
 
-<p>
-This will verify the Jenkins can connect to TeamServer with the configured variables. It will fail the build if the plugin is unable to connect. This test can be found as a button when adding a TeamServer profile.
-</p>
+    This will verify the Jenkins can connect to TeamServer with the configured variables. It will fail the build if the plugin is unable to connect. This test can be found as a button when adding a TeamServer profile.
 
-### Verify Vulnerability Threshold 
+* #### Verify Vulnerability Threshold 
 
-This will check TeamServer for the number of vulnerabilities in the application.
+    This will check TeamServer for the number of vulnerabilities in the application. The only required variable is `Threshold Count` which must be a positive integer. The other two variables `Threshold Severity` and `Threshold Vulnerability Type` are not required but can be useful if you want to filter the threshold count.
+    
+    **NOTE:** The variables in the Threshold Condition form are required to run this build action.
+    
+    This action is a post-build action and will fail the Jenkins build even if your build ran successfully.
+    
+## Charts
 
-The only required variable is `Threshold Count` which must be a positive integer.
+There are 2 charts that are generated after each build `Vulnerability Trends Across Builds` and `Severity Trends Across Builds`.
 
-The other two variables `Threshold Severity` and `Threshold Vulnerability Type` are not required but can be useful if you want to filter the threshold count.
+Here are two examples of the charts:
 
-**NOTE:** The variables in the Jenkins job properties are required to run this build action.
+![Severity Trends Across Builds](severity_trends.png)
 
-This action is a post-build action and will fail the Jenkins build even if your build ran successfully.
+![Vulnerability Trends Across Builds](vuln_trends.png)
+
