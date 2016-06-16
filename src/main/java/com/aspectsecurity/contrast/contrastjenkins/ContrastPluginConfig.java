@@ -105,7 +105,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             try {
                 contrastSDK = new ContrastSDK(username, serviceKey, apiKey, teamServerUrl);
 
-                contrastSDK.getProfileDefaultOrganizations();
+                contrastSDK.getProfileOrganizations();
 
                 return FormValidation.ok("Successfully verified the connection to TeamServer!");
             } catch (Exception e) {
