@@ -202,14 +202,14 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         }
 
         /**
-         * Validation of the 'applicationId' form Field.
+         * Validation of the 'applicationName' form Field.
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
          */
-        public FormValidation doCheckApplicationId(@QueryParameter String value) {
+        public FormValidation doCheckApplicationName(@QueryParameter String value) {
             if (value.length() == 0)
-                return FormValidation.error("Please set an Application Id");
+                return FormValidation.error("Please set an Application Name.");
             return FormValidation.ok();
         }
 

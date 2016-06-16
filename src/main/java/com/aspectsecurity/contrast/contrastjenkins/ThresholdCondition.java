@@ -43,6 +43,25 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         return thresholdVulnType;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("count is " + thresholdCount);
+
+        if (thresholdSeverity != null) {
+            sb.append(", severity is " + thresholdSeverity);
+        }
+
+        if (thresholdVulnType != null) {
+            sb.append(", rule type is " + thresholdVulnType);
+        }
+
+        sb.append(".");
+
+        return sb.toString();
+    }
+
     /**
      * Descriptor for {@link ThresholdCondition}.
      */

@@ -16,12 +16,12 @@ public class TeamServerProfile {
 
     private String teamServerUrl;
 
-    private String applicationId;
+    private String applicationName;
 
     private String serverName;
 
     @DataBoundConstructor
-    public TeamServerProfile(String name, String serverName, String username, String apiKey, String serviceKey, String teamServerUrl, String orgUuid, String applicationId) {
+    public TeamServerProfile(String name, String serverName, String username, String apiKey, String serviceKey, String teamServerUrl, String orgUuid, String applicationName) {
         this.name = name;
         this.serverName = serverName;
         this.username = username;
@@ -29,7 +29,7 @@ public class TeamServerProfile {
         this.serviceKey = serviceKey;
         this.teamServerUrl = teamServerUrl;
         this.orgUuid = orgUuid;
-        this.applicationId = applicationId;
+        this.applicationName = applicationName;
     }
 
     public String getName() {
@@ -56,8 +56,8 @@ public class TeamServerProfile {
         return teamServerUrl;
     }
 
-    public String getApplicationId() {
-        return applicationId;
+    public String getApplicationName() {
+        return applicationName;
     }
 
     public String getServerName() {
