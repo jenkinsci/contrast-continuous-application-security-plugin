@@ -1,5 +1,5 @@
 <!--Jenkins Cat -->
-![Jenkins Cat](img/jenkins-cat.png =100x)
+![Jenkins Cat](img/jenkins-cat.png "Jenkins Cat" )
 
 # Contrast Jenkins Plugin
 
