@@ -10,7 +10,7 @@
     <relativePath/>
   </parent>
   <groupId>com.aspectsecurity.contrast</groupId>
-  <artifactId>contrast-jenkins</artifactId>
+  <artifactId>contrast-continuous-application-security</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
@@ -28,9 +28,8 @@
     -->
   </properties>
 
-  <name>Contrast Jenkins Plugin</name>
+  <name>Contrast Continuous Application Security</name>
   <description>Jenkins Plugin to install the Contrast agent</description>
-  <!--<url>google.com</url> -->
 
   <!-- The default licence for Jenkins OSS Plugins is MIT. Substitute for the applicable one if needed. -->
 
@@ -41,13 +40,12 @@
     </license>
   </licenses>
 
-  <!-- Assuming you want to host on @jenkinsci:
   <scm>
     <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
     <url>http://github.com/jenkinsci/${project.artifactId}-plugin</url>
   </scm>
-   -->
+
   <repositories>
     <repository>
       <id>repo.jenkins-ci.org</id>
