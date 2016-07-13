@@ -8,7 +8,7 @@
     <version>2.3</version>
     <relativePath />
   </parent>
-  <groupId>com.aspectsecurity.contrast</groupId>
+  <groupId>com.contrastsecurity</groupId>
   <artifactId>contrast-continuous-application-security</artifactId>
   <version>1.1-SNAPSHOT</version>
   <packaging>hpi</packaging>
