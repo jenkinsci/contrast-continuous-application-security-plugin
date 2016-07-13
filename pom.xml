@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.contrastsecurity</groupId>
   <artifactId>contrast-continuous-application-security</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1</version>
   <packaging>hpi</packaging>
 
   <properties>
@@ -43,7 +43,7 @@
     <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
     <url>http://github.com/jenkinsci/${project.artifactId}-plugin</url>
-    <tag>contrast-continuous-application-security-1.0</tag>
+    <tag>contrast-continuous-application-security-1.1</tag>
   </scm>
 
   <repositories>
