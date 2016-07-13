@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.contrastsecurity</groupId>
   <artifactId>contrast-continuous-application-security</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <properties>
