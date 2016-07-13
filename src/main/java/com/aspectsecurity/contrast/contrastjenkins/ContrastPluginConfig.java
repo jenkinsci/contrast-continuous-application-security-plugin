@@ -33,11 +33,12 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
 
     @Override
     public ContrastPluginConfigDescriptor getDescriptor() {
-        return (ContrastPluginConfigDescriptor) Jenkins.getInstance().getDescriptor(getClass());
-    }
+        Jenkins instance = Jenkins.getInstance();
 
-    public static ContrastPluginConfigDescriptor getContrastConfigDescriptor() {
-        return (ContrastPluginConfigDescriptor) Jenkins.getInstance().getDescriptor(ContrastPluginConfig.class);
+        if (instance != null)
+            return (ContrastPluginConfigDescriptor) instance.getDescriptor(getClass());
+        else
+            return null;
     }
 
     public TeamServerProfile getProfile() {
