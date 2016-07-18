@@ -10,8 +10,17 @@
   </parent>
 
   <artifactId>contrast-continuous-application-security</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
+
+  <developers>
+    <developer>
+      <id>jleo</id>
+      <name>Justin Leo</name>
+      <email>justin.leo@contrastsecurity.com</email>
+    </developer>
+  </developers>
+  <url>https://wiki.jenkins-ci.org/display/JENKINS/Contrast+Continuous+Application+Security+Plugin</url>
 
   <properties>
     <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
