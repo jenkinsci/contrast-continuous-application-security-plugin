@@ -89,8 +89,8 @@ public class SeverityFrequencyPlot extends Graph {
         for (VulnerabilityFrequencyAction action : actions) {
             Map<String, Integer> result = action.getResult().getSeverityResult();
 
-            for (String severity : result.keySet()) {
-                ds.addValue(result.get(severity), severity, Integer.toString(action.getBuildNumber()));
+            for (Map.Entry<String, Integer> severity : result.entrySet()) {
+                ds.addValue(severity.getValue(), severity.getKey(), Integer.toString(action.getBuildNumber()));
             }
         }
         return ds;
