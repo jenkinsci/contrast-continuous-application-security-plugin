@@ -1,5 +1,6 @@
 package com.aspectsecurity.contrast.contrastjenkins;
 
+import com.contrastsecurity.models.Organizations;
 import com.contrastsecurity.sdk.ContrastSDK;
 import hudson.Extension;
 import hudson.model.AbstractProject;
@@ -11,6 +12,7 @@ import hudson.util.ListBoxModel;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
@@ -101,16 +103,38 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                                                          @QueryParameter("ts.apiKey") final String apiKey,
                                                          @QueryParameter("ts.serviceKey") final String serviceKey,
                                                          @QueryParameter("ts.teamServerUrl") final String teamServerUrl) throws IOException, ServletException {
-            ContrastSDK contrastSDK;
+            if (StringUtils.isEmpty(username)) {
+                return FormValidation.error("TeamServer Connection error: Username cannot be empty.");
+            }
+
+            if (StringUtils.isEmpty(apiKey)) {
+                return FormValidation.error("TeamServer Connection error: Api Key cannot be empty.");
+            }
+
+            if (StringUtils.isEmpty(serviceKey)) {
+                return FormValidation.error("TeamServer Connection error: Service Key cannot be empty");
+            }
+
+            if (StringUtils.isEmpty(teamServerUrl)) {
+                return FormValidation.error("TeamServer Connection error: TeamServer URL cannot be empty.");
+            }
+
+            if (!teamServerUrl.endsWith("/Contrast/api")) {
+                return FormValidation.error("TeamServer Connection error: TeamServer URL does not end with /Contrast/api.");
+            }
 
             try {
-                contrastSDK = new ContrastSDK(username, serviceKey, apiKey, teamServerUrl);
+                ContrastSDK contrastSDK = new ContrastSDK(username, serviceKey, apiKey, teamServerUrl);
 
-                contrastSDK.getProfileDefaultOrganizations();
+                Organizations organizations = contrastSDK.getProfileDefaultOrganizations();
+
+                if (organizations == null || organizations.getOrganization() == null) {
+                    return FormValidation.error("TeamServer Connection error: No organization found, Check your credentials and URL.");
+                }
 
                 return FormValidation.ok("Successfully verified the connection to TeamServer!");
             } catch (Exception e) {
-                return FormValidation.error("TeamServer Connection error: " + e.getMessage());
+                return FormValidation.error("TeamServer Connection error: Unable to connect to TeamServer.");
             }
         }
 
