@@ -1,5 +1,6 @@
 package com.aspectsecurity.contrast.contrastjenkins;
 
+import com.contrastsecurity.exceptions.UnauthorizedException;
 import com.contrastsecurity.models.Organizations;
 import com.contrastsecurity.sdk.ContrastSDK;
 import hudson.Extension;
@@ -133,7 +134,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 }
 
                 return FormValidation.ok("Successfully verified the connection to TeamServer!");
-            } catch (Exception e) {
+            } catch (UnauthorizedException e) {
                 return FormValidation.error("TeamServer Connection error: Unable to connect to TeamServer.");
             }
         }
