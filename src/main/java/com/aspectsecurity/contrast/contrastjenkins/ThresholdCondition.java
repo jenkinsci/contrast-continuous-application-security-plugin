@@ -6,16 +6,25 @@ import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
+import lombok.Getter;
+import lombok.Setter;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Properties;
+import java.util.TreeSet;
 
 /**
  * ThresholdCondition class contains the variables and logic to populate the conditions when verifying for vulnerabilities.
  */
+@Getter
+@Setter
 public class ThresholdCondition extends AbstractDescribableImpl<ThresholdCondition> {
 
     private String thresholdCount;
@@ -29,18 +38,6 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         this.thresholdCount = thresholdCount;
         this.thresholdSeverity = thresholdSeverity;
         this.thresholdVulnType = thresholdVulnType;
-    }
-
-    public String getThresholdCount() {
-        return thresholdCount;
-    }
-
-    public String getThresholdSeverity() {
-        return thresholdSeverity;
-    }
-
-    public String getThresholdVulnType() {
-        return thresholdVulnType;
     }
 
     @Override
@@ -112,11 +109,6 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             return FormValidation.ok();
         }
 
-
-        public List<String> getSeverities() {
-            return SEVERITIES;
-        }
-
         /**
          * Fills the Threshold Category select drop down with vulnerability types for the configured application.
          * These are read in from the static rules.properties file then sorted based on name.
@@ -132,14 +124,10 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
                 }
             };
 
-            InputStream rulesInputStream = getClass().getResourceAsStream("rules.properties");
-
-            try {
+            try (InputStream rulesInputStream = getClass().getResourceAsStream("rules.properties")) {
                 rules.load(rulesInputStream);
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                rulesInputStream.close();
             }
 
             items.add(EMPTY_SELECT, null);

@@ -5,7 +5,7 @@
             <f:repeatable var="profile" items="${descriptor.teamServerProfiles}">
                 <table width="100%">
                     <f:entry title="Configuration Profile Name">
-                        <f:textbox name="ts.name" value="${profile.name}"/>
+                        <f:textbox name="ts.name" value="${profile.name}" checkUrl="'descriptorByName/ContrastPluginConfig/checkProfileName?value='+escape(this.value)"/>
                     </f:entry>
 
                     <f:section title="TeamServer Configuration API">
@@ -18,20 +18,20 @@
                         <f:entry title="TeamServer Service Key">
                             <f:password name="ts.serviceKey" value="${profile.serviceKey}" checkUrl="'descriptorByName/ContrastPluginConfig/checkServiceKey?value='+escape(this.value)"/>
                         </f:entry>
-                        <f:entry title="TeamServer Url" >
+                        <f:entry title="TeamServer Url">
                             <f:textbox name="ts.teamServerUrl" value="${profile.teamServerUrl}" checkUrl="'descriptorByName/ContrastPluginConfig/checkTeamServerUrl?value='+escape(this.value)"/>
                         </f:entry>
                     </f:section>
 
                     <f:section title="Threshold Configuration Filter">
-                        <f:entry title="TeamServer Organization Uuid">
-                            <f:textbox name="ts.orgUuid" value="${profile.orgUuid}" />
+                        <f:entry title="Organization Uuid">
+                            <f:textbox name="ts.orgUuid" value="${profile.orgUuid}" checkUrl="'descriptorByName/ContrastPluginConfig/checkOrgUuid?value='+escape(this.value)"/>
                         </f:entry>
-                        <f:entry title="Application Name" >
-                            <f:textbox name="ts.applicationName" value="${profile.applicationName}"/>
+                        <f:entry title="Application Name">
+                            <f:textbox name="ts.applicationName" value="${profile.applicationName}" checkUrl="'descriptorByName/ContrastPluginConfig/checkApplicationName?value='+escape(this.value)"/>
                         </f:entry>
                         <f:entry title="Agent Server Name">
-                            <f:textbox name="ts.serverName" value="${profile.serverName}"/>
+                            <f:textbox name="ts.serverName" value="${profile.serverName}" checkUrl="'descriptorByName/ContrastPluginConfig/checkServerName?value='+escape(this.value)"/>
                         </f:entry>
                     </f:section>
 

@@ -9,7 +9,6 @@ import hudson.model.JobProperty;
 import hudson.model.JobPropertyDescriptor;
 import hudson.util.CopyOnWriteList;
 import hudson.util.FormValidation;
-import hudson.util.ListBoxModel;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -95,12 +94,13 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             return true;
         }
 
-        /** Validates the configured TeamServer profile by attempting to get the default profile for the username.
+        /**
+         * Validates the configured TeamServer profile by attempting to get the default profile for the username.
          *
-         * @param username      String username for the TeamServer user
-         * @param apiKey        String apiKey for the TeamServer user
-         * @param serviceKey    String serviceKey for the TeamServer user
-         * @param teamServerUrl String TeamServer Url for
+         * @param username      String username of the TeamServer user
+         * @param apiKey        String apiKey of the TeamServer user
+         * @param serviceKey    String serviceKey of the TeamServer user
+         * @param teamServerUrl String TeamServer Url
          * @return FormValidation
          * @throws IOException
          * @throws ServletException
@@ -139,25 +139,28 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 }
 
                 return FormValidation.ok("Successfully verified the connection to TeamServer!");
-            } catch (UnauthorizedException e) {
+            } catch (IOException | UnauthorizedException e) {
                 return FormValidation.error("TeamServer Connection error: Unable to connect to TeamServer.");
             }
         }
 
         public TeamServerProfile[] getTeamServerProfiles() {
             final TeamServerProfile[] profileArray = new TeamServerProfile[teamServerProfiles.size()];
+
             return teamServerProfiles.toArray(profileArray);
         }
 
-        @SuppressWarnings("unused")
-        public ListBoxModel doFillTeamServerProfileNameItems() {
-            final ListBoxModel model = new ListBoxModel();
+        /**
+         * Validation of the 'name' form Field.
+         *
+         * @param value This parameter receives the value that the user has typed.
+         * @return Indicates the outcome of the validation. This is sent to the browser.
+         */
+        public FormValidation doCheckProfileName(@QueryParameter String value) {
+            if (value.length() == 0)
+                return FormValidation.error("Please set a profile name.");
 
-            for (TeamServerProfile profile : teamServerProfiles) {
-                model.add(profile.getName(), profile.getName());
-            }
-
-            return model;
+            return FormValidation.ok();
         }
 
         /**
@@ -169,18 +172,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         public FormValidation doCheckUsername(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set a username.");
-            return FormValidation.ok();
-        }
-
-        /**
-         * Validation of the 'profile' form Field.
-         *
-         * @param value This parameter receives the value that the user has typed.
-         * @return Indicates the outcome of the validation. This is sent to the browser.
-         */
-        public FormValidation doCheckProfileName(@QueryParameter String value) {
-            if (value.length() == 0)
-                return FormValidation.error("Please set a profile name.");
             return FormValidation.ok();
         }
 
@@ -209,18 +200,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         }
 
         /**
-         * Validation of the 'orgUuid' form Field.
-         *
-         * @param value This parameter receives the value that the user has typed.
-         * @return Indicates the outcome of the validation. This is sent to the browser.
-         */
-        public FormValidation doCheckOrgUuid(@QueryParameter String value) {
-            if (value.length() == 0)
-                return FormValidation.error("Please set an Organization Uuid.");
-            return FormValidation.ok();
-        }
-
-        /**
          * Validation of the 'teamServerUrl' form Field.
          *
          * @param value This parameter receives the value that the user has typed.
@@ -229,6 +208,18 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         public FormValidation doCheckTeamServerUrl(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set a TeamServer Url.");
+            return FormValidation.ok();
+        }
+
+        /**
+         * Validation of the 'orgUuid' form Field.
+         *
+         * @param value This parameter receives the value that the user has typed.
+         * @return Indicates the outcome of the validation. This is sent to the browser.
+         */
+        public FormValidation doCheckOrgUuid(@QueryParameter String value) {
+            if (value.length() == 0)
+                return FormValidation.error("Please set an Organization Uuid.");
             return FormValidation.ok();
         }
 
@@ -250,9 +241,9 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
          */
-        public FormValidation doCheckSeverName(@QueryParameter String value) {
+        public FormValidation doCheckServerName(@QueryParameter String value) {
             if (value.length() == 0)
-                return FormValidation.error("Please set a Server Hostname.");
+                return FormValidation.error("Please set an Agent Server Name.");
             return FormValidation.ok();
         }
 
