@@ -1,7 +1,10 @@
 package com.aspectsecurity.contrast.contrastjenkins;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.kohsuke.stapler.DataBoundConstructor;
 
+@Getter @Setter
 public class TeamServerProfile {
 
     private String name;
@@ -30,37 +33,5 @@ public class TeamServerProfile {
         this.teamServerUrl = teamServerUrl;
         this.orgUuid = orgUuid;
         this.applicationName = applicationName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public String getServiceKey() {
-        return serviceKey;
-    }
-
-    public String getOrgUuid() {
-        return orgUuid;
-    }
-
-    public String getTeamServerUrl() {
-        return teamServerUrl;
-    }
-
-    public String getApplicationName() {
-        return applicationName;
-    }
-
-    public String getServerName() {
-        return serverName;
     }
 }

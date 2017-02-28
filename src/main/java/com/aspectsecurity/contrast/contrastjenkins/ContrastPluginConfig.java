@@ -14,6 +14,7 @@ import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
@@ -38,10 +39,11 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
     public ContrastPluginConfigDescriptor getDescriptor() {
         Jenkins instance = Jenkins.getInstance();
 
-        if (instance != null)
+        if (instance != null) {
             return (ContrastPluginConfigDescriptor) instance.getDescriptor(getClass());
-        else
+        } else {
             return null;
+        }
     }
 
     public TeamServerProfile getProfile() {
@@ -51,12 +53,15 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
     public static TeamServerProfile getProfile(String profileName) {
         final TeamServerProfile[] profiles = new ContrastPluginConfigDescriptor().getTeamServerProfiles();
 
-        if (profileName == null && profiles.length > 0)
+        if (profileName == null && ArrayUtils.isNotEmpty(profiles)) {
             return profiles[0];
+        }
 
         for (TeamServerProfile profile : profiles) {
-            if (profile.getName().equals(profileName))
+
+            if (StringUtils.equals(profileName, profile.getName())) {
                 return profile;
+            }
         }
         return null;
     }
@@ -236,6 +241,18 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         public FormValidation doCheckApplicationName(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set an Application Name.");
+            return FormValidation.ok();
+        }
+
+        /**
+         * Validation of the 'serverName' form Field.
+         *
+         * @param value This parameter receives the value that the user has typed.
+         * @return Indicates the outcome of the validation. This is sent to the browser.
+         */
+        public FormValidation doCheckSeverName(@QueryParameter String value) {
+            if (value.length() == 0)
+                return FormValidation.error("Please set a Server Hostname.");
             return FormValidation.ok();
         }
 

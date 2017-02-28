@@ -4,14 +4,11 @@
         <f:entry title="TeamServer profiles" description="Profiles for connecting to TeamServer">
             <f:repeatable var="profile" items="${descriptor.teamServerProfiles}">
                 <table width="100%">
-                    <f:entry title="TeamServer Profile Name">
+                    <f:entry title="Configuration Profile Name">
                         <f:textbox name="ts.name" value="${profile.name}"/>
                     </f:entry>
-                    <f:entry title="TeamServer Server Name">
-                        <f:textbox name="ts.serverName" value="${profile.serverName}"/>
-                    </f:entry>
 
-                    <f:section title="TeamServer Configuration">
+                    <f:section title="TeamServer Configuration API">
                         <f:entry title="TeamServer Username">
                             <f:textbox name="ts.username" value="${profile.username}" checkUrl="'descriptorByName/ContrastPluginConfig/checkUsername?value='+escape(this.value)"/>
                         </f:entry>
@@ -21,18 +18,20 @@
                         <f:entry title="TeamServer Service Key">
                             <f:password name="ts.serviceKey" value="${profile.serviceKey}" checkUrl="'descriptorByName/ContrastPluginConfig/checkServiceKey?value='+escape(this.value)"/>
                         </f:entry>
-
                         <f:entry title="TeamServer Url" >
                             <f:textbox name="ts.teamServerUrl" value="${profile.teamServerUrl}" checkUrl="'descriptorByName/ContrastPluginConfig/checkTeamServerUrl?value='+escape(this.value)"/>
                         </f:entry>
                     </f:section>
 
-                    <f:section title="Threshold Configuration">
+                    <f:section title="Threshold Configuration Filter">
                         <f:entry title="TeamServer Organization Uuid">
                             <f:textbox name="ts.orgUuid" value="${profile.orgUuid}" />
                         </f:entry>
-                        <f:entry title="TeamServer Application Name" >
+                        <f:entry title="Application Name" >
                             <f:textbox name="ts.applicationName" value="${profile.applicationName}"/>
+                        </f:entry>
+                        <f:entry title="Agent Server Name">
+                            <f:textbox name="ts.serverName" value="${profile.serverName}"/>
                         </f:entry>
                     </f:section>
 
