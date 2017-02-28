@@ -13,10 +13,8 @@ import org.kohsuke.stapler.QueryParameter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Properties;
 import java.util.TreeSet;
 
@@ -148,7 +146,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             ListBoxModel items = new ListBoxModel();
             items.add(EMPTY_SELECT, null);
 
-            for (String severity : SEVERITIES) {
+            for (String severity : VulnerabilityTrendHelper.SEVERITIES) {
                 items.add(severity, severity);
             }
 
@@ -165,6 +163,5 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         }
     }
 
-    private static final List<String> SEVERITIES = Arrays.asList("Note", "Low", "Medium", "High", "Critical");
     private static final String EMPTY_SELECT = "None";
 }
