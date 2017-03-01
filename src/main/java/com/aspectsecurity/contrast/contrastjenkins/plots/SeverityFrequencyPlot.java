@@ -12,6 +12,7 @@ import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 
@@ -23,6 +24,15 @@ import java.util.Map;
 
 
 public class SeverityFrequencyPlot extends Graph {
+
+    private Color[] colors = new Color[]{
+            new Color(230, 240, 255),
+            new Color(240, 255, 240),
+            new Color(255, 255, 255),
+            new Color(255, 255, 240),
+            new Color(255, 240, 240),
+            new Color(240, 240, 240)
+    };
 
     private AbstractProject<?, ?> project;
 
@@ -52,6 +62,15 @@ public class SeverityFrequencyPlot extends Graph {
         plot.setOutlinePaint(null);
         plot.setRangeGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.black);
+
+        // Set colors here
+        BarRenderer barRenderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
+
+        barRenderer.setSeriesPaint(0, Color.lightGray);
+        barRenderer.setSeriesPaint(1, Color.gray);
+        barRenderer.setSeriesPaint(2, Color.yellow);
+        barRenderer.setSeriesPaint(4, Color.orange);
+        barRenderer.setSeriesPaint(5, Color.red);
 
         CategoryAxis domainAxis = new ShiftedCategoryAxis("Build Number");
         plot.setDomainAxis(domainAxis);
