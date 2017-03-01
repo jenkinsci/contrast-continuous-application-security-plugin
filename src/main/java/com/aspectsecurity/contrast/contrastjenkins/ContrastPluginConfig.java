@@ -105,10 +105,10 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          * @throws IOException
          * @throws ServletException
          */
-        public FormValidation doTestTeamServerConnection(@QueryParameter("ts.username") final String username,
-                                                         @QueryParameter("ts.apiKey") final String apiKey,
-                                                         @QueryParameter("ts.serviceKey") final String serviceKey,
-                                                         @QueryParameter("ts.teamServerUrl") final String teamServerUrl) throws IOException, ServletException {
+        public FormValidation doTestTeamServerConnection(@QueryParameter("username") final String username,
+                                                         @QueryParameter("apiKey") final String apiKey,
+                                                         @QueryParameter("serviceKey") final String serviceKey,
+                                                         @QueryParameter("teamServerUrl") final String teamServerUrl) throws IOException, ServletException {
             if (StringUtils.isEmpty(username)) {
                 return FormValidation.error("TeamServer Connection error: Username cannot be empty.");
             }
