@@ -89,6 +89,14 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 }
             }
 
+            // refresh all org rules
+            for (TeamServerProfile teamServerProfile: teamServerProfiles) {
+                ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(teamServerProfile.getUsername(), teamServerProfile.getServiceKey(),
+                        teamServerProfile.getApiKey(), teamServerProfile.getTeamServerUrl());
+
+                teamServerProfile.setVulnerabilityTypes(VulnerabilityTrendHelper.saveRules(contrastSDK, teamServerProfile.getOrgUuid()));
+            }
+
             save();
 
             return true;

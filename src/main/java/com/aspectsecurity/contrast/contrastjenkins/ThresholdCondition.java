@@ -42,14 +42,14 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("count is " + thresholdCount);
+        sb.append("count is ").append(thresholdCount);
 
         if (thresholdSeverity != null) {
-            sb.append(", severity is " + thresholdSeverity);
+            sb.append(", severity is ").append(thresholdSeverity);
         }
 
         if (thresholdVulnType != null) {
-            sb.append(", rule type is " + thresholdVulnType);
+            sb.append(", rule type is ").append(thresholdVulnType);
         }
 
         sb.append(".");
