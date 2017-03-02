@@ -3,9 +3,11 @@ package com.aspectsecurity.contrast.contrastjenkins;
 
 import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
+import hudson.model.Action;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
+import jenkins.model.Jenkins;
 import lombok.Getter;
 import lombok.Setter;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -133,6 +135,13 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             for (Object rule : rules.keySet()) {
                 items.add((String) rule, (String) rule);
             }
+
+
+            // figure out how to get
+            for (Action action: Jenkins.getInstance().getActions()) {
+
+            }
+
 
             return items;
         }
