@@ -21,14 +21,8 @@
                         <f:entry title="TeamServer Url" help="/plugin/contrast-continuous-application-security/help-teamServerUrl.html">
                             <f:textbox name="teamServerUrl" field="teamServerUrl" value="${profile.teamServerUrl}" checkUrl="'descriptorByName/ContrastPluginConfig/checkTeamServerUrl?value='+escape(this.value)"/>
                         </f:entry>
-                    </f:section>
-
-                    <f:section title="Threshold Configuration">
                         <f:entry title="Organization Uuid" help="/plugin/contrast-continuous-application-security/help-orgUuid.html">
                             <f:textbox name="orgUuid" field="orgUuid" value="${profile.orgUuid}" checkUrl="'descriptorByName/ContrastPluginConfig/checkOrgUuid?value='+escape(this.value)"/>
-                        </f:entry>
-                        <f:entry title="Application Name" help="/plugin/contrast-continuous-application-security/help-applicationName.html">
-                            <f:textbox name="applicationName" field="applicationName" value="${profile.applicationName}" checkUrl="'descriptorByName/ContrastPluginConfig/checkApplicationName?value='+escape(this.value)"/>
                         </f:entry>
                     </f:section>
 

@@ -138,7 +138,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             }
 
             try {
-                ContrastSDK contrastSDK = new ContrastSDK(username, serviceKey, apiKey, teamServerUrl);
+                ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(username, serviceKey, apiKey, teamServerUrl);
 
                 Organizations organizations = contrastSDK.getProfileDefaultOrganizations();
 
