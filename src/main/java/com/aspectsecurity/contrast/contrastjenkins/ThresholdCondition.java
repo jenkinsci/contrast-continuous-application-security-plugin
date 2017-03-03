@@ -2,23 +2,17 @@ package com.aspectsecurity.contrast.contrastjenkins;
 
 
 import hudson.Extension;
+import hudson.RelativePath;
 import hudson.model.AbstractDescribableImpl;
-import hudson.model.Action;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
-import jenkins.model.Jenkins;
 import lombok.Getter;
 import lombok.Setter;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Properties;
-import java.util.TreeSet;
 
 /**
  * ThresholdCondition class contains the variables and logic to populate the conditions when verifying for vulnerabilities.
@@ -110,38 +104,22 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         }
 
         /**
-         * Fills the Threshold Category select drop down with vulnerability types for the configured application.
-         * These are read in from the static rules.properties file then sorted based on name.
+         * Fills the Threshold Category select drop down with vulnerability types for the configured profile.
          *
          * @return ListBoxModel filled with vulnerability types.
          */
-        public ListBoxModel doFillThresholdVulnTypeItems() throws IOException {
+        public ListBoxModel doFillThresholdVulnTypeItems(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName) throws IOException {
             ListBoxModel items = new ListBoxModel();
-            Properties rules = new Properties() {
-                @Override
-                public synchronized Enumeration<Object> keys() {
-                    return Collections.enumeration(new TreeSet<>(super.keySet()));
-                }
-            };
 
-            try (InputStream rulesInputStream = getClass().getResourceAsStream("rules.properties")) {
-                rules.load(rulesInputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            TeamServerProfile teamServerProfile = VulnerabilityTrendHelper.getProfile(teamServerProfileName);
 
             items.add(EMPTY_SELECT, null);
 
-            for (Object rule : rules.keySet()) {
-                items.add((String) rule, (String) rule);
+            if (teamServerProfile != null) {
+                for (VulnerabilityType vulnerabilityType : teamServerProfile.getVulnerabilityTypes()) {
+                    items.add(vulnerabilityType.getTitle(), vulnerabilityType.getName());
+                }
             }
-
-
-            // figure out how to get
-            for (Action action: Jenkins.getInstance().getActions()) {
-                System.out.println(action.getDisplayName());
-            }
-
 
             return items;
         }
