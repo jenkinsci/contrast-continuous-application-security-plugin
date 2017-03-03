@@ -15,7 +15,6 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.ui.RectangleInsets;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -68,7 +67,6 @@ public class SeverityFrequencyPlot extends Graph {
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         rangeAxis.setAutoRange(true);
 
-        plot.setInsets(new RectangleInsets(0, 5.0, 0, 5.0));
         return chart;
     }
 
@@ -95,12 +93,6 @@ public class SeverityFrequencyPlot extends Graph {
             Map<String, Integer> result = action.getResult().getSeverityResult();
 
             String buildNumber = Integer.toString(action.getBuildNumber());
-
-            ds.addValue(result.get("Note"), "Note", buildNumber);
-            ds.addValue(result.get("Low"), "Low", buildNumber);
-            ds.addValue(result.get("Medium"), "Medium", buildNumber);
-            ds.addValue(result.get("High"), "High", buildNumber);
-            ds.addValue(result.get("Critical"), "Critical", buildNumber);
 
             for (String severity : VulnerabilityTrendHelper.SEVERITIES) {
                 ds.addValue(result.get(severity), severity, buildNumber);

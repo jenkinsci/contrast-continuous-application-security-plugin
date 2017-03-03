@@ -24,15 +24,12 @@ public class TeamServerProfile {
 
     private String applicationName;
 
-    private String serverName;
-
     private List<VulnerabilityType> vulnerabilityTypes;
 
     @DataBoundConstructor
-    public TeamServerProfile(String name, String serverName, String username, String apiKey, String serviceKey,
+    public TeamServerProfile(String name, String username, String apiKey, String serviceKey,
                              String teamServerUrl, String orgUuid, String applicationName) {
         this.name = name;
-        this.serverName = serverName;
         this.username = username;
         this.apiKey = apiKey;
         this.serviceKey = serviceKey;

@@ -30,9 +30,6 @@
                         <f:entry title="Application Name" help="/plugin/contrast-continuous-application-security/help-applicationName.html">
                             <f:textbox name="applicationName" field="applicationName" value="${profile.applicationName}" checkUrl="'descriptorByName/ContrastPluginConfig/checkApplicationName?value='+escape(this.value)"/>
                         </f:entry>
-                        <f:entry title="Agent Server Name" help="/plugin/contrast-continuous-application-security/help-serverName.html">
-                            <f:textbox name="serverName" field="serverName" value="${profile.serverName}" checkUrl="'descriptorByName/ContrastPluginConfig/checkServerName?value='+escape(this.value)"/>
-                        </f:entry>
                     </f:section>
 
                     <f:entry title="">

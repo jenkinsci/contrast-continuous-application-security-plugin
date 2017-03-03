@@ -139,7 +139,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
 
             // figure out how to get
             for (Action action: Jenkins.getInstance().getActions()) {
-
+                System.out.println(action.getDisplayName());
             }
 
 

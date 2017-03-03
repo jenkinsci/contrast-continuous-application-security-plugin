@@ -243,18 +243,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             return FormValidation.ok();
         }
 
-        /**
-         * Validation of the 'serverName' form Field.
-         *
-         * @param value This parameter receives the value that the user has typed.
-         * @return Indicates the outcome of the validation. This is sent to the browser.
-         */
-        public FormValidation doCheckServerName(@QueryParameter String value) {
-            if (value.length() == 0)
-                return FormValidation.error("Please set an Agent Server Name.");
-            return FormValidation.ok();
-        }
-
         @Override
         public String getDisplayName() {
             return "Contrast Plugin Configuration";
