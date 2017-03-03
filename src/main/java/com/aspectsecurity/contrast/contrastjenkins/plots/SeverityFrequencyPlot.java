@@ -63,9 +63,6 @@ public class SeverityFrequencyPlot extends Graph {
 
         CategoryAxis domainAxis = new ShiftedCategoryAxis("Build Number");
         plot.setDomainAxis(domainAxis);
-        domainAxis.setLowerMargin(0.0);
-        domainAxis.setUpperMargin(0.0);
-        domainAxis.setCategoryMargin(0.0);
 
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
@@ -105,7 +102,7 @@ public class SeverityFrequencyPlot extends Graph {
             ds.addValue(result.get("High"), "High", buildNumber);
             ds.addValue(result.get("Critical"), "Critical", buildNumber);
 
-            for (String severity: VulnerabilityTrendHelper.SEVERITIES) {
+            for (String severity : VulnerabilityTrendHelper.SEVERITIES) {
                 ds.addValue(result.get(severity), severity, buildNumber);
             }
         }
@@ -118,7 +115,7 @@ public class SeverityFrequencyPlot extends Graph {
         java.util.List<Color> colors = new ArrayList<>();
 
         renderer.setSeriesPaint(0, new Color(232, 232, 232));
-        renderer.setSeriesPaint(1 ,new Color(186, 186, 186));
+        renderer.setSeriesPaint(1, new Color(186, 186, 186));
         renderer.setSeriesPaint(2, new Color(247, 182, 0));
         renderer.setSeriesPaint(3, new Color(247, 138, 49));
         renderer.setSeriesPaint(4, new Color(230, 48, 37));
