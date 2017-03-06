@@ -10,7 +10,7 @@
         </f:entry>
 
         <f:entry title="Output Directory" field="outputDirectory">
-            <f:select/>
+            <f:textbox field="outputDirectory"/>
         </f:entry>
     </f:section>
 </j:jelly>

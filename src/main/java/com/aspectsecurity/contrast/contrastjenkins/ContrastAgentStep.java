@@ -13,14 +13,12 @@ import org.apache.commons.io.FileUtils;
 import org.jenkinsci.plugins.workflow.steps.AbstractStepDescriptorImpl;
 import org.jenkinsci.plugins.workflow.steps.AbstractStepImpl;
 import org.jenkinsci.plugins.workflow.steps.AbstractSynchronousStepExecution;
-import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContextParameter;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 @Getter
 public class ContrastAgentStep extends AbstractStepImpl {
@@ -81,30 +79,6 @@ public class ContrastAgentStep extends AbstractStepImpl {
             return "Download latest Contrast agent";
         }
 
-        @Override
-        public Step newInstance(Map<String, Object> arguments) throws Exception {
-            String dir, profile, agentType;
-
-            if (!arguments.containsKey("outputDirectory")) {
-                throw new IllegalArgumentException("Output directory must be set.");
-            } else {
-                dir = (String) arguments.get("outputDirectory");
-            }
-
-            if (!arguments.containsKey("profile")) {
-                throw new IllegalArgumentException("Profile must be set.");
-            } else {
-                profile = (String) arguments.get("profile");
-            }
-
-            if (!arguments.containsKey("agentType")) {
-                throw new IllegalArgumentException("Agent Type must be set.");
-            } else {
-                agentType = (String) arguments.get("agentType");
-            }
-
-            return new ContrastAgentStep(profile, dir, agentType);
-        }
 
         @SuppressWarnings("unused")
         public ListBoxModel doFillProfileItems() {
