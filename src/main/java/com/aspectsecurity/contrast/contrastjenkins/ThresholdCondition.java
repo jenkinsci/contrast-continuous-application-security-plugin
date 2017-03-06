@@ -109,19 +109,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          * @return ListBoxModel filled with vulnerability types.
          */
         public ListBoxModel doFillThresholdVulnTypeItems(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName) throws IOException {
-            ListBoxModel items = new ListBoxModel();
-
-            TeamServerProfile teamServerProfile = VulnerabilityTrendHelper.getProfile(teamServerProfileName);
-
-            items.add(VulnerabilityTrendHelper.EMPTY_SELECT, null);
-
-            if (teamServerProfile != null) {
-                for (VulnerabilityType vulnerabilityType : teamServerProfile.getVulnerabilityTypes()) {
-                    items.add(vulnerabilityType.getTitle(), vulnerabilityType.getName());
-                }
-            }
-
-            return items;
+            return VulnerabilityTrendHelper.getVulnerabilityTypes(teamServerProfileName);
         }
 
         /**
