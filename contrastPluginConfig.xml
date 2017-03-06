@@ -9,7 +9,6 @@
             <orgUuid>110a6669-82fb-4db3-8ad2-fef35b01371c</orgUuid>
             <teamServerUrl>http://localhost:19080/Contrast/api</teamServerUrl>
             <applicationName>WebGoat</applicationName>
-            <serverName>justinslaptop</serverName>
         </com.aspectsecurity.contrast.contrastjenkins.TeamServerProfile>
     </teamServerProfiles>
 </com.aspectsecurity.contrast.contrastjenkins.ContrastPluginConfig_-ContrastPluginConfigDescriptor>

@@ -113,7 +113,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
 
             TeamServerProfile teamServerProfile = VulnerabilityTrendHelper.getProfile(teamServerProfileName);
 
-            items.add(EMPTY_SELECT, null);
+            items.add(VulnerabilityTrendHelper.EMPTY_SELECT, null);
 
             if (teamServerProfile != null) {
                 for (VulnerabilityType vulnerabilityType : teamServerProfile.getVulnerabilityTypes()) {
@@ -130,14 +130,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          * @return ListBoxModel filled with severities.
          */
         public ListBoxModel doFillThresholdSeverityItems() {
-            ListBoxModel items = new ListBoxModel();
-            items.add(EMPTY_SELECT, null);
-
-            for (String severity : VulnerabilityTrendHelper.SEVERITIES) {
-                items.add(severity, severity);
-            }
-
-            return items;
+            return VulnerabilityTrendHelper.getSeverityListBoxModel();
         }
 
         /**
@@ -149,6 +142,4 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             return "Threshold Condition";
         }
     }
-
-    private static final String EMPTY_SELECT = "None";
 }
