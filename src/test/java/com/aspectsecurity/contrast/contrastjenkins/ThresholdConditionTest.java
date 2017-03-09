@@ -6,8 +6,6 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class ThresholdConditionTest extends TestCase {
 
     private ThresholdConditionStub.ThresholdConditionDescriptorStub descriptor;
@@ -16,13 +14,6 @@ public class ThresholdConditionTest extends TestCase {
     @Override
     public void setUp() {
         descriptor = new ThresholdConditionStub.ThresholdConditionDescriptorStub();
-    }
-
-    // @Test
-    public void testDoFillThresholdVulnTypeItems() throws IOException {
-        ListBoxModel result = descriptor.doFillThresholdVulnTypeItems("Test");
-
-        assertTrue(result.size() > 0);
     }
 
     @Test
