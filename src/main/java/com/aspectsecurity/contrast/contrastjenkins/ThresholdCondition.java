@@ -2,20 +2,23 @@ package com.aspectsecurity.contrast.contrastjenkins;
 
 
 import hudson.Extension;
+import hudson.RelativePath;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
+import lombok.Getter;
+import lombok.Setter;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
 
 /**
  * ThresholdCondition class contains the variables and logic to populate the conditions when verifying for vulnerabilities.
  */
+@Getter
+@Setter
 public class ThresholdCondition extends AbstractDescribableImpl<ThresholdCondition> {
 
     private String thresholdCount;
@@ -31,30 +34,18 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         this.thresholdVulnType = thresholdVulnType;
     }
 
-    public String getThresholdCount() {
-        return thresholdCount;
-    }
-
-    public String getThresholdSeverity() {
-        return thresholdSeverity;
-    }
-
-    public String getThresholdVulnType() {
-        return thresholdVulnType;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("count is " + thresholdCount);
+        sb.append("count is ").append(thresholdCount);
 
         if (thresholdSeverity != null) {
-            sb.append(", severity is " + thresholdSeverity);
+            sb.append(", severity is ").append(thresholdSeverity);
         }
 
         if (thresholdVulnType != null) {
-            sb.append(", rule type is " + thresholdVulnType);
+            sb.append(", rule type is ").append(thresholdVulnType);
         }
 
         sb.append(".");
@@ -112,43 +103,13 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             return FormValidation.ok();
         }
 
-
-        public List<String> getSeverities() {
-            return SEVERITIES;
-        }
-
         /**
-         * Fills the Threshold Category select drop down with vulnerability types for the configured application.
-         * These are read in from the static rules.properties file then sorted based on name.
+         * Fills the Threshold Category select drop down with vulnerability types for the configured profile.
          *
          * @return ListBoxModel filled with vulnerability types.
          */
-        public ListBoxModel doFillThresholdVulnTypeItems() throws IOException {
-            ListBoxModel items = new ListBoxModel();
-            Properties rules = new Properties() {
-                @Override
-                public synchronized Enumeration<Object> keys() {
-                    return Collections.enumeration(new TreeSet<>(super.keySet()));
-                }
-            };
-
-            InputStream rulesInputStream = getClass().getResourceAsStream("rules.properties");
-
-            try {
-                rules.load(rulesInputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                rulesInputStream.close();
-            }
-
-            items.add(EMPTY_SELECT, null);
-
-            for (Object rule : rules.keySet()) {
-                items.add((String) rule, (String) rule);
-            }
-
-            return items;
+        public ListBoxModel doFillThresholdVulnTypeItems(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName) throws IOException {
+            return VulnerabilityTrendHelper.getVulnerabilityTypes(teamServerProfileName);
         }
 
         /**
@@ -157,14 +118,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          * @return ListBoxModel filled with severities.
          */
         public ListBoxModel doFillThresholdSeverityItems() {
-            ListBoxModel items = new ListBoxModel();
-            items.add(EMPTY_SELECT, null);
-
-            for (String severity : SEVERITIES) {
-                items.add(severity, severity);
-            }
-
-            return items;
+            return VulnerabilityTrendHelper.getSeverityListBoxModel();
         }
 
         /**
@@ -176,7 +130,4 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             return "Threshold Condition";
         }
     }
-
-    private static final List<String> SEVERITIES = Arrays.asList("Note", "Low", "Medium", "High", "Critical");
-    private static final String EMPTY_SELECT = "None";
 }

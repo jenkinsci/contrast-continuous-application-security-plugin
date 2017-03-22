@@ -1,6 +1,7 @@
 package com.aspectsecurity.contrast.contrastjenkins.plots;
 
 import com.aspectsecurity.contrast.contrastjenkins.VulnerabilityFrequencyAction;
+import com.aspectsecurity.contrast.contrastjenkins.VulnerabilityTrendHelper;
 import hudson.model.AbstractProject;
 import hudson.model.Run;
 import hudson.util.Graph;
@@ -12,8 +13,8 @@ import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.ui.RectangleInsets;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -53,17 +54,19 @@ public class SeverityFrequencyPlot extends Graph {
         plot.setRangeGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.black);
 
+        BarRenderer renderer = (BarRenderer) plot.getRenderer();
+        setColors(renderer);
+
+        // Set colors here
+        plot.setRenderer(renderer);
+
         CategoryAxis domainAxis = new ShiftedCategoryAxis("Build Number");
         plot.setDomainAxis(domainAxis);
-        domainAxis.setLowerMargin(0.0);
-        domainAxis.setUpperMargin(0.0);
-        domainAxis.setCategoryMargin(0.0);
 
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         rangeAxis.setAutoRange(true);
 
-        plot.setInsets(new RectangleInsets(0, 0, 0, 5.0));
         return chart;
     }
 
@@ -89,10 +92,26 @@ public class SeverityFrequencyPlot extends Graph {
         for (VulnerabilityFrequencyAction action : actions) {
             Map<String, Integer> result = action.getResult().getSeverityResult();
 
-            for (Map.Entry<String, Integer> severity : result.entrySet()) {
-                ds.addValue(severity.getValue(), severity.getKey(), Integer.toString(action.getBuildNumber()));
+            String buildNumber = Integer.toString(action.getBuildNumber());
+
+            for (String severity : VulnerabilityTrendHelper.SEVERITIES) {
+                ds.addValue(result.get(severity), severity, buildNumber);
             }
         }
+
         return ds;
+    }
+
+
+    private java.util.List<Color> setColors(BarRenderer renderer) {
+        java.util.List<Color> colors = new ArrayList<>();
+
+        renderer.setSeriesPaint(0, new Color(232, 232, 232));
+        renderer.setSeriesPaint(1, new Color(186, 186, 186));
+        renderer.setSeriesPaint(2, new Color(247, 182, 0));
+        renderer.setSeriesPaint(3, new Color(247, 138, 49));
+        renderer.setSeriesPaint(4, new Color(230, 48, 37));
+
+        return colors;
     }
 }

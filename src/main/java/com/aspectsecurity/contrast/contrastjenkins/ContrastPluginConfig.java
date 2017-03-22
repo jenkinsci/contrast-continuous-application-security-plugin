@@ -9,11 +9,11 @@ import hudson.model.JobProperty;
 import hudson.model.JobPropertyDescriptor;
 import hudson.util.CopyOnWriteList;
 import hudson.util.FormValidation;
-import hudson.util.ListBoxModel;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
@@ -38,10 +38,11 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
     public ContrastPluginConfigDescriptor getDescriptor() {
         Jenkins instance = Jenkins.getInstance();
 
-        if (instance != null)
+        if (instance != null) {
             return (ContrastPluginConfigDescriptor) instance.getDescriptor(getClass());
-        else
+        } else {
             return null;
+        }
     }
 
     public TeamServerProfile getProfile() {
@@ -51,12 +52,15 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
     public static TeamServerProfile getProfile(String profileName) {
         final TeamServerProfile[] profiles = new ContrastPluginConfigDescriptor().getTeamServerProfiles();
 
-        if (profileName == null && profiles.length > 0)
+        if (profileName == null && ArrayUtils.isNotEmpty(profiles)) {
             return profiles[0];
+        }
 
         for (TeamServerProfile profile : profiles) {
-            if (profile.getName().equals(profileName))
+
+            if (StringUtils.equals(profileName, profile.getName())) {
                 return profile;
+            }
         }
         return null;
     }
@@ -85,25 +89,34 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 }
             }
 
+            // refresh all org rules
+            for (TeamServerProfile teamServerProfile : teamServerProfiles) {
+                ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(teamServerProfile.getUsername(), teamServerProfile.getServiceKey(),
+                        teamServerProfile.getApiKey(), teamServerProfile.getTeamServerUrl());
+
+                teamServerProfile.setVulnerabilityTypes(VulnerabilityTrendHelper.saveRules(contrastSDK, teamServerProfile.getOrgUuid()));
+            }
+
             save();
 
             return true;
         }
 
-        /** Validates the configured TeamServer profile by attempting to get the default profile for the username.
+        /**
+         * Validates the configured TeamServer profile by attempting to get the default profile for the username.
          *
-         * @param username      String username for the TeamServer user
-         * @param apiKey        String apiKey for the TeamServer user
-         * @param serviceKey    String serviceKey for the TeamServer user
-         * @param teamServerUrl String TeamServer Url for
+         * @param username      String username of the TeamServer user
+         * @param apiKey        String apiKey of the TeamServer user
+         * @param serviceKey    String serviceKey of the TeamServer user
+         * @param teamServerUrl String TeamServer Url
          * @return FormValidation
          * @throws IOException
          * @throws ServletException
          */
-        public FormValidation doTestTeamServerConnection(@QueryParameter("ts.username") final String username,
-                                                         @QueryParameter("ts.apiKey") final String apiKey,
-                                                         @QueryParameter("ts.serviceKey") final String serviceKey,
-                                                         @QueryParameter("ts.teamServerUrl") final String teamServerUrl) throws IOException, ServletException {
+        public FormValidation doTestTeamServerConnection(@QueryParameter("username") final String username,
+                                                         @QueryParameter("apiKey") final String apiKey,
+                                                         @QueryParameter("serviceKey") final String serviceKey,
+                                                         @QueryParameter("teamServerUrl") final String teamServerUrl) throws IOException, ServletException {
             if (StringUtils.isEmpty(username)) {
                 return FormValidation.error("TeamServer Connection error: Username cannot be empty.");
             }
@@ -125,7 +138,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             }
 
             try {
-                ContrastSDK contrastSDK = new ContrastSDK(username, serviceKey, apiKey, teamServerUrl);
+                ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(username, serviceKey, apiKey, teamServerUrl);
 
                 Organizations organizations = contrastSDK.getProfileDefaultOrganizations();
 
@@ -134,25 +147,28 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 }
 
                 return FormValidation.ok("Successfully verified the connection to TeamServer!");
-            } catch (UnauthorizedException e) {
+            } catch (IOException | UnauthorizedException e) {
                 return FormValidation.error("TeamServer Connection error: Unable to connect to TeamServer.");
             }
         }
 
         public TeamServerProfile[] getTeamServerProfiles() {
             final TeamServerProfile[] profileArray = new TeamServerProfile[teamServerProfiles.size()];
+
             return teamServerProfiles.toArray(profileArray);
         }
 
-        @SuppressWarnings("unused")
-        public ListBoxModel doFillTeamServerProfileNameItems() {
-            final ListBoxModel model = new ListBoxModel();
+        /**
+         * Validation of the 'name' form Field.
+         *
+         * @param value This parameter receives the value that the user has typed.
+         * @return Indicates the outcome of the validation. This is sent to the browser.
+         */
+        public FormValidation doCheckProfileName(@QueryParameter String value) {
+            if (value.length() == 0)
+                return FormValidation.error("Please set a profile name.");
 
-            for (TeamServerProfile profile : teamServerProfiles) {
-                model.add(profile.getName(), profile.getName());
-            }
-
-            return model;
+            return FormValidation.ok();
         }
 
         /**
@@ -164,18 +180,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         public FormValidation doCheckUsername(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set a username.");
-            return FormValidation.ok();
-        }
-
-        /**
-         * Validation of the 'profile' form Field.
-         *
-         * @param value This parameter receives the value that the user has typed.
-         * @return Indicates the outcome of the validation. This is sent to the browser.
-         */
-        public FormValidation doCheckProfileName(@QueryParameter String value) {
-            if (value.length() == 0)
-                return FormValidation.error("Please set a profile name.");
             return FormValidation.ok();
         }
 
@@ -204,18 +208,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         }
 
         /**
-         * Validation of the 'orgUuid' form Field.
-         *
-         * @param value This parameter receives the value that the user has typed.
-         * @return Indicates the outcome of the validation. This is sent to the browser.
-         */
-        public FormValidation doCheckOrgUuid(@QueryParameter String value) {
-            if (value.length() == 0)
-                return FormValidation.error("Please set an Organization Uuid.");
-            return FormValidation.ok();
-        }
-
-        /**
          * Validation of the 'teamServerUrl' form Field.
          *
          * @param value This parameter receives the value that the user has typed.
@@ -224,6 +216,18 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         public FormValidation doCheckTeamServerUrl(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set a TeamServer Url.");
+            return FormValidation.ok();
+        }
+
+        /**
+         * Validation of the 'orgUuid' form Field.
+         *
+         * @param value This parameter receives the value that the user has typed.
+         * @return Indicates the outcome of the validation. This is sent to the browser.
+         */
+        public FormValidation doCheckOrgUuid(@QueryParameter String value) {
+            if (value.length() == 0)
+                return FormValidation.error("Please set an Organization Uuid.");
             return FormValidation.ok();
         }
 

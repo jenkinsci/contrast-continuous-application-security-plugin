@@ -1,5 +1,5 @@
 <?jelly escape-by-default='true'?>
 
 <div>
-    This plugin is for building applications with Contrast TeamServer.
+    This plugin is for continuous application security with Contrast integration.
 </div>

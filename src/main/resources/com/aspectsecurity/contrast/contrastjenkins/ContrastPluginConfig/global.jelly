@@ -1,44 +1,34 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
     <f:section title="Contrast TeamServer profiles">
-        <f:entry title="TeamServer profiles" description="Profiles for connecting to TeamServer">
+        <f:entry description="Profiles for connecting to TeamServer">
             <f:repeatable var="profile" items="${descriptor.teamServerProfiles}">
                 <table width="100%">
-                    <f:entry title="TeamServer Profile Name">
-                        <f:textbox name="ts.name" value="${profile.name}"/>
-                    </f:entry>
-                    <f:entry title="TeamServer Server Name">
-                        <f:textbox name="ts.serverName" value="${profile.serverName}"/>
+                    <f:entry title="Configuration Profile Name">
+                        <f:textbox name="name" value="${profile.name}" checkUrl="'descriptorByName/ContrastPluginConfig/checkProfileName?value='+escape(this.value)"/>
                     </f:entry>
 
-                    <f:section title="TeamServer Configuration">
-                        <f:entry title="TeamServer Username">
-                            <f:textbox name="ts.username" value="${profile.username}" checkUrl="'descriptorByName/ContrastPluginConfig/checkUsername?value='+escape(this.value)"/>
+                    <f:section title="Contrast API Configuration">
+                        <f:entry title="Contrast Username" help="/plugin/contrast-continuous-application-security/help-username.html">
+                            <f:textbox name="username" field="username" value="${profile.username}" checkUrl="'descriptorByName/ContrastPluginConfig/checkUsername?value='+escape(this.value)"/>
                         </f:entry>
-                        <f:entry title="TeamServer API Key">
-                            <f:password name="ts.apiKey" value="${profile.apiKey}" checkUrl="'descriptorByName/ContrastPluginConfig/checkApiKey?value='+escape(this.value)"/>
+                        <f:entry title="Contrast API Key" help="/plugin/contrast-continuous-application-security/help-apiKey.html">
+                            <f:password name="apiKey" field="apiKey" value="${profile.apiKey}" checkUrl="'descriptorByName/ContrastPluginConfig/checkApiKey?value='+escape(this.value)"/>
                         </f:entry>
-                        <f:entry title="TeamServer Service Key">
-                            <f:password name="ts.serviceKey" value="${profile.serviceKey}" checkUrl="'descriptorByName/ContrastPluginConfig/checkServiceKey?value='+escape(this.value)"/>
+                        <f:entry title="Contrast Service Key" help="/plugin/contrast-continuous-application-security/help-serviceKey.html">
+                            <f:password name="serviceKey" field="serviceKey" value="${profile.serviceKey}" checkUrl="'descriptorByName/ContrastPluginConfig/checkServiceKey?value='+escape(this.value)"/>
                         </f:entry>
-
-                        <f:entry title="TeamServer Url" >
-                            <f:textbox name="ts.teamServerUrl" value="${profile.teamServerUrl}" checkUrl="'descriptorByName/ContrastPluginConfig/checkTeamServerUrl?value='+escape(this.value)"/>
+                        <f:entry title="Contrast Url" help="/plugin/contrast-continuous-application-security/help-teamServerUrl.html">
+                            <f:textbox name="teamServerUrl" field="teamServerUrl" value="${profile.teamServerUrl}" checkUrl="'descriptorByName/ContrastPluginConfig/checkTeamServerUrl?value='+escape(this.value)"/>
                         </f:entry>
-                    </f:section>
-
-                    <f:section title="Threshold Configuration">
-                        <f:entry title="TeamServer Organization Uuid">
-                            <f:textbox name="ts.orgUuid" value="${profile.orgUuid}" />
-                        </f:entry>
-                        <f:entry title="TeamServer Application Name" >
-                            <f:textbox name="ts.applicationName" value="${profile.applicationName}"/>
+                        <f:entry title="Organization Uuid" help="/plugin/contrast-continuous-application-security/help-orgUuid.html">
+                            <f:textbox name="orgUuid" field="orgUuid" value="${profile.orgUuid}" checkUrl="'descriptorByName/ContrastPluginConfig/checkOrgUuid?value='+escape(this.value)"/>
                         </f:entry>
                     </f:section>
 
                     <f:entry title="">
                         <f:validateButton title="${%Test TeamServer Connection}" progress="${%Testing Connection...}"
-                                method="testTeamServerConnection" with="ts.username,ts.apiKey,ts.serviceKey,ts.teamServerUrl" />
+                                method="testTeamServerConnection" with="username,apiKey,serviceKey,teamServerUrl" />
                     </f:entry>
 
                     <f:entry title="">
