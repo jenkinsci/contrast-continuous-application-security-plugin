@@ -26,6 +26,10 @@
                         </f:entry>
                     </f:section>
 
+                    <f:entry title="Fail build if application is not found on TeamServer" help="/plugin/contrast-continuous-application-security/help-failOnWrongApplicationName.html" >
+                        <f:checkbox name="failOnWrongApplicationName" field="failOnWrongApplicationName" value="${profile.failOnWrongApplicationName}" checked="${profile.failOnWrongApplicationName}" />
+                    </f:entry>
+
                     <f:entry title="">
                         <f:validateButton title="${%Test TeamServer Connection}" progress="${%Testing Connection...}"
                                 method="testTeamServerConnection" with="username,apiKey,serviceKey,teamServerUrl" />

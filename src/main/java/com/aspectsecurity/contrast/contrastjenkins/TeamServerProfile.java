@@ -26,9 +26,11 @@ public class TeamServerProfile {
 
     private List<VulnerabilityType> vulnerabilityTypes;
 
+    private boolean failOnWrongApplicationName;
+
     @DataBoundConstructor
     public TeamServerProfile(String name, String username, String apiKey, String serviceKey,
-                             String teamServerUrl, String orgUuid, String applicationName) {
+                             String teamServerUrl, String orgUuid, String applicationName, boolean failOnWrongApplicationName) {
         this.name = name;
         this.username = username;
         this.apiKey = apiKey;
@@ -36,5 +38,6 @@ public class TeamServerProfile {
         this.teamServerUrl = teamServerUrl;
         this.orgUuid = orgUuid;
         this.applicationName = applicationName;
+        this.failOnWrongApplicationName = failOnWrongApplicationName;
     }
 }
