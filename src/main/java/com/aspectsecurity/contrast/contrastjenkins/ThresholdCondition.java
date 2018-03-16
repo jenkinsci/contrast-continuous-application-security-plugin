@@ -21,14 +21,14 @@ import java.io.IOException;
 @Setter
 public class ThresholdCondition extends AbstractDescribableImpl<ThresholdCondition> {
 
-    private String thresholdCount;
+    private Integer thresholdCount;
 
     private String thresholdSeverity;
 
     private String thresholdVulnType;
 
     @DataBoundConstructor
-    public ThresholdCondition(String thresholdCount, String thresholdSeverity, String thresholdVulnType) {
+    public ThresholdCondition(Integer thresholdCount, String thresholdSeverity, String thresholdVulnType) {
         this.thresholdCount = thresholdCount;
         this.thresholdSeverity = thresholdSeverity;
         this.thresholdVulnType = thresholdVulnType;
@@ -67,7 +67,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          */
         public FormValidation doCheckThresholdCount(@QueryParameter String value) {
 
-            if (value.length() > 0) {
+            if (!value.isEmpty()) {
                 try {
                     int temp = Integer.parseInt(value);
 
@@ -78,6 +78,8 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
                 } catch (NumberFormatException e) {
                     return FormValidation.error("Please enter a valid integer.");
                 }
+            } else {
+                return FormValidation.error("Please enter a positive integer.");
             }
 
             return FormValidation.ok();
