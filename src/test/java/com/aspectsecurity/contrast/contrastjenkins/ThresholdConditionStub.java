@@ -4,7 +4,7 @@ package com.aspectsecurity.contrast.contrastjenkins;
 public class ThresholdConditionStub extends ThresholdCondition {
 
     public ThresholdConditionStub() {
-        super("test", "test", "test");
+        super(0, "test", "test");
     }
 
     public static class ThresholdConditionDescriptorStub extends ThresholdCondition.DescriptorImpl {
