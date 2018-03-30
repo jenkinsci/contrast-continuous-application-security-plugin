@@ -30,6 +30,10 @@
                         <f:checkbox name="failOnWrongApplicationName" field="failOnWrongApplicationName" value="${profile.failOnWrongApplicationName}" checked="${profile.failOnWrongApplicationName}" />
                     </f:entry>
 
+                    <f:entry title="Result of a vulnerable build" help="/plugin/contrast-continuous-application-security/help-vulnerableBuildResult.html">
+                        <f:select field="vulnerableBuildResult" default="${profile.vulnerableBuildResult}" />
+                    </f:entry>
+
                     <f:entry title="">
                         <f:validateButton title="${%Test TeamServer Connection}" progress="${%Testing Connection...}"
                                 method="testTeamServerConnection" with="username,apiKey,serviceKey,teamServerUrl" />
