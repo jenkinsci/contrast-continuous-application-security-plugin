@@ -25,7 +25,7 @@ There are currently 2 build items added by this plugin:
 
     This will verify the Jenkins can connect to TeamServer with the configured variables. It will fail the build if the plugin is unable to connect. This test can be found as a button when adding a TeamServer profile.
 
-* #### Verify Vulnerability Threshold
+* #### Contrast - Verify Vulnerability Threshold
 
     Available as a step and a post build action.
 
