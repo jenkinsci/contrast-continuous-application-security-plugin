@@ -7,14 +7,14 @@ Repository for the Contrast Jenkins plugin. This plugin adds the ability to conf
 
 ## Variables
 
-| Parameter                   | Description                                             |
-|-----------------------------|---------------------------------------------------------|
-| Contrast Username         | Username/email for your account in Contrast |
-| Contrast API Key          | API Key found in **Organization Settings**                |
+| Parameter                   | Description                                             | Since |
+|-----------------------------|---------------------------------------------------------|-------|
+| Contrast Username         | Username/email for your account in Contrast | 
+| Contrast API Key          | API Key found in **Organization Settings**                | 
 | Contrast Service Key      | Service Key found in **Organization Settings**             |
 | Contrast URL          | API URL to your Contrast instance <BR> Use *https://app.contrastsecurity.com/Contrast/api* if you're a SaaS customer; all others use the URL of your Contrast UI (e.g., *http://contrastserver:8080/Contrast/api*). |
 | Organization UUID | Organization UUID of the configured user found in **Organization Settings** <BR> You can also copy it from the URL when viewing the home page in Contrast. |
-
+|ignoreContrastFindings | Jenkins boolean build parameter. If set to true, builds will not be failed when Vulnerability Threshold Conditions are not met. | 2.3 |
 ---
 
 ## Workflow
@@ -25,7 +25,7 @@ There are currently 2 build items added by this plugin:
 
     This will verify the Jenkins can connect to TeamServer with the configured variables. It will fail the build if the plugin is unable to connect. This test can be found as a button when adding a TeamServer profile.
 
-* #### Verify Vulnerability Threshold
+* #### Contrast - Verify Vulnerability Threshold
 
     Available as a step and a post build action.
 
