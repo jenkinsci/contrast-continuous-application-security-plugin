@@ -58,3 +58,11 @@ Here are two examples of the charts:
 
 [Threshold Condition Config](vulnerabilityTrendRecorderConfig.xml)
 
+## Building the plugin
+
+`mvn clean install`
+
+## Running Locally
+
+`./run.sh`
+
