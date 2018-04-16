@@ -27,11 +27,14 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
 
     private String thresholdVulnType;
 
+    private String applicationName;
+
     @DataBoundConstructor
-    public ThresholdCondition(Integer thresholdCount, String thresholdSeverity, String thresholdVulnType) {
+    public ThresholdCondition(Integer thresholdCount, String thresholdSeverity, String thresholdVulnType, String applicationName) {
         this.thresholdCount = thresholdCount;
         this.thresholdSeverity = thresholdSeverity;
         this.thresholdVulnType = thresholdVulnType;
+        this.applicationName = applicationName;
     }
 
     @Override
@@ -46,6 +49,10 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
 
         if (thresholdVulnType != null) {
             sb.append(", rule type is ").append(thresholdVulnType);
+        }
+
+        if (applicationName != null) {
+            sb.append(", application name is ").append(applicationName);
         }
 
         sb.append(".");
@@ -104,6 +111,24 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         public FormValidation doCheckThresholdVulnType(@QueryParameter String value) {
             return FormValidation.ok();
         }
+
+
+        /**
+         * Validation of the 'applicationName' form Field.
+         *
+         * @param value This parameter receives the value that the user has typed.
+         * @return Indicates the outcome of the validation. This is sent to the browser.
+         */
+        public FormValidation doCheckApplicationName(@QueryParameter String value) {
+
+            if (value.isEmpty()) {
+                return FormValidation.error("Please enter an application name.");
+            }
+
+            return FormValidation.ok();
+        }
+
+
 
         /**
          * Fills the Threshold Category select drop down with vulnerability types for the configured profile.
