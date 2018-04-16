@@ -15,6 +15,7 @@ Repository for the Contrast Jenkins plugin. This plugin adds the ability to conf
 | Contrast URL          | API URL to your Contrast instance <BR> Use *https://app.contrastsecurity.com/Contrast/api* if you're a SaaS customer; all others use the URL of your Contrast UI (e.g., *http://contrastserver:8080/Contrast/api*). |
 | Organization UUID | Organization UUID of the configured user found in **Organization Settings** <BR> You can also copy it from the URL when viewing the home page in Contrast. |
 |ignoreContrastFindings | Jenkins boolean build parameter. If set to true, builds will not be failed when Vulnerability Threshold Conditions are not met. | 2.3 |
+| Result of a vulnerable build | Contrast TeamServer profile configuration parameter allowing to choose the result of a build that does not meet the Vulnerability Threshold Conditions. | 2.3 |
 ---
 
 ## Workflow

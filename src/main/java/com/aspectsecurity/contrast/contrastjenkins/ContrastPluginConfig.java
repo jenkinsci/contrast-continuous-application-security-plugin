@@ -7,8 +7,10 @@ import hudson.Extension;
 import hudson.model.AbstractProject;
 import hudson.model.JobProperty;
 import hudson.model.JobPropertyDescriptor;
+import hudson.model.Result;
 import hudson.util.CopyOnWriteList;
 import hudson.util.FormValidation;
+import hudson.util.ListBoxModel;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -246,6 +248,19 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         @Override
         public String getDisplayName() {
             return "Contrast Plugin Configuration";
+        }
+
+
+        public ListBoxModel doFillVulnerableBuildResultItems() {
+            ListBoxModel items = new ListBoxModel();
+
+            items.add(Result.FAILURE.toString());
+            items.add(Result.SUCCESS.toString());
+            items.add(Result.UNSTABLE.toString());
+            items.add(Result.NOT_BUILT.toString());
+            items.add(Result.ABORTED.toString());
+
+            return items;
         }
     }
 }
