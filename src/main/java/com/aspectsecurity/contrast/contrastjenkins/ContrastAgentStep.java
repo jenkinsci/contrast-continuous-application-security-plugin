@@ -111,6 +111,7 @@ public class ContrastAgentStep extends AbstractStepImpl {
             File agentFile = new File(step.getOutputDirectory() + "/" + "contrast.jar");
 
             if (teamServerProfile == null) {
+                VulnerabilityTrendHelper.logMessage(taskListener, "Unable to find TeamServer profile.");
                 throw new AbortException("Unable to find TeamServer profile.");
             }
 
@@ -136,6 +137,7 @@ public class ContrastAgentStep extends AbstractStepImpl {
                 // Write bytes to file
                 FileUtils.writeByteArrayToFile(agentFile, agent);
             } catch (IOException e) {
+                VulnerabilityTrendHelper.logMessage(taskListener, e.getMessage());
                 throw new AbortException("Unable to save file to " + step.getOutputDirectory());
             }
 
