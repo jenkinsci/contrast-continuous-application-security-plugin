@@ -122,12 +122,11 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         public FormValidation doCheckApplicationName(@QueryParameter String value) {
 
             if (value.isEmpty()) {
-                return FormValidation.error("Please enter an application name.");
+                return FormValidation.error("Please enter an application name found in Teamserver.");
             }
 
             return FormValidation.ok();
         }
-
 
 
         /**
