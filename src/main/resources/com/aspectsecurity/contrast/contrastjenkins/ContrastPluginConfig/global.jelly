@@ -1,5 +1,5 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
     <f:section title="Contrast TeamServer profiles">
         <f:entry description="Profiles for connecting to TeamServer">
             <f:repeatable var="profile" items="${descriptor.teamServerProfiles}">
@@ -32,6 +32,36 @@
 
                     <f:entry title="Result of a vulnerable build" help="/plugin/contrast-continuous-application-security/help-vulnerableBuildResult.html">
                         <f:select field="vulnerableBuildResult" default="${profile.vulnerableBuildResult}" />
+                    </f:entry>
+
+
+
+                    <f:entry title="Vulnerability statuses">
+                        <f:checkbox title="Auto-Remediated" name="autoRemediated"
+                                    value="${profile.autoRemediated}"
+                                    checked="${profile.autoRemediated}"/>
+                        <f:checkbox title="Not a Problem" name="notAProblem" value="${profile.notAProblem}"
+                                    checked="${profile.notAProblem}"/>
+                        <f:checkbox title="Fixed" name="fixed" value="${profile.fixed}"
+                                    checked="${profile.fixed}"/>
+                    </f:entry>
+
+                    <f:entry>
+                        <f:checkbox title="Confirmed" name="confirmed" value="${profile.confirmed}"
+                                    checked="${profile.confirmed}"/>
+                        <f:checkbox title="Remediated" name="remediated" value="${profile.remediated}"
+                                    checked="${profile.remediated}"/>
+                        <f:checkbox title="Being Tracked" name="beingTracked" value="${profile.beingTracked}"
+                                    checked="${profile.beingTracked}"/>
+                    </f:entry>
+
+                    <f:entry help="/plugin/contrast-continuous-application-security/help-vulnerabilityStatus.html">
+                        <f:checkbox title="Suspicious" name="suspicious" value="${profile.suspicious}"
+                                    checked="${profile.suspicious}"/>
+                        <f:checkbox title="Reported" name="reported" value="${profile.reported}"
+                                    checked="${profile.reported}"/>
+                        <f:checkbox title="Untracked" name="untracked" value="${profile.untracked}"
+                                    checked="${profile.untracked}"/>
                     </f:entry>
 
                     <f:entry title="">
