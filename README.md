@@ -30,7 +30,7 @@ There are currently 2 build items added by this plugin:
 
     Available as a step and a post build action.
 
-    This will check TeamServer for the number of vulnerabilities in the application. The only required variable is `Threshold Count` which must be a positive integer. The other two variables `Threshold Severity` and `Threshold Vulnerability Type` are not required but can be useful if you want to filter the threshold count.
+    This will check TeamServer for the number of vulnerabilities in the application. The required variables are `Threshold Count` which must be a positive integer and `Application Name`. The other two variables `Threshold Severity` and `Threshold Vulnerability Type` are not required but can be useful if you want to filter the threshold count.
     
     **NOTE:** The variables in the Threshold Condition form are required to run this build action.
     
@@ -38,9 +38,9 @@ There are currently 2 build items added by this plugin:
 
 ## Test for Vulnerabilities
 
-In order for the Jenkins plugin to get accurate information, you must add a unique identifier built from the Jenkins CI configuration as an agent property. The corresponding property for the Java agent is `contrast.override.appversion`. Also, the job name must match your application name or you must override your application name with another property to ensure that Contrast tests for the correct information.
+In order for the Jenkins plugin to get accurate information, you must add a unique identifier built from the Jenkins CI configuration as an agent property. The corresponding property for the Java agent is `contrast.override.appversion`. Also, for each Threshold Condition, you have to specify the Application Name to ensure that Contrast tests for the correct information.
 
-The plugin uses the unique identifier `${JOB_NAME}-${BUILD_NUMBER}` to filter vulnerabilities and check conditions. `JOB_NAME` and `BUILD_NUMBER` are available as Jenkins environment<a href="https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project">properties</a>.
+By default, the plugin uses `${JOB_NAME}` as a value of the `Application name` parameter. The plugin uses the unique identifier `${Application Name}-${BUILD_NUMBER}` to filter vulnerabilities and check conditions. `JOB_NAME` and `BUILD_NUMBER` are available as Jenkins environment<a href="https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project">properties</a>.
     
 ## Charts
 
