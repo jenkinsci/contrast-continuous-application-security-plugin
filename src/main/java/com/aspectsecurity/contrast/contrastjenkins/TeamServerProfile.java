@@ -41,22 +41,12 @@ public class TeamServerProfile {
     private boolean beingTracked;
     private boolean untracked;
 
-//    @DataBoundConstructor
-//    public TeamServerProfile(String name, String username, String apiKey, String serviceKey,
-//                             String teamServerUrl, String orgUuid, String applicationName, boolean failOnWrongApplicationName, String vulnerableBuildResult) {
-//        this.name = name;
-//        this.username = username;
-//        this.apiKey = apiKey;
-//        this.serviceKey = serviceKey;
-//        this.teamServerUrl = teamServerUrl;
-//        this.orgUuid = orgUuid;
-//        this.applicationName = applicationName;
-//        this.failOnWrongApplicationName = failOnWrongApplicationName;
-//        this.vulnerableBuildResult = vulnerableBuildResult;
-//    }
-
     @DataBoundConstructor
-    public TeamServerProfile(String name, String username, String apiKey, String serviceKey, String orgUuid, String teamServerUrl, String applicationName, boolean failOnWrongApplicationName, String vulnerableBuildResult, boolean autoRemediated, boolean confirmed, boolean suspicious, boolean notAProblem, boolean remediated, boolean reported, boolean fixed, boolean beingTracked, boolean untracked) {
+    public TeamServerProfile(String name, String username, String apiKey, String serviceKey, String orgUuid,
+                             String teamServerUrl, String applicationName, boolean failOnWrongApplicationName,
+                             String vulnerableBuildResult, boolean autoRemediated, boolean confirmed, boolean suspicious,
+                             boolean notAProblem, boolean remediated, boolean reported, boolean fixed,
+                             boolean beingTracked, boolean untracked) {
         this.name = name;
         this.username = username;
         this.apiKey = apiKey;
