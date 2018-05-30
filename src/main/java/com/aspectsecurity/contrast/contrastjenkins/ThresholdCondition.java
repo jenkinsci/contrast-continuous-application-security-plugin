@@ -13,6 +13,8 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ThresholdCondition class contains the variables and logic to populate the conditions when verifying for vulnerabilities.
@@ -29,12 +31,36 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
 
     private String applicationName;
 
+    private boolean autoRemediated;
+    private boolean confirmed;
+    private boolean suspicious;
+    private boolean notAProblem;
+    private boolean remediated;
+    private boolean reported;
+    private boolean fixed;
+    private boolean beingTracked;
+    private boolean untracked;
+
     @DataBoundConstructor
-    public ThresholdCondition(Integer thresholdCount, String thresholdSeverity, String thresholdVulnType, String applicationName) {
+    public ThresholdCondition(Integer thresholdCount, String thresholdSeverity, String thresholdVulnType,
+                              String applicationName, boolean autoRemediated, boolean confirmed, boolean suspicious,
+                              boolean notAProblem, boolean remediated, boolean reported, boolean fixed,
+                              boolean beingTracked, boolean untracked) {
+
         this.thresholdCount = thresholdCount;
         this.thresholdSeverity = thresholdSeverity;
         this.thresholdVulnType = thresholdVulnType;
         this.applicationName = applicationName;
+
+        this.autoRemediated = autoRemediated;
+        this.confirmed = confirmed;
+        this.suspicious = suspicious;
+        this.notAProblem = notAProblem;
+        this.remediated = remediated;
+        this.reported = reported;
+        this.fixed = fixed;
+        this.beingTracked = beingTracked;
+        this.untracked = untracked;
     }
 
     @Override
@@ -155,5 +181,37 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         public String getDisplayName() {
             return "Threshold Condition";
         }
+    }
+
+    public List<String> getVulnerabilityStatuses() {
+        List<String> status = new ArrayList();
+        if (autoRemediated) {
+            status.add(Constants.VULNERABILITY_STATUS_AUTO_REMEDIATED);
+        }
+        if (confirmed) {
+            status.add(Constants.VULNERABILITY_STATUS_CONFIRMED);
+        }
+        if (suspicious) {
+            status.add(Constants.VULNERABILITY_STATUS_SUSPICIOUS);
+        }
+        if (notAProblem) {
+            status.add(Constants.VULNERABILITY_STATUS_NOT_A_PROBLEM);
+        }
+        if (remediated) {
+            status.add(Constants.VULNERABILITY_STATUS_REMEDIATED);
+        }
+        if (reported) {
+            status.add(Constants.VULNERABILITY_STATUS_REPORTED);
+        }
+        if (fixed) {
+            status.add(Constants.VULNERABILITY_STATUS_FIXED);
+        }
+        if (beingTracked) {
+            status.add(Constants.VULNERABILITY_STATUS_BEING_TRACKED);
+        }
+        if (untracked) {
+            status.add(Constants.VULNERABILITY_STATUS_UNTRACKED);
+        }
+        return status;
     }
 }

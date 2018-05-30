@@ -34,36 +34,6 @@
                         <f:select field="vulnerableBuildResult" default="${profile.vulnerableBuildResult}" />
                     </f:entry>
 
-
-
-                    <f:entry title="Vulnerability statuses">
-                        <f:checkbox title="Auto-Remediated" name="autoRemediated"
-                                    value="${profile.autoRemediated}"
-                                    checked="${profile.autoRemediated}"/>
-                        <f:checkbox title="Not a Problem" name="notAProblem" value="${profile.notAProblem}"
-                                    checked="${profile.notAProblem}"/>
-                        <f:checkbox title="Fixed" name="fixed" value="${profile.fixed}"
-                                    checked="${profile.fixed}"/>
-                    </f:entry>
-
-                    <f:entry>
-                        <f:checkbox title="Confirmed" name="confirmed" value="${profile.confirmed}"
-                                    checked="${profile.confirmed}"/>
-                        <f:checkbox title="Remediated" name="remediated" value="${profile.remediated}"
-                                    checked="${profile.remediated}"/>
-                        <f:checkbox title="Being Tracked" name="beingTracked" value="${profile.beingTracked}"
-                                    checked="${profile.beingTracked}"/>
-                    </f:entry>
-
-                    <f:entry help="/plugin/contrast-continuous-application-security/help-vulnerabilityStatus.html">
-                        <f:checkbox title="Suspicious" name="suspicious" value="${profile.suspicious}"
-                                    checked="${profile.suspicious}"/>
-                        <f:checkbox title="Reported" name="reported" value="${profile.reported}"
-                                    checked="${profile.reported}"/>
-                        <f:checkbox title="Untracked" name="untracked" value="${profile.untracked}"
-                                    checked="${profile.untracked}"/>
-                    </f:entry>
-
                     <f:entry title="">
                         <f:validateButton title="${%Test TeamServer Connection}" progress="${%Testing Connection...}"
                                 method="testTeamServerConnection" with="username,apiKey,serviceKey,teamServerUrl" />
