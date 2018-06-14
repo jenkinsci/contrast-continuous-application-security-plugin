@@ -31,14 +31,15 @@ public class TeamServerProfile {
     private String vulnerableBuildResult;
 
     @DataBoundConstructor
-    public TeamServerProfile(String name, String username, String apiKey, String serviceKey,
-                             String teamServerUrl, String orgUuid, String applicationName, boolean failOnWrongApplicationName, String vulnerableBuildResult) {
+    public TeamServerProfile(String name, String username, String apiKey, String serviceKey, String orgUuid,
+                             String teamServerUrl, String applicationName, boolean failOnWrongApplicationName,
+                             String vulnerableBuildResult) {
         this.name = name;
         this.username = username;
         this.apiKey = apiKey;
         this.serviceKey = serviceKey;
-        this.teamServerUrl = teamServerUrl;
         this.orgUuid = orgUuid;
+        this.teamServerUrl = teamServerUrl;
         this.applicationName = applicationName;
         this.failOnWrongApplicationName = failOnWrongApplicationName;
         this.vulnerableBuildResult = vulnerableBuildResult;
