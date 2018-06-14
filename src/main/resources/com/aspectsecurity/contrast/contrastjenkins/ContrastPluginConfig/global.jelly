@@ -26,12 +26,12 @@
                         </f:entry>
                     </f:section>
 
-                    <f:entry title="Fail build if application is not found on TeamServer" help="/plugin/contrast-continuous-application-security/help-failOnWrongApplicationName.html" >
-                        <f:checkbox name="failOnWrongApplicationName" field="failOnWrongApplicationName" value="${profile.failOnWrongApplicationName}" checked="${profile.failOnWrongApplicationName}" />
+                    <f:entry title="Result of a vulnerable build" help="/plugin/contrast-continuous-application-security/help-vulnerableBuildResult.html">
+                        <f:select field="vulnerableBuildResult" default="${profile.vulnerableBuildResult}"/>
                     </f:entry>
 
-                    <f:entry title="Result of a vulnerable build" help="/plugin/contrast-continuous-application-security/help-vulnerableBuildResult.html">
-                        <f:select field="vulnerableBuildResult" default="${profile.vulnerableBuildResult}" />
+                    <f:entry help="/plugin/contrast-continuous-application-security/help-failOnWrongApplicationName.html" >
+                        <f:checkbox title="Fail build if application is not found on TeamServer" name="failOnWrongApplicationName" field="failOnWrongApplicationName" value="${profile.failOnWrongApplicationName}" checked="${profile.failOnWrongApplicationName}" />
                     </f:entry>
 
                     <f:entry title="">
