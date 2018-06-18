@@ -22,7 +22,7 @@ Repository for the Contrast Jenkins plugin. This plugin adds the ability to conf
 
 There are currently 2 build items added by this plugin:
 
-* #### Test TeamServer Connection
+* #### Test Contrast Connection
 
     This will verify the Jenkins can connect to TeamServer with the configured variables. It will fail the build if the plugin is unable to connect. This test can be found as a button when adding a TeamServer profile.
 

@@ -1,6 +1,6 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-    <f:section title="Contrast TeamServer profiles">
+    <f:section title="Contrast profiles">
         <f:entry description="Profiles for connecting to TeamServer">
             <f:repeatable var="profile" items="${descriptor.teamServerProfiles}">
                 <table width="100%">
@@ -26,16 +26,16 @@
                         </f:entry>
                     </f:section>
 
-                    <f:entry title="Fail build if application is not found on TeamServer" help="/plugin/contrast-continuous-application-security/help-failOnWrongApplicationName.html" >
-                        <f:checkbox name="failOnWrongApplicationName" field="failOnWrongApplicationName" value="${profile.failOnWrongApplicationName}" checked="${profile.failOnWrongApplicationName}" />
+                    <f:entry title="Result of a vulnerable build" help="/plugin/contrast-continuous-application-security/help-vulnerableBuildResult.html">
+                        <f:select field="vulnerableBuildResult" default="${profile.vulnerableBuildResult}"/>
                     </f:entry>
 
-                    <f:entry title="Result of a vulnerable build" help="/plugin/contrast-continuous-application-security/help-vulnerableBuildResult.html">
-                        <f:select field="vulnerableBuildResult" default="${profile.vulnerableBuildResult}" />
+                    <f:entry help="/plugin/contrast-continuous-application-security/help-failOnWrongApplicationName.html" >
+                        <f:checkbox title="Fail build if application is not found on TeamServer" name="failOnWrongApplicationName" field="failOnWrongApplicationName" value="${profile.failOnWrongApplicationName}" checked="${profile.failOnWrongApplicationName}" />
                     </f:entry>
 
                     <f:entry title="">
-                        <f:validateButton title="${%Test TeamServer Connection}" progress="${%Testing Connection...}"
+                        <f:validateButton title="${%Test Contrast Connection}" progress="${%Testing Connection...}"
                                 method="testTeamServerConnection" with="username,apiKey,serviceKey,teamServerUrl" />
                     </f:entry>
 
