@@ -49,4 +49,59 @@
             </f:repeatable>
         </f:entry>
     </f:section>
+
+
+
+    <f:section title="Contrast Vulnerability Threshold Conditions">
+
+        <f:entry description="Conditions for verifying your build">
+            <f:repeatable var="globalThresholdCondition" items="${descriptor.globalThresholdConditions}">
+                <table width="100%">
+                    <f:entry title="Count" help="/plugin/contrast-continuous-application-security/help-thresholdCount.html">
+                        <f:number name="thresholdCount" field="thresholdCount" value="${globalThresholdCondition.thresholdCount}" default="0" clazz="required positive-number" />
+                    </f:entry>
+
+                    <f:entry title="Severity" help="/plugin/contrast-continuous-application-security/help-thresholdSeverity.html">
+                        <f:select default="${globalThresholdCondition.thresholdSeverity}" field="thresholdSeverity"/>
+                    </f:entry>
+
+                    <f:entry title="Vulnerability statuses" help="/plugin/contrast-continuous-application-security/help-vulnerabilityStatus.html">
+                        <f:checkbox title="Auto-Remediated" name="autoRemediated" field="autoRemediated" value="${globalThresholdCondition.autoRemediated}" checked="${globalThresholdCondition.autoRemediated}"/>
+                    </f:entry>
+
+                    <f:entry>
+                        <f:checkbox title="Not a Problem" name="notAProblem" field="notAProblem" value="${globalThresholdCondition.notAProblem}" checked="${globalThresholdCondition.notAProblem}"/>
+                    </f:entry>
+                    <f:entry>
+                        <f:checkbox title="Fixed" name="fixed" field="fixed" value="${globalThresholdCondition.fixed}" checked="${globalThresholdCondition.fixed}"/>
+                    </f:entry>
+                    <f:entry>
+                        <f:checkbox title="Confirmed" name="confirmed" field="confirmed" value="${globalThresholdCondition.confirmed}" checked="${globalThresholdCondition.confirmed}"/>
+                    </f:entry>
+                    <f:entry>
+                        <f:checkbox title="Remediated" name="remediated" field="remediated" value="${globalThresholdCondition.remediated}" checked="${globalThresholdCondition.remediated}"/>
+                    </f:entry>
+                    <f:entry>
+                        <f:checkbox title="Being Tracked" name="beingTracked" field="beingTracked" value="${globalThresholdCondition.beingTracked}" checked="${globalThresholdCondition.beingTracked}"/>
+                    </f:entry>
+                    <f:entry>
+                        <f:checkbox title="Suspicious" name="suspicious" field="suspicious" value="${globalThresholdCondition.suspicious}" checked="${globalThresholdCondition.suspicious}"/>
+                    </f:entry>
+                    <f:entry>
+                        <f:checkbox title="Reported" name="reported" field="reported" value="${globalThresholdCondition.reported}" checked="${globalThresholdCondition.reported}"/>
+                    </f:entry>
+                    <f:entry>
+                        <f:checkbox title="Untracked" name="untracked" field="untracked" value="${globalThresholdCondition.untracked}" checked="${globalThresholdCondition.untracked}"/>
+                    </f:entry>
+
+                    <f:entry title="">
+                        <div align="right">
+                            <f:repeatableDeleteButton/>
+                        </div>
+                    </f:entry>
+                </table>
+            </f:repeatable>
+        </f:entry>
+    </f:section>
+
 </j:jelly>
