@@ -34,6 +34,10 @@
                         <f:checkbox title="Fail build if application is not found on TeamServer" name="failOnWrongApplicationName" field="failOnWrongApplicationName" value="${profile.failOnWrongApplicationName}" checked="${profile.failOnWrongApplicationName}" />
                     </f:entry>
 
+                    <f:entry help="/plugin/contrast-continuous-application-security/help-allowGlobalThresholdConditionsOverride.html" >
+                        <f:checkbox title="Allow global Contrast Vulnerability Threshold Conditions to be overridden in a Job configuration" name="allowGlobalThresholdConditionsOverride" field="allowGlobalThresholdConditionsOverride" value="${profile.allowGlobalThresholdConditionsOverride}" checked="${profile.allowGlobalThresholdConditionsOverride}" />
+                    </f:entry>
+
                     <f:entry title="">
                         <f:validateButton title="${%Test Contrast Connection}" progress="${%Testing Connection...}"
                                 method="testTeamServerConnection" with="username,apiKey,serviceKey,teamServerUrl" />
