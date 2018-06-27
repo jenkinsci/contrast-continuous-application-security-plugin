@@ -61,12 +61,21 @@
         <f:entry description="Conditions for verifying your build">
             <f:repeatable var="globalThresholdCondition" items="${descriptor.globalThresholdConditions}">
                 <table width="100%">
+
+                    <f:entry title="TeamServer Profile">
+                        <f:select default="${globalThresholdCondition.teamServerProfileName}" field="teamServerProfileName"/>
+                    </f:entry>
+
                     <f:entry title="Count" help="/plugin/contrast-continuous-application-security/help-thresholdCount.html">
                         <f:number name="thresholdCount" field="thresholdCount" value="${globalThresholdCondition.thresholdCount}" default="0" clazz="required positive-number" />
                     </f:entry>
 
                     <f:entry title="Severity" help="/plugin/contrast-continuous-application-security/help-thresholdSeverity.html">
                         <f:select default="${globalThresholdCondition.thresholdSeverity}" field="thresholdSeverity"/>
+                    </f:entry>
+
+                    <f:entry title="Vulnerability Type" help="/plugin/contrast-continuous-application-security/help-thresholdVulnType.html">
+                        <f:select default="${globalThresholdCondition.thresholdVulnType}" field="thresholdVulnType"/>
                     </f:entry>
 
                     <f:entry title="Vulnerability statuses" help="/plugin/contrast-continuous-application-security/help-vulnerabilityStatus.html">

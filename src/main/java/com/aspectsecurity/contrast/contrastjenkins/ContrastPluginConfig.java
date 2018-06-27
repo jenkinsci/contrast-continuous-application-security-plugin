@@ -4,6 +4,7 @@ import com.contrastsecurity.exceptions.UnauthorizedException;
 import com.contrastsecurity.models.Organizations;
 import com.contrastsecurity.sdk.ContrastSDK;
 import hudson.Extension;
+import hudson.RelativePath;
 import hudson.model.AbstractProject;
 import hudson.model.JobProperty;
 import hudson.model.JobPropertyDescriptor;
@@ -117,6 +118,20 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             save();
 
             return true;
+        }
+
+        @SuppressWarnings("unused")
+        public ListBoxModel doFillTeamServerProfileNameItems() {
+            return VulnerabilityTrendHelper.getProfileNames();
+        }
+
+        /**
+         * Fills the Threshold Category select drop down with vulnerability types for the configured profile.
+         *
+         * @return ListBoxModel filled with vulnerability types.
+         */
+        public ListBoxModel doFillThresholdVulnTypeItems(@QueryParameter("teamServerProfileName") final String teamServerProfileName) throws IOException {
+            return VulnerabilityTrendHelper.getVulnerabilityTypes(teamServerProfileName);
         }
 
         /**

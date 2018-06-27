@@ -11,10 +11,13 @@ import java.util.List;
 @Setter
 public class GlobalThresholdCondition {
 
+    private String teamServerProfileName;
+
     private Integer thresholdCount;
 
     private String thresholdSeverity;
 
+    private String thresholdVulnType;
 
     private boolean autoRemediated;
     private boolean confirmed;
@@ -27,11 +30,14 @@ public class GlobalThresholdCondition {
     private boolean untracked;
 
     @DataBoundConstructor
-    public GlobalThresholdCondition(Integer thresholdCount, String thresholdSeverity, boolean autoRemediated,
+    public GlobalThresholdCondition(String teamServerProfileName, Integer thresholdCount, String thresholdSeverity, String thresholdVulnType, boolean autoRemediated,
                                     boolean confirmed, boolean suspicious, boolean notAProblem, boolean remediated,
                                     boolean reported, boolean fixed, boolean beingTracked, boolean untracked) {
+
+        this.teamServerProfileName = teamServerProfileName;
         this.thresholdCount = thresholdCount;
         this.thresholdSeverity = thresholdSeverity;
+        this.thresholdVulnType = thresholdVulnType;
         this.autoRemediated = autoRemediated;
         this.confirmed = confirmed;
         this.suspicious = suspicious;
