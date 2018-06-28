@@ -137,8 +137,7 @@ public class ContrastAgentStep extends AbstractStepImpl {
             }
 
             VulnerabilityTrendHelper.logMessage(taskListener, "Saving agent to file.");
-            /* ddooley.  using FilePath instead of File.
-            *  Regular Java io will not work on remote Jenkins slaves.
+            /* Regular Java io will not work on remote Jenkins slaves.
             *  The contrast.jar will not persist on the slave with java.io.File, probably due to how the Jenkins agent technology works.
             *  It is better to use the Hudson libraries. */
             try {
