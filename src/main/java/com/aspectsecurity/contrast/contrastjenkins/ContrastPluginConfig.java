@@ -4,6 +4,7 @@ import com.contrastsecurity.exceptions.UnauthorizedException;
 import com.contrastsecurity.models.Organizations;
 import com.contrastsecurity.sdk.ContrastSDK;
 import hudson.Extension;
+import hudson.RelativePath;
 import hudson.model.AbstractProject;
 import hudson.model.JobProperty;
 import hudson.model.JobPropertyDescriptor;
@@ -72,6 +73,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
 
         private CopyOnWriteList<TeamServerProfile> teamServerProfiles = new CopyOnWriteList<>();
 
+        private CopyOnWriteList<GlobalThresholdCondition> globalThresholdConditions = new CopyOnWriteList<>();
+
         public ContrastPluginConfigDescriptor() {
             super(ContrastPluginConfig.class);
             load();
@@ -99,9 +102,36 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 teamServerProfile.setVulnerabilityTypes(VulnerabilityTrendHelper.saveRules(contrastSDK, teamServerProfile.getOrgUuid()));
             }
 
+
+            final JSONArray globalThresholdConditionJsonArray = json.optJSONArray("globalThresholdCondition");
+
+            if (globalThresholdConditionJsonArray != null) {
+                globalThresholdConditions.replaceBy(req.bindJSONToList(GlobalThresholdCondition.class, globalThresholdConditionJsonArray));
+            } else {
+                if (json.keySet().isEmpty()) {
+                    globalThresholdConditions = new CopyOnWriteList<>();
+                } else {
+                    globalThresholdConditions.replaceBy(req.bindJSON(GlobalThresholdCondition.class, json.getJSONObject("globalThresholdCondition")));
+                }
+            }
+
             save();
 
             return true;
+        }
+
+        @SuppressWarnings("unused")
+        public ListBoxModel doFillTeamServerProfileNameItems() {
+            return VulnerabilityTrendHelper.getProfileNames();
+        }
+
+        /**
+         * Fills the Threshold Category select drop down with vulnerability types for the configured profile.
+         *
+         * @return ListBoxModel filled with vulnerability types.
+         */
+        public ListBoxModel doFillThresholdVulnTypeItems(@QueryParameter("teamServerProfileName") final String teamServerProfileName) throws IOException {
+            return VulnerabilityTrendHelper.getVulnerabilityTypes(teamServerProfileName);
         }
 
         /**
@@ -160,6 +190,47 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             return teamServerProfiles.toArray(profileArray);
         }
 
+        public GlobalThresholdCondition[] getGlobalThresholdConditions() {
+            final GlobalThresholdCondition[] globalThresholdConditionArray = new GlobalThresholdCondition[globalThresholdConditions.size()];
+
+            return globalThresholdConditions.toArray(globalThresholdConditionArray);
+        }
+
+        /**
+         * Fills the Threshold Severity select drop down with severities for the configured application.
+         *
+         * @return ListBoxModel filled with severities.
+         */
+        public ListBoxModel doFillThresholdSeverityItems() {
+            return VulnerabilityTrendHelper.getSeverityListBoxModel();
+        }
+
+        /**
+         * Validation of the 'thresholdCount' form Field.
+         *
+         * @param value This parameter receives the value that the user has typed.
+         * @return Indicates the outcome of the validation. This is sent to the browser.
+         */
+        public FormValidation doCheckThresholdCount(@QueryParameter String value) {
+
+            if (!value.isEmpty()) {
+                try {
+                    int temp = Integer.parseInt(value);
+
+                    if (temp < 0) {
+                        return FormValidation.error("Please enter a positive integer.");
+                    }
+
+                } catch (NumberFormatException e) {
+                    return FormValidation.error("Please enter a valid integer.");
+                }
+            } else {
+                return FormValidation.error("Please enter a positive integer.");
+            }
+
+            return FormValidation.ok();
+        }
+
         /**
          * Validation of the 'name' form Field.
          *
@@ -206,6 +277,16 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         public FormValidation doCheckServiceKey(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set a Service Key.");
+            return FormValidation.ok();
+        }
+
+        /**
+         * Validation of the 'thresholdSeverity' form Field.
+         *
+         * @param value This parameter receives the value that the user has typed.
+         * @return Indicates the outcome of the validation. This is sent to the browser.
+         */
+        public FormValidation doCheckThresholdSeverity(@QueryParameter String value) {
             return FormValidation.ok();
         }
 
