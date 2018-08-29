@@ -12,6 +12,6 @@ public final class Constants {
     public static final String VULNERABILITY_STATUS_UNTRACKED = "Untracked";
     public static final String VULNERABILITY_STATUS_NOT_A_PROBLEM = "NotAProblem";
 
-    public static final int defaultAppVersionTagFormat = 1;
-    public static final int hierarchicalAppVersionTagFormat = 2;
+    public static final int DEFAULT_APP_VERSION_TAG_FORMAT = 1;
+    public static final int HIERARCHICAL_APP_VERSION_TAG_FORMAT = 2;
 }
