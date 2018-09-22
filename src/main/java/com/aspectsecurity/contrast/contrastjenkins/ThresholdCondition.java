@@ -29,7 +29,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
 
     private String thresholdVulnType;
 
-    private String applicationName;
+    private String applicationId;
 
     private boolean autoRemediated;
     private boolean confirmed;
@@ -43,14 +43,14 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
 
     @DataBoundConstructor
     public ThresholdCondition(Integer thresholdCount, String thresholdSeverity, String thresholdVulnType,
-                              String applicationName, boolean autoRemediated, boolean confirmed, boolean suspicious,
+                              String applicationId, boolean autoRemediated, boolean confirmed, boolean suspicious,
                               boolean notAProblem, boolean remediated, boolean reported, boolean fixed,
                               boolean beingTracked, boolean untracked) {
 
         this.thresholdCount = thresholdCount;
         this.thresholdSeverity = thresholdSeverity;
         this.thresholdVulnType = thresholdVulnType;
-        this.applicationName = applicationName;
+        this.applicationId = applicationId;
 
         this.autoRemediated = autoRemediated;
         this.confirmed = confirmed;
@@ -77,8 +77,8 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             sb.append(", rule type is ").append(thresholdVulnType);
         }
 
-        if (applicationName != null) {
-            sb.append(", application name is ").append(applicationName);
+        if (applicationId != null) {
+            sb.append(", application ID is ").append(applicationId);
         }
 
         sb.append(".");
