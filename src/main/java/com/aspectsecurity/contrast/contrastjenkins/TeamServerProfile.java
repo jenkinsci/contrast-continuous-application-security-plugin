@@ -22,8 +22,6 @@ public class TeamServerProfile {
 
     private String teamServerUrl;
 
-    private String applicationName;
-
     private List<VulnerabilityType> vulnerabilityTypes;
 
     private boolean failOnWrongApplicationId;
@@ -32,9 +30,11 @@ public class TeamServerProfile {
 
     private boolean allowGlobalThresholdConditionsOverride;
 
+    private List<App> apps;
+
     @DataBoundConstructor
     public TeamServerProfile(String name, String username, String apiKey, String serviceKey, String orgUuid,
-                             String teamServerUrl, String applicationName, boolean failOnWrongApplicationId,
+                             String teamServerUrl, boolean failOnWrongApplicationId,
                              String vulnerableBuildResult, boolean allowGlobalThresholdConditionsOverride) {
         this.name = name;
         this.username = username;
@@ -42,7 +42,6 @@ public class TeamServerProfile {
         this.serviceKey = serviceKey;
         this.orgUuid = orgUuid;
         this.teamServerUrl = teamServerUrl;
-        this.applicationName = applicationName;
         this.failOnWrongApplicationId = failOnWrongApplicationId;
         this.vulnerableBuildResult = vulnerableBuildResult;
         this.allowGlobalThresholdConditionsOverride = allowGlobalThresholdConditionsOverride;

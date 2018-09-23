@@ -138,22 +138,24 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             return FormValidation.ok();
         }
 
-
         /**
-         * Validation of the 'applicationName' form Field.
+         * Validation of the 'applicationId' form Field.
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
          */
-        public FormValidation doCheckApplicationName(@QueryParameter String value) {
-
-            if (value.isEmpty()) {
-                return FormValidation.error("Please enter an application name found in Teamserver.");
-            }
-
+        public FormValidation doCheckApplicationId(@QueryParameter String value) {
             return FormValidation.ok();
         }
 
+        /**
+         * Fills the Threshold Category select drop down with application ids.
+         *
+         * @return ListBoxModel filled with application ids.
+         */
+        public ListBoxModel doFillApplicationIdItems(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName) throws IOException {
+            return VulnerabilityTrendHelper.getApplicationIds(teamServerProfileName);
+        }
 
         /**
          * Fills the Threshold Category select drop down with vulnerability types for the configured profile.
