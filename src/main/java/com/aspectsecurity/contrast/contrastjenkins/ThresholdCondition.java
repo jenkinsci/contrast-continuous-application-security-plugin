@@ -31,6 +31,10 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
 
     private String applicationId;
 
+    //// Compatibility fix for plugin versions <=2.6
+    private String applicationName;
+    ////
+
     private boolean autoRemediated;
     private boolean confirmed;
     private boolean suspicious;
