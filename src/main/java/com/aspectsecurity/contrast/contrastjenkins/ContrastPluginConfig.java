@@ -15,7 +15,6 @@ import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
@@ -29,7 +28,6 @@ import java.io.IOException;
  * Adds the necessary configuration options to a job's properties. Used in VulnerabilityTrendRecorder
  */
 public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
-    private String teamServerProfileName;
 
     @DataBoundConstructor
     public ContrastPluginConfig() {
@@ -45,26 +43,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         } else {
             return null;
         }
-    }
-
-    public TeamServerProfile getProfile() {
-        return getProfile(teamServerProfileName);
-    }
-
-    public static TeamServerProfile getProfile(String profileName) {
-        final TeamServerProfile[] profiles = new ContrastPluginConfigDescriptor().getTeamServerProfiles();
-
-        if (profileName == null && ArrayUtils.isNotEmpty(profiles)) {
-            return profiles[0];
-        }
-
-        for (TeamServerProfile profile : profiles) {
-
-            if (StringUtils.equals(profileName, profile.getName())) {
-                return profile;
-            }
-        }
-        return null;
     }
 
     @Extension

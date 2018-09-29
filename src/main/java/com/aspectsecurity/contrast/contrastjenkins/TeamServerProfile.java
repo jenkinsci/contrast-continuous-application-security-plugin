@@ -27,7 +27,7 @@ public class TeamServerProfile {
     private boolean failOnWrongApplicationId;
 
     /////// Compatibility fix for plugin versions <=2.6
-    private Boolean failOnWrongApplicationName;
+    private boolean failOnWrongApplicationName;
     ///////
 
     private String vulnerableBuildResult;
