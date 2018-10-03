@@ -10,6 +10,7 @@ import hudson.util.ListBoxModel;
 import lombok.Getter;
 import lombok.Setter;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 
 import java.io.IOException;
@@ -20,29 +21,46 @@ import java.util.List;
  * ThresholdCondition class contains the variables and logic to populate the conditions when verifying for vulnerabilities.
  */
 @Getter
-@Setter
 public class ThresholdCondition extends AbstractDescribableImpl<ThresholdCondition> {
 
+    @Setter
     private Integer thresholdCount;
 
+    @Setter
     private String thresholdSeverity;
 
+    @Setter
     private String thresholdVulnType;
 
     private String applicationId;
+
+    @DataBoundSetter
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+    }
 
     //// Compatibility fix for plugin versions <=2.6
     private String applicationName;
     ////
 
+    @Setter
     private boolean autoRemediated;
+    @Setter
     private boolean confirmed;
+    @Setter
     private boolean suspicious;
+    @Setter
     private boolean notAProblem;
+    @Setter
     private boolean remediated;
+    @Setter
     private boolean reported;
+
+    @Setter
     private boolean fixed;
+    @Setter
     private boolean beingTracked;
+    @Setter
     private boolean untracked;
 
     @DataBoundConstructor
