@@ -4,7 +4,6 @@ import com.contrastsecurity.exceptions.UnauthorizedException;
 import com.contrastsecurity.models.Organizations;
 import com.contrastsecurity.sdk.ContrastSDK;
 import hudson.Extension;
-import hudson.RelativePath;
 import hudson.model.AbstractProject;
 import hudson.model.JobProperty;
 import hudson.model.JobPropertyDescriptor;
@@ -150,9 +149,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                                                          @QueryParameter("apiKey") final Secret apiKey,
                                                          @QueryParameter("serviceKey") final Secret serviceKey,
                                                          @QueryParameter("teamServerUrl") final String teamServerUrl) throws IOException, ServletException {
-
-            System.out.println(apiKey);
-            System.out.println(apiKey.getPlainText());
 
             if (StringUtils.isEmpty(username)) {
                 return FormValidation.error("TeamServer Connection error: Username cannot be empty.");
