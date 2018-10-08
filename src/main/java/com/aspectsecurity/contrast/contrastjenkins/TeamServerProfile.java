@@ -22,19 +22,22 @@ public class TeamServerProfile {
 
     private String teamServerUrl;
 
-    private String applicationName;
-
     private List<VulnerabilityType> vulnerabilityTypes;
 
+    private boolean failOnWrongApplicationId;
+
+    /////// Compatibility fix for plugin versions <=2.6
     private boolean failOnWrongApplicationName;
 
     private String vulnerableBuildResult;
 
     private boolean allowGlobalThresholdConditionsOverride;
 
+    private List<App> apps;
+
     @DataBoundConstructor
     public TeamServerProfile(String name, String username, String apiKey, String serviceKey, String orgUuid,
-                             String teamServerUrl, String applicationName, boolean failOnWrongApplicationName,
+                             String teamServerUrl, boolean failOnWrongApplicationId,
                              String vulnerableBuildResult, boolean allowGlobalThresholdConditionsOverride) {
         this.name = name;
         this.username = username;
@@ -42,8 +45,7 @@ public class TeamServerProfile {
         this.serviceKey = serviceKey;
         this.orgUuid = orgUuid;
         this.teamServerUrl = teamServerUrl;
-        this.applicationName = applicationName;
-        this.failOnWrongApplicationName = failOnWrongApplicationName;
+        this.failOnWrongApplicationId = failOnWrongApplicationId;
         this.vulnerableBuildResult = vulnerableBuildResult;
         this.allowGlobalThresholdConditionsOverride = allowGlobalThresholdConditionsOverride;
     }

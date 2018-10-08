@@ -10,6 +10,7 @@ import hudson.util.ListBoxModel;
 import lombok.Getter;
 import lombok.Setter;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 
 import java.io.IOException;
@@ -20,37 +21,57 @@ import java.util.List;
  * ThresholdCondition class contains the variables and logic to populate the conditions when verifying for vulnerabilities.
  */
 @Getter
-@Setter
 public class ThresholdCondition extends AbstractDescribableImpl<ThresholdCondition> {
 
+    @Setter
     private Integer thresholdCount;
 
+    @Setter
     private String thresholdSeverity;
 
+    @Setter
     private String thresholdVulnType;
 
+    private String applicationId;
+
+    @DataBoundSetter
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+    }
+
+    //// Compatibility fix for plugin versions <=2.6
     private String applicationName;
 
+    @Setter
     private boolean autoRemediated;
+    @Setter
     private boolean confirmed;
+    @Setter
     private boolean suspicious;
+    @Setter
     private boolean notAProblem;
+    @Setter
     private boolean remediated;
+    @Setter
     private boolean reported;
+
+    @Setter
     private boolean fixed;
+    @Setter
     private boolean beingTracked;
+    @Setter
     private boolean untracked;
 
     @DataBoundConstructor
     public ThresholdCondition(Integer thresholdCount, String thresholdSeverity, String thresholdVulnType,
-                              String applicationName, boolean autoRemediated, boolean confirmed, boolean suspicious,
+                              String applicationId, boolean autoRemediated, boolean confirmed, boolean suspicious,
                               boolean notAProblem, boolean remediated, boolean reported, boolean fixed,
                               boolean beingTracked, boolean untracked) {
 
         this.thresholdCount = thresholdCount;
         this.thresholdSeverity = thresholdSeverity;
         this.thresholdVulnType = thresholdVulnType;
-        this.applicationName = applicationName;
+        this.applicationId = applicationId;
 
         this.autoRemediated = autoRemediated;
         this.confirmed = confirmed;
@@ -77,8 +98,8 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             sb.append(", rule type is ").append(thresholdVulnType);
         }
 
-        if (applicationName != null) {
-            sb.append(", application name is ").append(applicationName);
+        if (applicationId != null) {
+            sb.append(", application ID is ").append(applicationId);
         }
 
         sb.append(".");
@@ -138,22 +159,24 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             return FormValidation.ok();
         }
 
-
         /**
-         * Validation of the 'applicationName' form Field.
+         * Validation of the 'applicationId' form Field.
          *
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
          */
-        public FormValidation doCheckApplicationName(@QueryParameter String value) {
-
-            if (value.isEmpty()) {
-                return FormValidation.error("Please enter an application name found in Teamserver.");
-            }
-
+        public FormValidation doCheckApplicationId(@QueryParameter String value) {
             return FormValidation.ok();
         }
 
+        /**
+         * Fills the Threshold Category select drop down with application ids.
+         *
+         * @return ListBoxModel filled with application ids.
+         */
+        public ListBoxModel doFillApplicationIdItems(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName) throws IOException {
+            return VulnerabilityTrendHelper.getApplicationIds(teamServerProfileName);
+        }
 
         /**
          * Fills the Threshold Category select drop down with vulnerability types for the configured profile.
