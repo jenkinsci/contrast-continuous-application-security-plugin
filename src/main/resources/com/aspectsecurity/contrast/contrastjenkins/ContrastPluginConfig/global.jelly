@@ -30,8 +30,8 @@
                         <f:select field="vulnerableBuildResult" default="${profile.vulnerableBuildResult}"/>
                     </f:entry>
 
-                    <f:entry help="/plugin/contrast-continuous-application-security/help-failOnWrongApplicationName.html" >
-                        <f:checkbox title="Fail build if application is not found on TeamServer" name="failOnWrongApplicationName" field="failOnWrongApplicationName" value="${profile.failOnWrongApplicationName}" checked="${profile.failOnWrongApplicationName}" />
+                    <f:entry help="/plugin/contrast-continuous-application-security/help-failOnWrongApplicationId.html" >
+                        <f:checkbox title="Fail build if application is not found on TeamServer" name="failOnWrongApplicationId" field="failOnWrongApplicationId" value="${profile.failOnWrongApplicationId}" checked="${profile.failOnWrongApplicationId}" />
                     </f:entry>
 
                     <f:entry help="/plugin/contrast-continuous-application-security/help-allowGlobalThresholdConditionsOverride.html" >

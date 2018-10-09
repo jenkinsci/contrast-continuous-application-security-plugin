@@ -16,7 +16,6 @@ import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
@@ -30,7 +29,6 @@ import java.io.IOException;
  * Adds the necessary configuration options to a job's properties. Used in VulnerabilityTrendRecorder
  */
 public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
-    private String teamServerProfileName;
 
     @DataBoundConstructor
     public ContrastPluginConfig() {
@@ -46,26 +44,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         } else {
             return null;
         }
-    }
-
-    public TeamServerProfile getProfile() {
-        return getProfile(teamServerProfileName);
-    }
-
-    public static TeamServerProfile getProfile(String profileName) {
-        final TeamServerProfile[] profiles = new ContrastPluginConfigDescriptor().getTeamServerProfiles();
-
-        if (profileName == null && ArrayUtils.isNotEmpty(profiles)) {
-            return profiles[0];
-        }
-
-        for (TeamServerProfile profile : profiles) {
-
-            if (StringUtils.equals(profileName, profile.getName())) {
-                return profile;
-            }
-        }
-        return null;
     }
 
     @Extension
@@ -94,12 +72,14 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 }
             }
 
-            // refresh all org rules
+            // refresh all org rules and applications
             for (TeamServerProfile teamServerProfile : teamServerProfiles) {
                 ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(teamServerProfile.getUsername(), teamServerProfile.getServiceKey(),
                         teamServerProfile.getApiKey(), teamServerProfile.getTeamServerUrl());
 
                 teamServerProfile.setVulnerabilityTypes(VulnerabilityTrendHelper.saveRules(contrastSDK, teamServerProfile.getOrgUuid()));
+
+                teamServerProfile.setApps(VulnerabilityTrendHelper.saveApplicationIds(contrastSDK, teamServerProfile.getOrgUuid()));
             }
 
 
@@ -312,18 +292,6 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         public FormValidation doCheckOrgUuid(@QueryParameter String value) {
             if (value.length() == 0)
                 return FormValidation.error("Please set an Organization Uuid.");
-            return FormValidation.ok();
-        }
-
-        /**
-         * Validation of the 'applicationName' form Field.
-         *
-         * @param value This parameter receives the value that the user has typed.
-         * @return Indicates the outcome of the validation. This is sent to the browser.
-         */
-        public FormValidation doCheckApplicationName(@QueryParameter String value) {
-            if (value.length() == 0)
-                return FormValidation.error("Please set an Application Name.");
             return FormValidation.ok();
         }
 
