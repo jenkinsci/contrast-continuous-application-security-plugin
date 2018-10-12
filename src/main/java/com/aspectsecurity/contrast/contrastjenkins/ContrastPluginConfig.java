@@ -11,6 +11,7 @@ import hudson.model.Result;
 import hudson.util.CopyOnWriteList;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
+import hudson.util.Secret;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -125,18 +126,19 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          * @throws ServletException
          */
         public FormValidation doTestTeamServerConnection(@QueryParameter("username") final String username,
-                                                         @QueryParameter("apiKey") final String apiKey,
-                                                         @QueryParameter("serviceKey") final String serviceKey,
+                                                         @QueryParameter("apiKey") final Secret apiKey,
+                                                         @QueryParameter("serviceKey") final Secret serviceKey,
                                                          @QueryParameter("teamServerUrl") final String teamServerUrl) throws IOException, ServletException {
+
             if (StringUtils.isEmpty(username)) {
                 return FormValidation.error("TeamServer Connection error: Username cannot be empty.");
             }
 
-            if (StringUtils.isEmpty(apiKey)) {
+            if (StringUtils.isEmpty(apiKey.getPlainText())) {
                 return FormValidation.error("TeamServer Connection error: Api Key cannot be empty.");
             }
 
-            if (StringUtils.isEmpty(serviceKey)) {
+            if (StringUtils.isEmpty(serviceKey.getPlainText())) {
                 return FormValidation.error("TeamServer Connection error: Service Key cannot be empty");
             }
 
@@ -149,7 +151,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
             }
 
             try {
-                ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(username, serviceKey, apiKey, teamServerUrl);
+                ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(username, serviceKey.getPlainText(), apiKey.getPlainText(), teamServerUrl);
 
                 Organizations organizations = contrastSDK.getProfileDefaultOrganizations();
 
