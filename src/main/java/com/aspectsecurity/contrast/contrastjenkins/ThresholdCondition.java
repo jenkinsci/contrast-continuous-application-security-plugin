@@ -40,6 +40,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
     }
 
     //// Compatibility fix for plugin versions <=2.6
+    @Setter
     private String applicationName;
 
     @Setter
