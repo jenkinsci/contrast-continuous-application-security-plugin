@@ -5,6 +5,7 @@ import hudson.Extension;
 import hudson.RelativePath;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
+import hudson.util.ComboBoxModel;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
 import lombok.Getter;
@@ -166,17 +167,20 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
          */
-        public FormValidation doCheckApplicationId(@QueryParameter String value) {
-            return FormValidation.ok();
+        public FormValidation doCheckApplicationId(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName, @QueryParameter String value) {
+            if (VulnerabilityTrendHelper.appExistsInProfile(teamServerProfileName, value)) {
+                return FormValidation.ok();
+            }
+            return FormValidation.warning("Application not found.");
         }
 
         /**
-         * Fills the Threshold Category select drop down with application ids.
+         * Fills the Threshold Category combo box with application ids.
          *
-         * @return ListBoxModel filled with application ids.
+         * @return ComboBoxModel filled with application ids.
          */
-        public ListBoxModel doFillApplicationIdItems(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName) throws IOException {
-            return VulnerabilityTrendHelper.getApplicationIds(teamServerProfileName);
+        public ComboBoxModel doFillApplicationIdItems(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName) {
+            return VulnerabilityTrendHelper.getApplicationIdsComboBoxModel(teamServerProfileName);
         }
 
         /**
