@@ -131,23 +131,23 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                                                          @QueryParameter("teamServerUrl") final String teamServerUrl) throws IOException, ServletException {
 
             if (StringUtils.isEmpty(username)) {
-                return FormValidation.error("TeamServer Connection error: Username cannot be empty.");
+                return FormValidation.error("Connection error: Username cannot be empty.");
             }
 
             if (StringUtils.isEmpty(apiKey.getPlainText())) {
-                return FormValidation.error("TeamServer Connection error: Api Key cannot be empty.");
+                return FormValidation.error("Connection error: Api Key cannot be empty.");
             }
 
             if (StringUtils.isEmpty(serviceKey.getPlainText())) {
-                return FormValidation.error("TeamServer Connection error: Service Key cannot be empty");
+                return FormValidation.error("Connection error: Service Key cannot be empty");
             }
 
             if (StringUtils.isEmpty(teamServerUrl)) {
-                return FormValidation.error("TeamServer Connection error: TeamServer URL cannot be empty.");
+                return FormValidation.error("Connection error: Contrast URL cannot be empty.");
             }
 
             if (!teamServerUrl.endsWith("/Contrast/api")) {
-                return FormValidation.error("TeamServer Connection error: TeamServer URL does not end with /Contrast/api.");
+                return FormValidation.error("Connection error: Contrast Url does not end with /Contrast/api.");
             }
 
             try {
@@ -156,12 +156,12 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 Organizations organizations = contrastSDK.getProfileDefaultOrganizations();
 
                 if (organizations == null || organizations.getOrganization() == null) {
-                    return FormValidation.error("TeamServer Connection error: No organization found, Check your credentials and URL.");
+                    return FormValidation.error("Connection error: No organization found, Check your credentials and URL.");
                 }
 
-                return FormValidation.ok("Successfully verified the connection to TeamServer!");
+                return FormValidation.ok("Successfully connected to Contrast.");
             } catch (IOException | UnauthorizedException e) {
-                return FormValidation.error("TeamServer Connection error: Unable to connect to TeamServer.");
+                return FormValidation.error("Unable to connect to Contrast.");
             }
         }
 
