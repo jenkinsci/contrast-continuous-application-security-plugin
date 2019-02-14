@@ -1,6 +1,7 @@
 package com.aspectsecurity.contrast.contrastjenkins;
 
 
+import com.contrastsecurity.sdk.ContrastSDK;
 import hudson.Extension;
 import hudson.RelativePath;
 import hudson.model.AbstractDescribableImpl;
@@ -8,6 +9,7 @@ import hudson.model.Descriptor;
 import hudson.util.ComboBoxModel;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
+import jenkins.model.Jenkins;
 import lombok.Getter;
 import lombok.Setter;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -15,7 +17,9 @@ import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 
 import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -115,6 +119,9 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
     @Extension
     public static class DescriptorImpl extends Descriptor<ThresholdCondition> {
 
+        Calendar lastAppsRefresh;
+        int appsRefreshIntervalMinutes = 1;
+
         /**
          * Validation of the 'thresholdCount' form Field.
          *
@@ -180,7 +187,28 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          * @return ComboBoxModel filled with application ids.
          */
         public ComboBoxModel doFillApplicationIdItems(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName) {
+
+            // Refresh apps every ${appsRefreshIntervalMinutes} minutes before filling in the combobox
+            if (lastAppsRefresh == null || ChronoUnit.MINUTES.between(lastAppsRefresh.toInstant(), Calendar.getInstance().toInstant()) >= appsRefreshIntervalMinutes) {
+                refreshApps(teamServerProfileName);
+                lastAppsRefresh = Calendar.getInstance();
+            }
+
             return VulnerabilityTrendHelper.getApplicationIdsComboBoxModel(teamServerProfileName);
+        }
+
+        public void refreshApps(String teamServerProfileName) {
+            Jenkins jenkins = Jenkins.getInstance();
+            if (jenkins != null) {
+                ContrastPluginConfig.ContrastPluginConfigDescriptor contrastPluginConfigDescriptor = jenkins.getDescriptorByType(ContrastPluginConfig.ContrastPluginConfigDescriptor.class);
+                TeamServerProfile teamServerProfile = VulnerabilityTrendHelper.getProfile(teamServerProfileName, contrastPluginConfigDescriptor);
+
+                ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(teamServerProfile.getUsername(), teamServerProfile.getServiceKey(),
+                        teamServerProfile.getApiKey(), teamServerProfile.getTeamServerUrl());
+
+                teamServerProfile.setApps(VulnerabilityTrendHelper.saveApplicationIds(contrastSDK, teamServerProfile.getOrgUuid()));
+                contrastPluginConfigDescriptor.save();
+            }
         }
 
         /**
