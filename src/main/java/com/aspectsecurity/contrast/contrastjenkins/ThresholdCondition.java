@@ -17,7 +17,6 @@ import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 
 import java.io.IOException;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -189,7 +188,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         public ComboBoxModel doFillApplicationIdItems(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName) {
 
             // Refresh apps every ${appsRefreshIntervalMinutes} minutes before filling in the combobox
-            if (lastAppsRefresh == null || ChronoUnit.MINUTES.between(lastAppsRefresh.toInstant(), Calendar.getInstance().toInstant()) >= appsRefreshIntervalMinutes) {
+            if (lastAppsRefresh == null || (Calendar.getInstance().getTimeInMillis() - lastAppsRefresh.getTimeInMillis()) / 60000 >= appsRefreshIntervalMinutes) {
                 refreshApps(teamServerProfileName);
                 lastAppsRefresh = Calendar.getInstance();
             }
