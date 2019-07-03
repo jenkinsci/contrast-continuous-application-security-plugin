@@ -15,4 +15,5 @@ public final class Constants {
     public static final int QUERY_BY_APP_VERSION_TAG_DEFAULT_FORMAT = 1;
     public static final int QUERY_BY_APP_VERSION_TAG_HIERARCHICAL_FORMAT = 2;
     public static final int QUERY_BY_START_DATE = 3;
+    public static final int QUERY_BY_PARAMETER = 4;
 }
