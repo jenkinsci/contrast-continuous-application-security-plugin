@@ -13,3 +13,4 @@ output/
 logs/
 bin/
 work/
+.DS_Store
