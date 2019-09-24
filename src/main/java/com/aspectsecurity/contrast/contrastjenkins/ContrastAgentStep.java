@@ -111,7 +111,7 @@ public class ContrastAgentStep extends AbstractStepImpl {
 
         @Override
         public Void run() throws AbortException {
-            String agentFileName = VulnerabilityFrequencyAction.getDefaultAgentFileNameFromString(step.getAgentType());
+            String agentFileName = VulnerabilityTrendHelper.getDefaultAgentFileNameFromString(step.getAgentType());
 
             TeamServerProfile teamServerProfile = VulnerabilityTrendHelper.getProfile(step.getProfile());
             File agentFile = new File(step.getOutputDirectory() + "/" + agentFileName);
