@@ -111,9 +111,10 @@ public class ContrastAgentStep extends AbstractStepImpl {
 
         @Override
         public Void run() throws AbortException {
+            String agentFileName = VulnerabilityTrendHelper.getDefaultAgentFileNameFromString(step.getAgentType());
 
             TeamServerProfile teamServerProfile = VulnerabilityTrendHelper.getProfile(step.getProfile());
-            File agentFile = new File(step.getOutputDirectory() + "/" + "contrast.jar");
+            File agentFile = new File(step.getOutputDirectory() + "/" + agentFileName);
 
             if (teamServerProfile == null) {
                 VulnerabilityTrendHelper.logMessage(taskListener, "Unable to find TeamServer profile.");
@@ -138,14 +139,14 @@ public class ContrastAgentStep extends AbstractStepImpl {
 
             VulnerabilityTrendHelper.logMessage(taskListener, "Saving agent to file.");
             /* Regular Java io will not work on remote Jenkins slaves.
-            *  The contrast.jar will not persist on the slave with java.io.File, probably due to how the Jenkins agent technology works.
+            *  The agent file will not persist on the slave with java.io.File, probably due to how the Jenkins agent technology works.
             *  It is better to use the Hudson libraries. */
             try {
                 filePath.child(step.getOutputDirectory()).mkdirs();
                 OutputStream outputStream = null;
                 InputStream inputStream = null;
                 try {
-                    outputStream = filePath.child(step.getOutputDirectory() + "/" + "contrast.jar").write();
+                    outputStream = filePath.child(step.getOutputDirectory() + "/" + agentFileName).write();
                     inputStream = new ByteArrayInputStream(agent);
                     IOUtils.copy(inputStream,outputStream);
                 } finally {
