@@ -24,7 +24,7 @@
 
   <properties>
     <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
-    <jenkins.version>2.107.1</jenkins.version>
+    <jenkins.version>2.60.3</jenkins.version>
     <!-- Java Level to use. Java 8 required when using core >= 3.44 -->
     <java.level>8</java.level>
     <!-- Jenkins Test Harness version you use to test the plugin. -->
@@ -35,6 +35,7 @@
          ~ stapler-plugin.version: The Stapler Maven plugin version required by the plugin.
     -->
     <powermock.version>1.6.2</powermock.version>
+    <spotbugs.failOnError>false</spotbugs.failOnError>
   </properties>
 
   <name>Contrast Continuous Application Security</name>
