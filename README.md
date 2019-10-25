@@ -7,7 +7,7 @@ Repository for the Contrast Jenkins plugin. This plugin adds the ability to conf
 
 ## Requirements
 * Jenkins version >= 2.60.3
-> Note: for Jenkins versions between 1.625.3 and 2.60.3, use tag version [2.12.1](https://github.com/jenkinsci/contrast-continuous-application-security-plugin/releases/tag/contrast-continuous-application-security-2.12.1)
+> Note: for Jenkins versions between 1.625.3 and 2.60.3, use plugin version [2.12.1](https://github.com/jenkinsci/contrast-continuous-application-security-plugin/releases/tag/contrast-continuous-application-security-2.12.1)
 
 ## Variables
 
