@@ -14,3 +14,10 @@ logs/
 bin/
 work/
 .DS_Store
+
+#VSCode
+.classpath
+.factorypath
+.project
+.settings
+.vscode/
