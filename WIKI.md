@@ -23,11 +23,17 @@ Contrast and make API calls in post-build actions. Among the following
 requirements, you'll need a unique profile name to identify your
 configuration and use it in a specific job.
 
-[TABLE]
-
-  
-
-  
+|**Parameter** | **Description** | **Since** |
+|:-------------|:----------------|:----------|
+| Contrast Username | Username/email for your account in Contrast | |
+| Contrast API Key | Log in to your Teamserver account and go to **Your Account**. Look under **YOUR KEYS**. | |
+| Contrast Service Key | Log in to your Teamserver account and go to **Your Account**. Look under **YOUR KEYS**. | |
+| Contrast URL | API URL to your Contrast instance Use https://app.contrastsecurity.com/Contrast/api if you're a SaaS customer; all others use the URL of your Contrast UI (e.g., https://contrastserver/Contrast/api). | |
+| Organization UUID | Organization UUID of the configured user found in Organization Settings | |
+| ignoreContrastFindings | Jenkins boolean build parameter. If set to true, builds will not be failed when Vulnerability Threshold Conditions are not met. | 2.3 |
+| Result of a vulnerable build | Contrast TeamServer profile configuration parameter allowing to choose the result of a build that does not meet the Vulnerability Threshold Conditions. | 2.3 |
+| Fail build if application is not found on TeamServer | This option allows to fail a build if the application is not found in the Contrast application. | 2.4 |
+| Allow global Contrast Vulnerability Threshold Conditions to be overridden in a Job configuration | Choose if global threshold conditions can be overridden in post-build actions. (See the Global threshold conditions section for more details.) | 2.5 |
 
 ![](https://wiki.jenkins.io/download/attachments/99058675/Jenkins_ts_profile.png?version=2&modificationDate=1534378875000&api=v2){.confluence-embedded-image
 height="400"}
