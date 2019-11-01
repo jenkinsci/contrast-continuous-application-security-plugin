@@ -15,6 +15,14 @@ In the Jenkins dashboard, go to **Manage Jenkins** in the left sidebar,
 and select the **Configure System** page to find a new Contrast
 TeamServer profiles section.
 
+# Requirements
+
+Jenkins Version >= 2.60.3
+
+# OpenDocs Project
+
+For more information, you can view our [OpenDocs](https://docs.contrastsecurity.com/tools-ci.html#jenkins) project.
+
 # Contrast API Settings
 
 Contrast API settings enable the plugin to connect to Contrast and query
