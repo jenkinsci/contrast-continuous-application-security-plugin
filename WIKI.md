@@ -43,10 +43,9 @@ configuration and use it in a specific job.
 | Fail build if application is not found on TeamServer | This option allows to fail a build if the application is not found in the Contrast application. | 2.4 |
 | Allow global Contrast Vulnerability Threshold Conditions to be overridden in a Job configuration | Choose if global threshold conditions can be overridden in post-build actions. (See the Global threshold conditions section for more details.) | 2.5 |
 
-![](https://wiki.jenkins.io/download/attachments/99058675/Jenkins_ts_profile.png?version=2&modificationDate=1534378875000&api=v2){.confluence-embedded-image
-height="400"}
 
-  
+
+<a href="img/Jenkins_ts_profile.png" rel="lightbox" title="Jenkins Team Server Profile"><img class="thumbnail" src="img/Jenkins_ts_profile.png" height="400"/></a>
 
 ### Test the connection
 
@@ -86,7 +85,8 @@ the **first** bad condition and tells you on which condition it failed.
 
 ### ![](https://wiki.jenkins.io/download/attachments/99058675/Jenkins_global_threshold_condition.png?version=1&modificationDate=1534380027000&api=v2){.confluence-embedded-image height="400"}
 
-  
+<a href="img/Jenkins_global_threshold_condition.png" rel="lightbox" title="Jenkins Global Threshold Conditions"><img class="thumbnail" src="img/Jenkins_global_threshold_condition.png" height="400"/></a>
+
 
 ### Threshold conditions in a post-build action
 
@@ -105,8 +105,7 @@ Complete the following fields for **Post-Build Actions**.
     and **Vulnerability Statuses** similarly to the global threshold
     conditions described above.
 
-![](https://wiki.jenkins.io/download/attachments/99058675/Jenkins_threshold_condition.png?version=4&modificationDate=1539121408000&api=v2){.confluence-embedded-image
-height="250"}
+<a href="img/Jenkins_threshold_condition.png" rel="lightbox" title="Jenkins Global Threshold Conditions"><img class="thumbnail" src="img/Jenkins_threshold_condition.png" height="250"/></a>
 
 ### Threshold conditions in a Pipeline step
 
