@@ -83,8 +83,6 @@ the **first** bad condition and tells you on which condition it failed.
 > **Note**: Even if your build succeeds, the plugin fails the overall
 > build if the test finds a bad condition.
 
-### ![](https://wiki.jenkins.io/download/attachments/99058675/Jenkins_global_threshold_condition.png?version=1&modificationDate=1534380027000&api=v2){.confluence-embedded-image height="400"}
-
 <a href="img/Jenkins_global_threshold_condition.png" rel="lightbox" title="Jenkins Global Threshold Conditions"><img class="thumbnail" src="img/Jenkins_global_threshold_condition.png" height="400"/></a>
 
 
