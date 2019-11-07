@@ -20,7 +20,7 @@
       <email>justin.leo@contrastsecurity.com</email>
     </developer>
   </developers>
-  <url>https://github.com/jenkinsci/contrast-continuous-application-security-plugin/WIKI.md</url>
+  <url>https://github.com/jenkinsci/contrast-continuous-application-security-plugin/blob/master/WIKI.md</url>
 
   <properties>
     <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
