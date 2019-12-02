@@ -97,7 +97,7 @@
       <groupId>com.contrastsecurity</groupId>
       <artifactId>contrast-sdk-java</artifactId>
     <!--  <version>2.9</version> TODO: CHANGE ME -->
-      <version>2.11-SNAPSHOT</version>
+      <version>2.12-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
