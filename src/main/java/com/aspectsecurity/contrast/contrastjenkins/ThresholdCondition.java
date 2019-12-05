@@ -36,6 +36,9 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
     @Setter
     private String thresholdVulnType;
 
+    @Setter
+    private ApplicationDefinition applicationDefinition;
+
     private String applicationId;
 
     @DataBoundSetter
@@ -46,6 +49,24 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
     //// Compatibility fix for plugin versions <=2.6
     @Setter
     private String applicationName;
+
+    /**
+     * Name that was used to instrument the agent
+     */
+    @Setter
+    private String applicationOriginName;
+
+    /**
+     * Type of agent used to instrument the application
+     */
+    @Setter
+    private String agentType;
+
+    /**
+     * Only gets set when application is not initiated
+     */
+    @Setter
+    private boolean failOnAppNotFound;
 
     @Setter
     private boolean autoRemediated;
@@ -68,7 +89,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
     private boolean untracked;
 
     @DataBoundConstructor
-    public ThresholdCondition(Integer thresholdCount, String thresholdSeverity, String thresholdVulnType,
+    public ThresholdCondition(Integer thresholdCount, String thresholdSeverity, String thresholdVulnType, ApplicationDefinition applicationDefinition,
                               String applicationId, boolean autoRemediated, boolean confirmed, boolean suspicious,
                               boolean notAProblem, boolean remediated, boolean reported, boolean fixed,
                               boolean beingTracked, boolean untracked) {
@@ -76,7 +97,15 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         this.thresholdCount = thresholdCount;
         this.thresholdSeverity = thresholdSeverity;
         this.thresholdVulnType = thresholdVulnType;
-        this.applicationId = applicationId;
+        this.applicationDefinition = applicationDefinition;
+        if(applicationDefinition != null) {
+            this.applicationId = applicationDefinition.getApplicationId();
+            this.applicationOriginName = applicationDefinition.getApplicationOriginName();
+            this.agentType = applicationDefinition.getAgentType();
+            this.failOnAppNotFound = applicationDefinition.isFailOnAppNotFound();
+        } else {
+            this.applicationId = applicationId;
+        }
 
         this.autoRemediated = autoRemediated;
         this.confirmed = confirmed;
@@ -185,7 +214,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          *
          * @return ComboBoxModel filled with application ids.
          */
-        public ComboBoxModel doFillApplicationIdItems(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName) {
+        public ComboBoxModel doFillApplicationIdItems(@QueryParameter("teamServerProfileName") @RelativePath("../..") final String teamServerProfileName) {
 
             // Refresh apps every ${appsRefreshIntervalMinutes} minutes before filling in the combobox
             if (lastAppsRefresh == null || (Calendar.getInstance().getTimeInMillis() - lastAppsRefresh.getTimeInMillis()) / 60000 >= appsRefreshIntervalMinutes) {
@@ -208,6 +237,10 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
                 teamServerProfile.setApps(VulnerabilityTrendHelper.saveApplicationIds(contrastSDK, teamServerProfile.getOrgUuid()));
                 contrastPluginConfigDescriptor.save();
             }
+        }
+
+        public ListBoxModel doFillAgentTypeItems() {
+            return VulnerabilityTrendHelper.getAgentTypeListBoxModel();
         }
 
         /**
