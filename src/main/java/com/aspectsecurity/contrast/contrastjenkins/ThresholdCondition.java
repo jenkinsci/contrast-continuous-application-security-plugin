@@ -24,21 +24,25 @@ import java.util.List;
 /**
  * ThresholdCondition class contains the variables and logic to populate the conditions when verifying for vulnerabilities.
  */
-@Getter
 public class ThresholdCondition extends AbstractDescribableImpl<ThresholdCondition> {
 
     @Setter
+    @Getter
     private Integer thresholdCount;
 
     @Setter
+    @Getter
     private String thresholdSeverity;
 
     @Setter
+    @Getter
     private String thresholdVulnType;
 
     @Setter
+    @Getter
     private ApplicationDefinition applicationDefinition;
 
+    @Getter
     private String applicationId;
 
     @DataBoundSetter
@@ -48,48 +52,73 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
 
     //// Compatibility fix for plugin versions <=2.6
     @Setter
+    @Getter
     private String applicationName;
 
     /**
      * Name that was used to instrument the agent
      */
     @Setter
+    @Getter
     private String applicationOriginName;
 
     /**
      * Type of agent used to instrument the application
      */
     @Setter
+    @Getter
     private String agentType;
 
     /**
      * Only gets set when application is not initiated
      */
     @Setter
+    @Getter
     private boolean failOnAppNotFound;
 
+    /**
+     * 0 = instrumented
+     * 1 = not instrumented
+     */
     @Setter
+    @Getter
+    private int applicationState;
+
+    @Setter
+    @Getter
+    private MatchBy matchBy;
+
+    @Setter
+    @Getter
     private boolean autoRemediated;
     @Setter
+    @Getter
     private boolean confirmed;
     @Setter
+    @Getter
     private boolean suspicious;
     @Setter
+    @Getter
     private boolean notAProblem;
     @Setter
+    @Getter
     private boolean remediated;
     @Setter
+    @Getter
     private boolean reported;
 
     @Setter
+    @Getter
     private boolean fixed;
     @Setter
+    @Getter
     private boolean beingTracked;
     @Setter
+    @Getter
     private boolean untracked;
 
     @DataBoundConstructor
-    public ThresholdCondition(Integer thresholdCount, String thresholdSeverity, String thresholdVulnType, ApplicationDefinition applicationDefinition,
+    public ThresholdCondition(Integer thresholdCount, String thresholdSeverity, String thresholdVulnType, int applicationState, ApplicationDefinition applicationDefinition,
                               String applicationId, boolean autoRemediated, boolean confirmed, boolean suspicious,
                               boolean notAProblem, boolean remediated, boolean reported, boolean fixed,
                               boolean beingTracked, boolean untracked) {
@@ -98,13 +127,15 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         this.thresholdSeverity = thresholdSeverity;
         this.thresholdVulnType = thresholdVulnType;
         this.applicationDefinition = applicationDefinition;
-        if(applicationDefinition != null) {
-            this.applicationId = applicationDefinition.getApplicationId();
+        this.applicationId = applicationId;
+        this.applicationState = applicationState;
+        if(applicationState == 0) {
+            this.matchBy = MatchBy.APPLICATION_ID;
+        }else if(applicationDefinition != null) {
+            this.matchBy = applicationDefinition.getMatchBy();
             this.applicationOriginName = applicationDefinition.getApplicationOriginName();
             this.agentType = applicationDefinition.getAgentType();
             this.failOnAppNotFound = applicationDefinition.isFailOnAppNotFound();
-        } else {
-            this.applicationId = applicationId;
         }
 
         this.autoRemediated = autoRemediated;
@@ -214,7 +245,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          *
          * @return ComboBoxModel filled with application ids.
          */
-        public ComboBoxModel doFillApplicationIdItems(@QueryParameter("teamServerProfileName") @RelativePath("../..") final String teamServerProfileName) {
+        public ComboBoxModel doFillApplicationIdItems(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName) {
 
             // Refresh apps every ${appsRefreshIntervalMinutes} minutes before filling in the combobox
             if (lastAppsRefresh == null || (Calendar.getInstance().getTimeInMillis() - lastAppsRefresh.getTimeInMillis()) / 60000 >= appsRefreshIntervalMinutes) {
