@@ -1,14 +1,14 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-    <f:section title="Contrast profiles">
-        <f:entry description="Profiles for connecting to TeamServer">
+    <f:section title="Contrast Connections">
+        <f:entry description="Connection profiles for connecting to TeamServer">
             <f:repeatable var="profile" items="${descriptor.teamServerProfiles}">
                 <table width="100%">
-                    <f:entry title="Configuration Profile Name">
+                    <f:entry title="Connection Name">
                         <f:textbox name="name" value="${profile.name}" checkUrl="'descriptorByName/ContrastPluginConfig/checkProfileName?value='+escape(this.value)"/>
                     </f:entry>
 
-                    <f:section title="Contrast API Configuration">
+                    <f:section title="Connection Details">
                         <f:entry title="Contrast Username" help="/plugin/contrast-continuous-application-security/help-username.html">
                             <f:textbox name="username" field="username" value="${profile.username}" checkUrl="'descriptorByName/ContrastPluginConfig/checkUsername?value='+escape(this.value)"/>
                         </f:entry>
