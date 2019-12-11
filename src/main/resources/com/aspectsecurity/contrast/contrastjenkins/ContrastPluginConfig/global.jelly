@@ -35,7 +35,7 @@
                     </f:entry>
 
                     <f:entry help="/plugin/contrast-continuous-application-security/help-allowGlobalThresholdConditionsOverride.html" >
-                        <f:checkbox title="Allow global Contrast Vulnerability Threshold Conditions to be overridden in a Job configuration" name="allowGlobalThresholdConditionsOverride" field="allowGlobalThresholdConditionsOverride" value="${profile.allowGlobalThresholdConditionsOverride}" checked="${profile.allowGlobalThresholdConditionsOverride}" />
+                        <f:checkbox title="Allow job level application vulnerability security controls to override those controls defined here at the system level" name="allowGlobalThresholdConditionsOverride" field="allowGlobalThresholdConditionsOverride" value="${profile.allowGlobalThresholdConditionsOverride}" checked="${profile.allowGlobalThresholdConditionsOverride}" />
                     </f:entry>
 
                     <f:entry title="">
