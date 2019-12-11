@@ -1,7 +1,7 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
     <f:section title="Contrast Connections">
-        <f:entry description="Connection profiles for connecting to TeamServer">
+        <f:entry>
             <f:repeatable var="profile" items="${descriptor.teamServerProfiles}">
                 <table width="100%">
                     <f:entry title="Connection Name">
