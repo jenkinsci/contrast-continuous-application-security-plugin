@@ -56,21 +56,21 @@
 
 
 
-    <f:section title="Contrast Vulnerability Threshold Conditions">
+    <f:section title="Contrast Vulnerability Security Controls - Configure the security controls for your Contrast Connection by defining these vulnerability filters">
 
-        <f:entry description="Conditions for verifying your build">
+        <f:entry>
             <f:repeatable var="globalThresholdCondition" items="${descriptor.globalThresholdConditions}">
                 <table width="100%">
 
-                    <f:entry title="TeamServer Profile">
+                    <f:entry title="Contrast Connection">
                         <f:select default="${globalThresholdCondition.teamServerProfileName}" field="teamServerProfileName"/>
                     </f:entry>
 
-                    <f:entry title="Count" help="/plugin/contrast-continuous-application-security/help-thresholdCount.html">
+                    <f:entry title="Number of Allowed Vulnerabilities" help="/plugin/contrast-continuous-application-security/help-thresholdCount.html">
                         <f:number name="thresholdCount" field="thresholdCount" value="${globalThresholdCondition.thresholdCount}" default="0" clazz="required positive-number" />
                     </f:entry>
 
-                    <f:entry title="Severity" help="/plugin/contrast-continuous-application-security/help-thresholdSeverity.html">
+                    <f:entry title="Vulnerability Severity" help="/plugin/contrast-continuous-application-security/help-thresholdSeverity.html">
                         <f:select default="${globalThresholdCondition.thresholdSeverity}" field="thresholdSeverity"/>
                     </f:entry>
 
@@ -78,7 +78,7 @@
                         <f:select default="${globalThresholdCondition.thresholdVulnType}" field="thresholdVulnType"/>
                     </f:entry>
 
-                    <f:entry title="Vulnerability statuses" help="/plugin/contrast-continuous-application-security/help-vulnerabilityStatus.html">
+                    <f:entry title="Vulnerability Statuses" help="/plugin/contrast-continuous-application-security/help-vulnerabilityStatus.html">
                         <f:checkbox title="Auto-Remediated" name="autoRemediated" field="autoRemediated" value="${globalThresholdCondition.autoRemediated}" checked="${globalThresholdCondition.autoRemediated}"/>
                     </f:entry>
 
