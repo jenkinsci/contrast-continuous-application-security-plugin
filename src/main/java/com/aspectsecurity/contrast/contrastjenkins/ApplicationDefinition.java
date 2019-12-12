@@ -12,9 +12,9 @@ public class ApplicationDefinition {
     private MatchBy matchBy;
     private String applicationId;
     private String applicationOriginName;
-    private String agentType;
+    private String agentType; //Application Language in UI
     private boolean failOnAppNotFound;
-    private String applicationShortName;
+    private String applicationShortName; //Application Code in UI
 
     @DataBoundConstructor
     public ApplicationDefinition(String applicationId, String applicationOriginName, String applicationShortName, String agentType, boolean failOnAppNotFound) {
