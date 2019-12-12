@@ -56,8 +56,10 @@
 
 
 
-    <f:section title="Contrast Vulnerability Security Controls - Configure the security controls for your Contrast Connection by defining these vulnerability filters">
-
+    <f:section title="Contrast Vulnerability Security Controls">
+        <f:block>
+            <p>Configure the security controls for your Contrast Connection by defining these vulnerability filters.</p>
+        </f:block>
         <f:entry>
             <f:repeatable var="globalThresholdCondition" items="${descriptor.globalThresholdConditions}">
                 <table width="100%">
