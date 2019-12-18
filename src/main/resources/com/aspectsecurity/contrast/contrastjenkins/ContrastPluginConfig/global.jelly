@@ -1,14 +1,14 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-    <f:section title="Contrast profiles">
-        <f:entry description="Profiles for connecting to TeamServer">
+    <f:section title="Contrast Connections">
+        <f:entry>
             <f:repeatable var="profile" items="${descriptor.teamServerProfiles}">
                 <table width="100%">
-                    <f:entry title="Configuration Profile Name">
+                    <f:entry title="Connection Name">
                         <f:textbox name="name" value="${profile.name}" checkUrl="'descriptorByName/ContrastPluginConfig/checkProfileName?value='+escape(this.value)"/>
                     </f:entry>
 
-                    <f:section title="Contrast API Configuration">
+                    <f:section title="Connection Details">
                         <f:entry title="Contrast Username" help="/plugin/contrast-continuous-application-security/help-username.html">
                             <f:textbox name="username" field="username" value="${profile.username}" checkUrl="'descriptorByName/ContrastPluginConfig/checkUsername?value='+escape(this.value)"/>
                         </f:entry>
@@ -18,10 +18,10 @@
                         <f:entry title="Contrast Service Key" help="/plugin/contrast-continuous-application-security/help-serviceKey.html">
                             <f:password name="serviceKey" value="${profile.getSecretServiceKey()}" checkUrl="'descriptorByName/ContrastPluginConfig/checkServiceKey?value='+escape(this.value)"/>
                         </f:entry>
-                        <f:entry title="Contrast Url" help="/plugin/contrast-continuous-application-security/help-teamServerUrl.html">
+                        <f:entry title="Contrast URL" help="/plugin/contrast-continuous-application-security/help-teamServerUrl.html">
                             <f:textbox name="teamServerUrl" field="teamServerUrl" value="${profile.teamServerUrl}" checkUrl="'descriptorByName/ContrastPluginConfig/checkTeamServerUrl?value='+escape(this.value)"/>
                         </f:entry>
-                        <f:entry title="Organization Uuid" help="/plugin/contrast-continuous-application-security/help-orgUuid.html">
+                        <f:entry title="Organization ID" help="/plugin/contrast-continuous-application-security/help-orgUuid.html">
                             <f:textbox name="orgUuid" field="orgUuid" value="${profile.orgUuid}" checkUrl="'descriptorByName/ContrastPluginConfig/checkOrgUuid?value='+escape(this.value)"/>
                         </f:entry>
                     </f:section>
@@ -35,7 +35,7 @@
                     </f:entry>
 
                     <f:entry help="/plugin/contrast-continuous-application-security/help-allowGlobalThresholdConditionsOverride.html" >
-                        <f:checkbox title="Allow global Contrast Vulnerability Threshold Conditions to be overridden in a Job configuration" name="allowGlobalThresholdConditionsOverride" field="allowGlobalThresholdConditionsOverride" value="${profile.allowGlobalThresholdConditionsOverride}" checked="${profile.allowGlobalThresholdConditionsOverride}" />
+                        <f:checkbox title="Allow job level application vulnerability security controls to override those controls defined here at the system level" name="allowGlobalThresholdConditionsOverride" field="allowGlobalThresholdConditionsOverride" value="${profile.allowGlobalThresholdConditionsOverride}" checked="${profile.allowGlobalThresholdConditionsOverride}" />
                     </f:entry>
 
                     <f:entry title="">
@@ -56,21 +56,23 @@
 
 
 
-    <f:section title="Contrast Vulnerability Threshold Conditions">
-
-        <f:entry description="Conditions for verifying your build">
+    <f:section title="Contrast Vulnerability Security Controls">
+        <f:block>
+            <p>Configure the security controls for your Contrast Connection by defining these vulnerability filters.</p>
+        </f:block>
+        <f:entry>
             <f:repeatable var="globalThresholdCondition" items="${descriptor.globalThresholdConditions}">
                 <table width="100%">
 
-                    <f:entry title="TeamServer Profile">
+                    <f:entry title="Contrast Connection">
                         <f:select default="${globalThresholdCondition.teamServerProfileName}" field="teamServerProfileName"/>
                     </f:entry>
 
-                    <f:entry title="Count" help="/plugin/contrast-continuous-application-security/help-thresholdCount.html">
+                    <f:entry title="Number of Allowed Vulnerabilities" help="/plugin/contrast-continuous-application-security/help-thresholdCount.html">
                         <f:number name="thresholdCount" field="thresholdCount" value="${globalThresholdCondition.thresholdCount}" default="0" clazz="required positive-number" />
                     </f:entry>
 
-                    <f:entry title="Severity" help="/plugin/contrast-continuous-application-security/help-thresholdSeverity.html">
+                    <f:entry title="Vulnerability Severity" help="/plugin/contrast-continuous-application-security/help-thresholdSeverity.html">
                         <f:select default="${globalThresholdCondition.thresholdSeverity}" field="thresholdSeverity"/>
                     </f:entry>
 
@@ -78,7 +80,7 @@
                         <f:select default="${globalThresholdCondition.thresholdVulnType}" field="thresholdVulnType"/>
                     </f:entry>
 
-                    <f:entry title="Vulnerability statuses" help="/plugin/contrast-continuous-application-security/help-vulnerabilityStatus.html">
+                    <f:entry title="Vulnerability Statuses" help="/plugin/contrast-continuous-application-security/help-vulnerabilityStatus.html">
                         <f:checkbox title="Auto-Remediated" name="autoRemediated" field="autoRemediated" value="${globalThresholdCondition.autoRemediated}" checked="${globalThresholdCondition.autoRemediated}"/>
                     </f:entry>
 
