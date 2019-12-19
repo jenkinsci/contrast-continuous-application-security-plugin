@@ -115,6 +115,10 @@ Pipeline configuration:
 
     contrastVerification applicationId: '1e6ad9c6-89d4-4f06-bdf6-92c569ec89de', count: 1, profile: 'new-profile', queryBy: 3, rule: 'cache-controls-missing', severity: 'High'
 
+or 
+    
+    contrastVerification applicationName: 'MyApp', agentType: 'Java', count: 1, profile: 'new-profile', queryBy: 3, rule: 'cache-controls-missing', severity: 'High'
+    
 # Test for Vulnerabilities
 
 For the Jenkins plugin to get accurate information, you must add a
