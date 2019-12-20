@@ -11,15 +11,18 @@ Repository for the Contrast Jenkins plugin. This plugin adds the ability to conf
 
 ## Variables
 
-| Parameter                   | Description                                             | Since |
-|-----------------------------|---------------------------------------------------------|-------|
-| Contrast Username         | Username/email for your account in Contrast | 
-| Contrast API Key          | API Key found in **Organization Settings**                | 
-| Contrast Service Key      | Service Key found in **Organization Settings**             |
-| Contrast URL          | API URL to your Contrast instance <BR> Use *https://app.contrastsecurity.com/Contrast/api* if you're a SaaS customer; all others use the URL of your Contrast UI (e.g., *http://contrastserver:8080/Contrast/api*). |
-| Organization ID | Organization ID of the configured user found in **Organization Settings** <BR> You can also copy it from the URL when viewing the home page in Contrast. |
-|ignoreContrastFindings | Jenkins boolean build parameter. If set to true, builds will not be failed when Vulnerability Threshold Conditions are not met. | 2.3 |
-| Result of a vulnerable build | Contrast Connection configuration parameter allowing to choose the result of a build that does not meet the Vulnerability Threshold Conditions. | 2.3 |
+|**Parameter** | **Description** | **Since** |
+|:-------------|:----------------|:----------|
+| Contrast Username | Username/email for your account in Contrast | |
+| Contrast API Key | Log in to your Contrast account and go to **Your Account**. Look under **YOUR KEYS**. | |
+| Contrast Service Key | Log in to your Contrast account and go to **Your Account**. Look under **YOUR KEYS**. | |
+| Contrast URL | API URL to your Contrast instance Use https://app.contrastsecurity.com/Contrast/api if you're a SaaS customer; all others use the URL of your Contrast UI (e.g., https://contrastserver/Contrast/api). | |
+| Organization ID | Organization ID of the configured user found in Organization Settings | |
+| ignoreContrastFindings | Jenkins boolean build parameter. If set to true, builds will not be failed when Contrast Vulnerability Security Controls are not met. | 2.3 |
+| Result of a vulnerable build | Contrast Connection configuration parameter allowing to choose the result of a build that does not meet the Contrast Vulnerability Security Controls. | 2.3 |
+| Fail build if application is not found in Contrast | This option allows to fail a build if the application is not found in the Contrast application. | 2.4 |
+| Allow global Contrast Vulnerability Security Controls to be overridden in a Job configuration | Choose if global Contrast Vulnerability Security Controls can be overridden in post-build actions. (See the Global Contrast Vulnerability Security Controls section for more details.) | 2.5 |
+
 ---
 
 ## Workflow
@@ -34,15 +37,15 @@ There are currently 2 build items added by this plugin:
 
     Available as a step and a post build action.
 
-    This will check Contrast for the number of vulnerabilities in the application. The required variables are `Threshold Count` which must be a positive integer and `Application` either using `Application Name` or chosen from `Choose your application` dropdown. The other two variables `Threshold Severity` and `Threshold Vulnerability Type` are not required but can be useful if you want to filter the threshold count.
+    This will check Contrast for the number of vulnerabilities in the application. The required variables are `Number of Allowed Vulnerabilities` which must be a positive integer and `Application` either using `Application Name` or chosen from `Choose your application` dropdown. The other two variables `Vulnerability Severity` and `Vulnerability Type` are not required but can be useful if you want to filter the Number of Allowed Vulnerabilities.
     
-    **NOTE:** The variables in the Threshold Condition form are required to run this build action.
+    **NOTE:** The variables in the Contrast Vulnerability Security Controls form are required to run this build action.
     
     This verification will fail the Jenkins build even if your build succeeded.
 
 ## Test for Vulnerabilities
 
-In order for the Jenkins plugin to get accurate information, you must add a unique identifier built from the Jenkins CI configuration as an agent property. The corresponding property for the Java agent is `contrast.override.appversion`. Also, for each Threshold Condition, you have to specify the Application Name to ensure that Contrast tests for the correct information.
+In order for the Jenkins plugin to get accurate information, you must add a unique identifier built from the Jenkins CI configuration as an agent property. The corresponding property for the Java agent is `contrast.override.appversion`. Also, for each Contrast Vulnerability Security Control, you have to specify the Application Name to ensure that Contrast tests for the correct information.
 
    
 ## Charts
@@ -59,7 +62,7 @@ Here are two examples of the charts:
 
 [TeamServer Profile Config](contrastPluginConfig.xml)
 
-[Threshold Condition Config](vulnerabilityTrendRecorderConfig.xml)
+[Contrast Vulnerability Security Controls Config](vulnerabilityTrendRecorderConfig.xml)
 
 ## Building the plugin
 
