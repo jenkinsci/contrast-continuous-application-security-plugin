@@ -128,9 +128,9 @@ or
 For the Jenkins plugin to get accurate information, you must add a
 unique identifier built from the Jenkins CI configuration as an agent
 property. The corresponding property for the Java agent is
-`contrast.override.appversion`. For example, when starting Contrast
-agent add the following property:
-"-Dcontrast.appname=${applicationName}".
+`contrast.override.appversion`. For example, when starting the Contrast
+agent, add the following property:
+"-Dcontrast.override.appversion=${applicationVersion}".
 
 The plugin can use either the unique identifier `appVersionTag` or the
 `startDate` to filter vulnerabilities and check conditions. You can
@@ -141,6 +141,9 @@ options are available:
 -   appVersionTag, format: `applicationId-${BUILD_NUMBER}` (default)
 -   appVersionTag, format: `applicationId-${JOB_NAME}-${BUILD_NUMBER}`
 -   `startDate` (Build timestamp)
+-   Parameter: APPVERSIONTAG
+
+> **Note:** The queryBy option should match the contrast.override.appversion parameter you pass to the Contrast Java agent when running your application. If you use the third option (startDate), you aren't required to pass the contrast.override.appversion parameter to the Java agent.
 
 Both `JOB_NAME` and `BUILD_NUMBER` are available as Jenkins environment
-[properties](https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project){.external-link}.
+[properties](https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project){.external-link}.You can specify your own text for APPVERSIONTAG by selecting the fourth queryBy option and exporting APPVERSIONTAG as an environment property within your Jenkins job.
