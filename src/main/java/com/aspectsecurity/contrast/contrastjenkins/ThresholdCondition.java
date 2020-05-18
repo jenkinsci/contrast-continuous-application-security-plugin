@@ -238,8 +238,12 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             if (VulnerabilityTrendHelper.appExistsInProfile(teamServerProfileName, value)) {
                 TeamServerProfile profile = VulnerabilityTrendHelper.getProfile(teamServerProfileName);
                 ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(profile.getUsername(), profile.getServiceKey(), profile.getApiKey(), profile.getTeamServerUrl());
+                String appId = value;
+                if(value.contains("(") && value.contains(")")) {
+                    appId = VulnerabilityTrendHelper.getAppIdFromAppTitle(value);
+                }
                 try {
-                    if (VulnerabilityTrendHelper.isApplicableEnabledJobOutcomePolicyExist(contrastSDK, profile.getOrgUuid(), VulnerabilityTrendHelper.getAppIdFromAppTitle(value))) {
+                    if (VulnerabilityTrendHelper.isApplicableEnabledJobOutcomePolicyExist(contrastSDK, profile.getOrgUuid(), appId)) {
                         return FormValidation.warning("Your Contrast administrator has set a job outcome policy for this application. The Vulnerability Security Controls will be overriden.");
                     }
                 } catch (IOException | UnauthorizedException e) {
