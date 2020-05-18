@@ -1,6 +1,7 @@
 package com.aspectsecurity.contrast.contrastjenkins;
 
 
+import com.contrastsecurity.exceptions.UnauthorizedException;
 import com.contrastsecurity.sdk.ContrastSDK;
 import hudson.Extension;
 import hudson.RelativePath;
@@ -234,10 +235,25 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          * @return Indicates the outcome of the validation. This is sent to the browser.
          */
         public FormValidation doCheckApplicationId(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName, @QueryParameter String value) {
-            if (VulnerabilityTrendHelper.appExistsInProfile(teamServerProfileName, value)) {
+            /*if (VulnerabilityTrendHelper.appExistsInProfile(teamServerProfileName, value)) {
                 return FormValidation.ok();
             }
-            return FormValidation.warning("Application not found.");
+            return FormValidation.warning("Application not found.");*/
+            if (VulnerabilityTrendHelper.appExistsInProfile(teamServerProfileName, value)) {
+                TeamServerProfile profile = VulnerabilityTrendHelper.getProfile(teamServerProfileName);
+                ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(profile.getUsername(), profile.getServiceKey(), profile.getApiKey(), profile.getTeamServerUrl());
+                try {
+                    if (VulnerabilityTrendHelper.isApplicableEnabledJobOutcomePolicyExist(contrastSDK, profile.getOrgUuid(), VulnerabilityTrendHelper.getAppIdFromAppTitle(value))) {
+                        return FormValidation.warning("Your Contrast administrator has set a job outcome policy for this application. The Vulnerability Security Controls will be overriden.");
+                    }
+                } catch (IOException | UnauthorizedException e) {
+                    return FormValidation.warning("Unable to make connection with Contrast: " + e.getMessage());
+                }
+            } else {
+                return FormValidation.warning("Application not found.");
+            }
+            return FormValidation.ok();
+
         }
 
         /**
