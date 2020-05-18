@@ -235,10 +235,6 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          * @return Indicates the outcome of the validation. This is sent to the browser.
          */
         public FormValidation doCheckApplicationId(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName, @QueryParameter String value) {
-            /*if (VulnerabilityTrendHelper.appExistsInProfile(teamServerProfileName, value)) {
-                return FormValidation.ok();
-            }
-            return FormValidation.warning("Application not found.");*/
             if (VulnerabilityTrendHelper.appExistsInProfile(teamServerProfileName, value)) {
                 TeamServerProfile profile = VulnerabilityTrendHelper.getProfile(teamServerProfileName);
                 ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(profile.getUsername(), profile.getServiceKey(), profile.getApiKey(), profile.getTeamServerUrl());
@@ -249,7 +245,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
                 } catch (IOException | UnauthorizedException e) {
                     return FormValidation.warning("Unable to make connection with Contrast: " + e.getMessage());
                 }
-            } else {
+            } else if(!value.isEmpty()) {
                 return FormValidation.warning("Application not found.");
             }
             return FormValidation.ok();
