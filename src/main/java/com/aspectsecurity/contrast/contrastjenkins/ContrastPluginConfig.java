@@ -22,6 +22,8 @@ import org.kohsuke.stapler.StaplerRequest;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Contrast Plugin Configuration
@@ -158,8 +160,15 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 if (organizations == null || organizations.getOrganization() == null) {
                     return FormValidation.error("Connection error: No organization found, Check your credentials and URL.");
                 }
+                Collection<FormValidation> validationCollection = new ArrayList<>();
 
-                return FormValidation.ok("Successfully connected to Contrast.");
+                validationCollection.add(FormValidation.ok("Successfully connected to Contrast."));
+
+                if(VulnerabilityTrendHelper.isEnabledJobOutcomePolicyExist(contrastSDK,organizations.getOrganization().getOrgUuid())) {
+                    validationCollection.add(FormValidation.warning("Your Contrast administrator has set a policy for vulnerability thresholds. " +
+                        "The Contrast policy overrides Jenkins security controls for applications included in both"));
+                }
+                return FormValidation.aggregate(validationCollection);
             } catch (IOException | UnauthorizedException e) {
                 return FormValidation.error("Unable to connect to Contrast.");
             }

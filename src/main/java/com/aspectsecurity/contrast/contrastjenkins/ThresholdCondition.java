@@ -1,6 +1,7 @@
 package com.aspectsecurity.contrast.contrastjenkins;
 
 
+import com.contrastsecurity.exceptions.UnauthorizedException;
 import com.contrastsecurity.sdk.ContrastSDK;
 import hudson.Extension;
 import hudson.RelativePath;
@@ -235,9 +236,24 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          */
         public FormValidation doCheckApplicationId(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName, @QueryParameter String value) {
             if (VulnerabilityTrendHelper.appExistsInProfile(teamServerProfileName, value)) {
-                return FormValidation.ok();
+                TeamServerProfile profile = VulnerabilityTrendHelper.getProfile(teamServerProfileName);
+                ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(profile.getUsername(), profile.getServiceKey(), profile.getApiKey(), profile.getTeamServerUrl());
+                String appId = value;
+                if(value.contains("(") && value.contains(")")) {
+                    appId = VulnerabilityTrendHelper.getAppIdFromAppTitle(value);
+                }
+                try {
+                    if (VulnerabilityTrendHelper.isApplicableEnabledJobOutcomePolicyExist(contrastSDK, profile.getOrgUuid(), appId)) {
+                        return FormValidation.warning("Your Contrast administrator has set a policy for vulnerability thresholds for this application. The Contrast policy overrides Jenkins vulnerability security controls.");
+                    }
+                } catch (IOException | UnauthorizedException e) {
+                    return FormValidation.warning("Unable to make connection with Contrast: " + e.getMessage());
+                }
+            } else if(!value.isEmpty()) {
+                return FormValidation.warning("Application not found.");
             }
-            return FormValidation.warning("Application not found.");
+            return FormValidation.ok();
+
         }
 
         /**
