@@ -234,7 +234,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          * @return Indicates the outcome of the validation. This is sent to the browser.
          */
         public FormValidation doCheckApplicationId(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName, @QueryParameter String value) {
-            if (VulnerabilityTrendHelper.appExistsInProfile(teamServerProfileName, value)) {
+            if (VulnerabilityTrendHelper.appExistsInProfile(teamServerProfileName, value) || value.isEmpty()) {
                 return FormValidation.ok();
             }
             return FormValidation.warning("Application not found.");
