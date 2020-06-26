@@ -244,7 +244,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
                 }
                 try {
                     if (VulnerabilityTrendHelper.isApplicableEnabledJobOutcomePolicyExist(contrastSDK, profile.getOrgUuid(), appId)) {
-                        return FormValidation.warning("Your Contrast administrator has set a policy for vulnerability thresholds for this application. The Contrast policy overrides Jenkins vulnerability security controls.");
+                        return FormValidation.warning("Your Contrast administrator has set a policy for vulnerability thresholds for this application. The Contrast policy overrides Jenkins vulnerability security controls and 'query vulnerabilities by' selection.");
                     }
                 } catch (IOException | UnauthorizedException e) {
                     return FormValidation.warning("Unable to make connection with Contrast: " + e.getMessage());
