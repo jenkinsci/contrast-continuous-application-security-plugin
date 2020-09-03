@@ -1,7 +1,7 @@
 <!--Jenkins Cat -->
 ![Jenkins Cat](img/jenkins-cat.png "Jenkins Cat" )
 
-# Contrast Jenkins Plugin - Version 3.1
+# Contrast Jenkins Plugin - Version 3.3
 
 Repository for the Contrast Jenkins plugin. This plugin adds the ability to configure a connection to a Jenkins Build.
 
@@ -57,6 +57,8 @@ Here are two examples of the charts:
 ![Severity Trends Across Builds](img/severity_trends.png)
 
 ![Vulnerability Trends Across Builds](img/vuln_trends.png)
+
+> **Note:** The Vulnerability Report is not supported by the pipeline step and jobs that have applications with overridden Vulnerability Security Controls. Your Contrast admin can override the Vulnerability Security Controls for certain applications using the Job Outcome Policies in Contrast. 
 
 ## Exported Configurations
 
