@@ -58,7 +58,7 @@ Here are two examples of the charts:
 
 ![Vulnerability Trends Across Builds](img/vuln_trends.png)
 
-> **Note:** The Vulnerability Report is not supported by the pipeline step and jobs that have jobs with applications with overridden Vulnerability Security Controls. Your Contrast admin can override the Vulnerability Security Controls for certain applications using the Job Outcome Policies in Contrast. 
+> **Note:** The Vulnerability Report is not supported by the pipeline step and jobs that have applications with overridden Vulnerability Security Controls. Your Contrast admin can override the Vulnerability Security Controls for certain applications using the Job Outcome Policies in Contrast. 
 
 ## Exported Configurations
 
