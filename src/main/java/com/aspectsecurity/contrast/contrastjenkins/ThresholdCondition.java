@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * ThresholdCondition class contains the variables and logic to populate the conditions when verifying for vulnerabilities.
@@ -171,6 +172,27 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         sb.append(".");
 
         return sb.toString();
+    }
+
+    /**
+     * Returns the description of a condition that has been overridden with a job outcome policy.
+     * @return
+     */
+    public String getStringForOverriden() {
+        StringJoiner sj = new StringJoiner(", ");
+        String preString = "[";
+        String postString = "]";
+
+        if(applicationOriginName != null && agentType != null) {
+            sj.add("name='"+applicationOriginName+"'");
+            sj.add("language='"+agentType+"'");
+        }
+
+        if(applicationId != null) {
+            sj.add("applicationId='"+applicationId+"'");
+        }
+
+        return preString + sj.toString() + postString;
     }
 
     /**
