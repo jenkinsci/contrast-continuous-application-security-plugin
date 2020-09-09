@@ -183,8 +183,11 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         String preString = "[";
         String postString = "]";
 
-        if(applicationOriginName != null && agentType != null) {
+        if(applicationOriginName != null) {
             sj.add("name='"+applicationOriginName+"'");
+        }
+
+        if(agentType != null) {
             sj.add("language='"+agentType+"'");
         }
 
