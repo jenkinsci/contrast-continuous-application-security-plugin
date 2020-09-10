@@ -1,7 +1,7 @@
 <!--Jenkins Cat -->
 ![Jenkins Cat](img/jenkins-cat.png "Jenkins Cat" )
 
-# Contrast Jenkins Plugin - Version 3.3
+# Contrast Jenkins Plugin
 
 Repository for the Contrast Jenkins plugin. This plugin adds the ability to configure a connection to a Jenkins Build.
 
