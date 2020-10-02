@@ -170,7 +170,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 }
                 return FormValidation.aggregate(validationCollection);
             } catch (IOException | UnauthorizedException e) {
-                return FormValidation.error("Unable to connect to Contrast.");
+                return FormValidation.error(String.format("Unable to connect to Contrast. %s", e.getMessage()));
             }
         }
 
