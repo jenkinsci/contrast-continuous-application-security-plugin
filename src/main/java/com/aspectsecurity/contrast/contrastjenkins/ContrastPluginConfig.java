@@ -166,7 +166,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
 
                 if(VulnerabilityTrendHelper.isEnabledJobOutcomePolicyExist(contrastSDK,organizations.getOrganization().getOrgUuid())) {
                     validationCollection.add(FormValidation.warning("Your Contrast administrator has set a policy for vulnerability thresholds. " +
-                        "The Contrast policy overrides Jenkins security controls for applications included in both"));
+                        "The Contrast policy overrides Jenkins security controls for applications included in both."));
                 }
                 return FormValidation.aggregate(validationCollection);
             } catch (IOException | UnauthorizedException e) {
