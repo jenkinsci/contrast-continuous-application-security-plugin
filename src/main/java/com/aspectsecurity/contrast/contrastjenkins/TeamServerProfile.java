@@ -32,23 +32,38 @@ public class TeamServerProfile {
     @Getter
     private List<VulnerabilityType> vulnerabilityTypes;
 
-    @Getter
-    private boolean failOnWrongApplicationId;
+    private boolean applyVulnerableBuildResultOnContrastError;
 
-    /////// Compatibility fix for plugin versions <=2.6
-    @Getter
-    private boolean failOnWrongApplicationName;
     @Getter
     private String vulnerableBuildResult;
+
     @Getter
     private boolean allowGlobalThresholdConditionsOverride;
 
     @Getter
     private List<App> apps;
 
+    //Compatibility fix for plugin versions <= 3.6
+    /**
+     * @Deprecated
+     * Use {@link TeamServerProfile#applyVulnerableBuildResultOnContrastError}
+     */
+    @Getter
+    @Deprecated
+    private boolean failOnWrongApplicationId;
+
+    /////// Compatibility fix for plugin versions <=2.6
+    /**
+     * @Deprecated
+     * Use {@link TeamServerProfile#applyVulnerableBuildResultOnContrastError}
+     */
+    @Getter
+    @Deprecated
+    private boolean failOnWrongApplicationName;
+
     @DataBoundConstructor
     public TeamServerProfile(String name, String username, String apiKey, String serviceKey, String orgUuid,
-                             String teamServerUrl, boolean failOnWrongApplicationId,
+                             String teamServerUrl, boolean applyVulnerableBuildResultOnContrastError,
                              String vulnerableBuildResult, boolean allowGlobalThresholdConditionsOverride) {
         this.name = name;
         this.username = username;
@@ -56,7 +71,7 @@ public class TeamServerProfile {
         this.serviceKey = Secret.fromString(serviceKey);
         this.orgUuid = orgUuid;
         this.teamServerUrl = teamServerUrl;
-        this.failOnWrongApplicationId = failOnWrongApplicationId;
+        this.applyVulnerableBuildResultOnContrastError = applyVulnerableBuildResultOnContrastError;
         this.vulnerableBuildResult = vulnerableBuildResult;
         this.allowGlobalThresholdConditionsOverride = allowGlobalThresholdConditionsOverride;
     }
@@ -75,5 +90,13 @@ public class TeamServerProfile {
 
     String getServiceKey() {
         return serviceKey.getPlainText();
+    }
+
+    public boolean isApplyVulnerableBuildResultOnContrastError() {
+      //backwards compatability fix for profiles with old configurations
+      if(!this.applyVulnerableBuildResultOnContrastError && (this.isFailOnWrongApplicationId() || this.isFailOnWrongApplicationName())) {
+        return true;
+      }
+      return this.applyVulnerableBuildResultOnContrastError;
     }
 }
