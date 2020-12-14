@@ -30,8 +30,8 @@
                         <f:select field="vulnerableBuildResult" default="${profile.vulnerableBuildResult}"/>
                     </f:entry>
 
-                    <f:entry help="/plugin/contrast-continuous-application-security/help-failOnWrongApplicationId.html" >
-                        <f:checkbox title="Fail build if application is not found in Contrast" name="failOnWrongApplicationId" field="failOnWrongApplicationId" value="${profile.failOnWrongApplicationId}" checked="${profile.failOnWrongApplicationId}" />
+                    <f:entry help="/plugin/contrast-continuous-application-security/help-applyVulnerableBuildResultOnContrastError.html" >
+                        <f:checkbox title="Apply this vulnerable build result to the job when Jenkins encounters an error with Contrast" name="applyVulnerableBuildResultOnContrastError" field="applyVulnerableBuildResultOnContrastError" value="${profile.applyVulnerableBuildResultOnContrastError}" checked="${profile.applyVulnerableBuildResultOnContrastError}" />
                     </f:entry>
 
                     <f:entry help="/plugin/contrast-continuous-application-security/help-allowGlobalThresholdConditionsOverride.html" >
