@@ -10,7 +10,7 @@ build process.
 # Use the Plugin
 
 You can view the plugin code in Jenkins' [Github
-repository](https://github.com/jenkinsci/contrast-continuous-application-security-plugin){.external-link}.
+repository](https://github.com/jenkinsci/contrast-continuous-application-security-plugin).
 In the Jenkins dashboard, go to **Manage Jenkins** in the left sidebar,
 and select the **Configure System** page to find a new Contrast
 Connections section.
@@ -146,4 +146,4 @@ options are available:
 > **Note:** The queryBy option should match the contrast.override.appversion parameter you pass to the Contrast Java agent when running your application. If you use the third option (startDate), you aren't required to pass the contrast.override.appversion parameter to the Java agent.
 
 Both `JOB_NAME` and `BUILD_NUMBER` are available as Jenkins environment
-[properties](https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project){.external-link}.You can specify your own text for APPVERSIONTAG by selecting the fourth queryBy option and exporting APPVERSIONTAG as an environment property within your Jenkins job.
+[properties](https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project).You can specify your own text for APPVERSIONTAG by selecting the fourth queryBy option and exporting APPVERSIONTAG as an environment property within your Jenkins job.
