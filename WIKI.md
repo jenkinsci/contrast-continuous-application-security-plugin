@@ -19,8 +19,8 @@ Connections section.
 
 Jenkins Version >= 2.60.3
 
-# OpenDocs Project
-For more information, you can view our [OpenDocs](https://docs.contrastsecurity.com/tools-ci.html#jenkins) project.
+# Contrast Documentation
+For more information, you can view our [Contrast Docs](https://docs.contrastsecurity.com/en/jenkins.html).
 
 # Contrast API Settings
 
