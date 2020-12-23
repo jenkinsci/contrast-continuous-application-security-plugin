@@ -19,8 +19,8 @@ Connections section.
 
 Jenkins Version >= 2.60.3
 
-# OpenDocs Project
-For more information, you can view our [OpenDocs](https://docs.contrastsecurity.com/tools-ci.html#jenkins) project.
+# Contrast Documentation
+For more information, you can view our [Contrast Docs](https://docs.contrastsecurity.com/en/jenkins.html).
 
 # Contrast API Settings
 
@@ -147,3 +147,4 @@ options are available:
 
 Both `JOB_NAME` and `BUILD_NUMBER` are available as Jenkins environment
 [properties](https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project).You can specify your own text for APPVERSIONTAG by selecting the fourth queryBy option and exporting APPVERSIONTAG as an environment property within your Jenkins job.
+
