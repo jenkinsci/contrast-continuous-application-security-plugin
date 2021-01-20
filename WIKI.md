@@ -19,4 +19,4 @@ repository](https://github.com/jenkinsci/contrast-continuous-application-securit
 Jenkins Version >= 2.60.3
 
 ## Documentation
-[Contrast Docs](https://docs.contrastsecurity.com/en/jenkins.html")
+[Contrast Docs](https://docs.contrastsecurity.com/en/jenkins.html)
