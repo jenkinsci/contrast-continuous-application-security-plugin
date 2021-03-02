@@ -9,6 +9,14 @@ Repository for the Contrast Jenkins plugin. This plugin adds the ability to conf
 * Jenkins version >= 2.60.3
 > Note: for Jenkins versions between 1.625.3 and 2.60.3, use plugin version [2.12.1](https://github.com/jenkinsci/contrast-continuous-application-security-plugin/releases/tag/contrast-continuous-application-security-2.12.1)
 
+## Contrast TeamServer Compatible Versions
+
+| Jenkins Plugin Version | Minimum Contrast TeamServer Version |
+| :---: | :---: |
+| 3.4 | 3.7.6 |
+| 3.7 | 3.7.10 |
+| 3.8 | 3.8.0 |
+
 ## Documentation
 [Contrast Docs](https://docs.contrastsecurity.com/en/jenkins.html)
 
