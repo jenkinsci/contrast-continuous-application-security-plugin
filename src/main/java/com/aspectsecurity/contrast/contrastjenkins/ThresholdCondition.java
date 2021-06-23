@@ -192,10 +192,27 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
         }
 
         if(applicationId != null) {
-            sj.add("applicationId='"+applicationId+"'");
+            sj.add("applicationId='"+getPreparedApplicationId()+"'");
+        }
+
+        if(applicationId != null && applicationOriginName == null) {
+            sj.add(applicationId);
         }
 
         return preString + sj.toString() + postString;
+    }
+
+    /**
+     * Background: Some configurations can make the Application ID to be stored as 'AppName (AppId)'
+     * This is a getter that only returns the actual application id.
+     * Returns a proper application Id.
+     * @return
+     */
+    public String getPreparedApplicationId() {
+        if (VulnerabilityTrendHelper.getAppIdFromAppTitle(applicationId) != null) {
+            return VulnerabilityTrendHelper.getAppIdFromAppTitle(applicationId);
+        }
+        return applicationId;
     }
 
     /**
