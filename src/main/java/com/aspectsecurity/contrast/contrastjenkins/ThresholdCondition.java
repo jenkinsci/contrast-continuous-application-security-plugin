@@ -206,7 +206,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
      * Background: Some configurations can make the Application ID to be stored as 'AppName (AppId)'
      * This is a getter that only returns the actual application id.
      * Returns a proper application Id.
-     * @return
+     * @return Returns the app id without the name attached
      */
     public String getPreparedApplicationId() {
         if (VulnerabilityTrendHelper.getAppIdFromAppTitle(applicationId) != null) {
