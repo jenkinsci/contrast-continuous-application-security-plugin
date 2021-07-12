@@ -1,0 +1,24 @@
+name: Build Maven Package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Set up JDK 8
+      uses: actions/setup-java@v2
+      with:
+        java-version: '8'
+        distribution: 'adopt'
+        server-id: 'ossrh'
+    - name: Build with Maven
+      run: mvn -B -Dfindbugs.skip=true clean test
