@@ -1,4 +1,4 @@
-name: Build Maven Package
+name: Maven test
 
 on: [push]
 
@@ -20,5 +20,5 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         server-id: 'ossrh'
-    - name: Build with Maven
+    - name: Maven test
       run: mvn -B -Dfindbugs.skip=true clean test
