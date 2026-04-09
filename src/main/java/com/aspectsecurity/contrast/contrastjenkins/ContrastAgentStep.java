@@ -84,6 +84,7 @@ public class ContrastAgentStep extends AbstractStepImpl {
 
         @SuppressWarnings("unused")
         public ListBoxModel doFillProfileItems() {
+            Jenkins.getActiveInstance().checkPermission(Jenkins.ADMINISTER);
             return VulnerabilityTrendHelper.getProfileNames();
         }
 

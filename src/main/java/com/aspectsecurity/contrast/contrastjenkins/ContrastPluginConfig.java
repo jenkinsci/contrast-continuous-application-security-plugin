@@ -18,10 +18,13 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.interceptor.RequirePOST;
 import org.kohsuke.stapler.StaplerRequest;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -104,6 +107,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
 
         @SuppressWarnings("unused")
         public ListBoxModel doFillTeamServerProfileNameItems() {
+            Jenkins.getActiveInstance().checkPermission(Jenkins.ADMINISTER);
             return VulnerabilityTrendHelper.getProfileNames();
         }
 
@@ -127,10 +131,13 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          * @throws IOException
          * @throws ServletException
          */
+        @RequirePOST
         public FormValidation doTestTeamServerConnection(@QueryParameter("username") final String username,
                                                          @QueryParameter("apiKey") final Secret apiKey,
                                                          @QueryParameter("serviceKey") final Secret serviceKey,
                                                          @QueryParameter("teamServerUrl") final String teamServerUrl) throws IOException, ServletException {
+
+            Jenkins.getActiveInstance().checkPermission(Jenkins.ADMINISTER);
 
             if (StringUtils.isEmpty(username)) {
                 return FormValidation.error("Connection error: Username cannot be empty.");
@@ -148,8 +155,17 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 return FormValidation.error("Connection error: Contrast URL cannot be empty.");
             }
 
-            if (!teamServerUrl.endsWith("/Contrast/api")) {
-                return FormValidation.error("Connection error: Contrast Url does not end with /Contrast/api.");
+            try {
+                URL parsedUrl = new URL(teamServerUrl);
+                String protocol = parsedUrl.getProtocol();
+                if (!protocol.equals("http") && !protocol.equals("https")) {
+                    return FormValidation.error("Connection error: Contrast URL must use http or https.");
+                }
+                if (!parsedUrl.getPath().endsWith("/Contrast/api")) {
+                    return FormValidation.error("Connection error: Contrast Url does not end with /Contrast/api.");
+                }
+            } catch (MalformedURLException e) {
+                return FormValidation.error("Connection error: Contrast URL is not a valid URL.");
             }
 
             try {
