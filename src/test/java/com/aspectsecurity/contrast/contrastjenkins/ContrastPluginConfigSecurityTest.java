@@ -1,6 +1,7 @@
 package com.aspectsecurity.contrast.contrastjenkins;
 
 import com.contrastsecurity.sdk.ContrastSDK;
+import hudson.model.Item;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
 import hudson.util.Secret;
@@ -126,16 +127,18 @@ public class ContrastPluginConfigSecurityTest {
                 "https://contrast.example.com/Contrast/api");
     }
 
-    @Test(expected = AccessDeniedException.class)
+    @Test
     public void testDoFillTeamServerProfileNameItemsDeniedForNonAdmin() {
-        doThrow(new AccessDeniedException("Access denied"))
-                .when(jenkins).checkPermission(Jenkins.ADMINISTER);
+        when(jenkins.hasPermission(Item.CONFIGURE)).thenReturn(false);
 
-        descriptor.doFillTeamServerProfileNameItems();
+        ListBoxModel result = descriptor.doFillTeamServerProfileNameItems();
+
+        assertTrue(result.isEmpty());
     }
 
     @Test
     public void testDoFillTeamServerProfileNameItemsAllowedForAdmin() {
+        when(jenkins.hasPermission(Item.CONFIGURE)).thenReturn(true);
         ListBoxModel expectedItems = new ListBoxModel();
         given(VulnerabilityTrendHelper.getProfileNames()).willReturn(expectedItems);
 

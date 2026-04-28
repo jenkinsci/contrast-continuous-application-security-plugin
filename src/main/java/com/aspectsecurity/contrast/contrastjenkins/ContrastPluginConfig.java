@@ -5,6 +5,7 @@ import com.contrastsecurity.models.Organizations;
 import com.contrastsecurity.sdk.ContrastSDK;
 import hudson.Extension;
 import hudson.model.AbstractProject;
+import hudson.model.Item;
 import hudson.model.JobProperty;
 import hudson.model.JobPropertyDescriptor;
 import hudson.model.Result;
@@ -107,7 +108,9 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
 
         @SuppressWarnings("unused")
         public ListBoxModel doFillTeamServerProfileNameItems() {
-            Jenkins.getActiveInstance().checkPermission(Jenkins.ADMINISTER);
+            if (!Jenkins.getActiveInstance().hasPermission(Item.CONFIGURE)) {
+                return new ListBoxModel();
+            }
             return VulnerabilityTrendHelper.getProfileNames();
         }
 
@@ -117,6 +120,9 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          * @return ListBoxModel filled with vulnerability types.
          */
         public ListBoxModel doFillThresholdVulnTypeItems(@QueryParameter("teamServerProfileName") final String teamServerProfileName) throws IOException {
+            if (!Jenkins.getActiveInstance().hasPermission(Item.CONFIGURE)) {
+                return new ListBoxModel();
+            }
             return VulnerabilityTrendHelper.getVulnerabilityTypes(teamServerProfileName);
         }
 

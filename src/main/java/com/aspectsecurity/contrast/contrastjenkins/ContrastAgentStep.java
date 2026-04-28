@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import hudson.AbortException;
 import hudson.Extension;
 import hudson.FilePath;
+import hudson.model.Item;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.util.IOUtils;
@@ -84,7 +85,9 @@ public class ContrastAgentStep extends AbstractStepImpl {
 
         @SuppressWarnings("unused")
         public ListBoxModel doFillProfileItems() {
-            Jenkins.getActiveInstance().checkPermission(Jenkins.ADMINISTER);
+            if (!Jenkins.getActiveInstance().hasPermission(Item.CONFIGURE)) {
+                return new ListBoxModel();
+            }
             return VulnerabilityTrendHelper.getProfileNames();
         }
 
