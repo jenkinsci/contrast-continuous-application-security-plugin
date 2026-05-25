@@ -17,6 +17,7 @@ import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.interceptor.RequirePOST;
@@ -107,8 +108,8 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
         }
 
         @SuppressWarnings("unused")
-        public ListBoxModel doFillTeamServerProfileNameItems() {
-            if (!Jenkins.getActiveInstance().hasPermission(Item.CONFIGURE)) {
+        public ListBoxModel doFillTeamServerProfileNameItems(@AncestorInPath Item item) {
+            if (!hasFillPermission(item)) {
                 return new ListBoxModel();
             }
             return VulnerabilityTrendHelper.getProfileNames();
@@ -119,11 +120,18 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
          *
          * @return ListBoxModel filled with vulnerability types.
          */
-        public ListBoxModel doFillThresholdVulnTypeItems(@QueryParameter("teamServerProfileName") final String teamServerProfileName) throws IOException {
-            if (!Jenkins.getActiveInstance().hasPermission(Item.CONFIGURE)) {
+        public ListBoxModel doFillThresholdVulnTypeItems(@AncestorInPath Item item, @QueryParameter("teamServerProfileName") final String teamServerProfileName) throws IOException {
+            if (!hasFillPermission(item)) {
                 return new ListBoxModel();
             }
             return VulnerabilityTrendHelper.getVulnerabilityTypes(teamServerProfileName);
+        }
+
+        private static boolean hasFillPermission(Item item) {
+            if (item == null) {
+                return Jenkins.getActiveInstance().hasPermission(Jenkins.ADMINISTER);
+            }
+            return item.hasPermission(Item.CONFIGURE);
         }
 
         /**
@@ -167,8 +175,11 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 if (!protocol.equals("http") && !protocol.equals("https")) {
                     return FormValidation.error("Connection error: Contrast URL must use http or https.");
                 }
+                if (StringUtils.isEmpty(parsedUrl.getHost())) {
+                    return FormValidation.error("Connection error: Contrast URL is not a valid URL.");
+                }
                 if (!parsedUrl.getPath().endsWith("/Contrast/api")) {
-                    return FormValidation.error("Connection error: Contrast Url does not end with /Contrast/api.");
+                    return FormValidation.error("Connection error: Contrast URL does not end with /Contrast/api.");
                 }
             } catch (MalformedURLException e) {
                 return FormValidation.error("Connection error: Contrast URL is not a valid URL.");

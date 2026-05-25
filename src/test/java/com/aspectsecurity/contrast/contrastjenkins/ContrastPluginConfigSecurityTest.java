@@ -37,6 +37,9 @@ public class ContrastPluginConfigSecurityTest {
     @Mock
     private Secret mockSecret;
 
+    @Mock
+    private Item item;
+
     private ContrastPluginConfig.ContrastPluginConfigDescriptor descriptor;
 
     @Before
@@ -128,22 +131,103 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void testDoFillTeamServerProfileNameItemsDeniedForNonAdmin() {
-        when(jenkins.hasPermission(Item.CONFIGURE)).thenReturn(false);
+    public void doFillTeamServerProfileNameItemsReturnsEmptyWhenNoItemAndNotAdmin() {
+        when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(false);
 
-        ListBoxModel result = descriptor.doFillTeamServerProfileNameItems();
+        ListBoxModel result = descriptor.doFillTeamServerProfileNameItems(null);
 
         assertTrue(result.isEmpty());
     }
 
     @Test
-    public void testDoFillTeamServerProfileNameItemsAllowedForAdmin() {
-        when(jenkins.hasPermission(Item.CONFIGURE)).thenReturn(true);
-        ListBoxModel expectedItems = new ListBoxModel();
-        given(VulnerabilityTrendHelper.getProfileNames()).willReturn(expectedItems);
+    public void doFillTeamServerProfileNameItemsReturnsProfilesWhenNoItemAndAdmin() {
+        when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(true);
+        ListBoxModel expected = new ListBoxModel();
+        given(VulnerabilityTrendHelper.getProfileNames()).willReturn(expected);
 
-        ListBoxModel result = descriptor.doFillTeamServerProfileNameItems();
+        ListBoxModel result = descriptor.doFillTeamServerProfileNameItems(null);
 
-        assertEquals(expectedItems, result);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void doFillTeamServerProfileNameItemsReturnsEmptyWhenItemPresentButNoConfigurePermission() {
+        when(item.hasPermission(Item.CONFIGURE)).thenReturn(false);
+
+        ListBoxModel result = descriptor.doFillTeamServerProfileNameItems(item);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void doFillTeamServerProfileNameItemsReturnsProfilesWhenItemPresentAndHasConfigurePermission() {
+        when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
+        ListBoxModel expected = new ListBoxModel();
+        given(VulnerabilityTrendHelper.getProfileNames()).willReturn(expected);
+
+        ListBoxModel result = descriptor.doFillTeamServerProfileNameItems(item);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void doFillThresholdVulnTypeItemsReturnsEmptyWhenNoItemAndNotAdmin() throws IOException {
+        when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(false);
+
+        ListBoxModel result = descriptor.doFillThresholdVulnTypeItems(null, "profile");
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void doFillThresholdVulnTypeItemsReturnsTypesWhenNoItemAndAdmin() throws IOException {
+        when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(true);
+        ListBoxModel expected = new ListBoxModel();
+        given(VulnerabilityTrendHelper.getVulnerabilityTypes("profile")).willReturn(expected);
+
+        ListBoxModel result = descriptor.doFillThresholdVulnTypeItems(null, "profile");
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void doFillThresholdVulnTypeItemsReturnsEmptyWhenItemPresentButNoConfigurePermission() throws IOException {
+        when(item.hasPermission(Item.CONFIGURE)).thenReturn(false);
+
+        ListBoxModel result = descriptor.doFillThresholdVulnTypeItems(item, "profile");
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void doFillThresholdVulnTypeItemsReturnsTypesWhenItemPresentAndHasConfigurePermission() throws IOException {
+        when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
+        ListBoxModel expected = new ListBoxModel();
+        given(VulnerabilityTrendHelper.getVulnerabilityTypes("profile")).willReturn(expected);
+
+        ListBoxModel result = descriptor.doFillThresholdVulnTypeItems(item, "profile");
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testDoTestConnectionRejectsUrlWithBlankHost() throws Exception {
+        FormValidation result = descriptor.doTestTeamServerConnection(
+                "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
+                "https:///Contrast/api");
+
+        assertEquals(FormValidation.Kind.ERROR, result.kind);
+        assertTrue(result.getMessage().contains("not a valid URL"));
+    }
+
+    @Test
+    public void testDoTestConnectionPathErrorUsesUppercaseURL() throws Exception {
+        FormValidation result = descriptor.doTestTeamServerConnection(
+                "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
+                "https://example.com/wrong/path");
+
+        assertEquals(FormValidation.Kind.ERROR, result.kind);
+        assertTrue("expected message to use 'URL' not 'Url': " + result.getMessage(),
+                result.getMessage().contains("URL does not end with"));
     }
 }
