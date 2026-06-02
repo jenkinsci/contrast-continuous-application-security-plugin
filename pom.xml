@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>3.50</version>
+    <version>5.31</version>
     <relativePath />
   </parent>
 
@@ -24,17 +24,7 @@
 
   <properties>
     <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
-    <jenkins.version>2.60.3</jenkins.version>
-    <!-- Java Level to use. Java 8 required when using core >= 3.44 -->
-    <java.level>8</java.level>
-    <!-- Jenkins Test Harness version you use to test the plugin. -->
-    <!-- For Jenkins version >= 1.580.1 use JTH 2.x or higher. -->
-    <jenkins-test-harness.version>2.56</jenkins-test-harness.version>
-    <!-- Other properties you may want to use:
-         ~ hpi-plugin.version: The HPI Maven Plugin version used by the plugin..
-         ~ stapler-plugin.version: The Stapler Maven plugin version required by the plugin.
-    -->
-    <powermock.version>1.6.2</powermock.version>
+    <jenkins.version>2.479.3</jenkins.version>
     <spotbugs.skip>true</spotbugs.skip>
   </properties>
 
@@ -51,9 +41,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+    <connection>scm:git:https://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
-    <url>http://github.com/jenkinsci/${project.artifactId}-plugin</url>
+    <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
     <tag>contrast-continuous-application-security-2.0</tag>
   </scm>
 
@@ -111,7 +101,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.16.14</version>
+      <version>1.18.38</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -128,12 +118,10 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.7</version>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
-      <version>2.6</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -143,33 +131,7 @@
 
     <dependency>
       <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <version>1.10.19</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-core</artifactId>
-      <version>${powermock.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-module-junit4</artifactId>
-      <version>${powermock.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-api-mockito</artifactId>
-      <version>${powermock.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-reflect</artifactId>
-      <version>${powermock.version}</version>
+      <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
