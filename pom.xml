@@ -62,23 +62,31 @@
 
   <profiles>
     <profile>
-        <!--This profile gets activated by run.sh-->
+      <!--This profile gets activated by run.sh-->
       <id>runsh</id>
       <dependencies>
-        <!--This dependency is to install workflow-aggregator into the hpi for testing only.-->
+        <!--Install pipeline support into the local Jenkins for manual testing.-->
         <dependency>
           <groupId>org.jenkins-ci.plugins.workflow</groupId>
           <artifactId>workflow-aggregator</artifactId>
-          <version>2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>scm-api</artifactId>
-            <version>1.3</version>
+          <version>608.v67378e9d3db_1</version>
+          <scope>test</scope>
         </dependency>
       </dependencies>
     </profile>
   </profiles>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.jenkins.tools.bom</groupId>
+        <artifactId>bom-2.479.x</artifactId>
+        <version>5054.v620b_5d2b_d5e6</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
 
 
@@ -107,7 +115,6 @@
     <dependency>
       <groupId>org.jenkins-ci.plugins.workflow</groupId>
       <artifactId>workflow-step-api</artifactId>
-      <version>2.18</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
@@ -124,9 +131,8 @@
       <artifactId>commons-lang</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.7</version>
+      <groupId>io.jenkins.plugins</groupId>
+      <artifactId>commons-lang3-api</artifactId>
     </dependency>
 
     <dependency>
