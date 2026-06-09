@@ -279,6 +279,7 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
          */
+        @RequirePOST
         public FormValidation doCheckApplicationId(@AncestorInPath Item item, @QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName, @QueryParameter String value) {
             if (!hasFillPermission(item)) {
                 return FormValidation.ok();
