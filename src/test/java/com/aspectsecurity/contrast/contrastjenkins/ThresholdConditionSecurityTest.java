@@ -5,24 +5,23 @@ import hudson.util.ComboBoxModel;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
 import jenkins.model.Jenkins;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.util.Calendar;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Jenkins.class, VulnerabilityTrendHelper.class})
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class ThresholdConditionSecurityTest {
 
     @Mock
@@ -33,15 +32,24 @@ public class ThresholdConditionSecurityTest {
 
     private ThresholdCondition.DescriptorImpl descriptor;
 
+    private MockedStatic<Jenkins> mockedJenkins;
+    private MockedStatic<VulnerabilityTrendHelper> mockedHelper;
+
     @Before
     public void setUp() {
-        PowerMockito.mockStatic(Jenkins.class);
-        PowerMockito.mockStatic(VulnerabilityTrendHelper.class);
+        mockedJenkins = Mockito.mockStatic(Jenkins.class);
+        mockedHelper = Mockito.mockStatic(VulnerabilityTrendHelper.class);
 
-        when(Jenkins.getActiveInstance()).thenReturn(jenkins);
-        when(Jenkins.getInstance()).thenReturn(jenkins);
+        mockedJenkins.when(Jenkins::getActiveInstance).thenReturn(jenkins);
+        mockedJenkins.when(Jenkins::getInstance).thenReturn(jenkins);
 
         descriptor = new ThresholdConditionStub.ThresholdConditionDescriptorStub();
+    }
+
+    @After
+    public void tearDown() {
+        mockedJenkins.close();
+        mockedHelper.close();
     }
 
     // -------- doCheckApplicationId --------
@@ -67,7 +75,7 @@ public class ThresholdConditionSecurityTest {
     @Test
     public void doCheckApplicationIdRunsLookupWhenItemHasConfigurePermission() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
-        given(VulnerabilityTrendHelper.appExistsInProfile("profile", "")).willReturn(false);
+        mockedHelper.when(() -> VulnerabilityTrendHelper.appExistsInProfile("profile", "")).thenReturn(false);
 
         FormValidation result = descriptor.doCheckApplicationId(item, "profile", "");
 
@@ -77,7 +85,7 @@ public class ThresholdConditionSecurityTest {
     @Test
     public void doCheckApplicationIdReturnsAppNotFoundWarningWhenAuthorized() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
-        given(VulnerabilityTrendHelper.appExistsInProfile("profile", "nope")).willReturn(false);
+        mockedHelper.when(() -> VulnerabilityTrendHelper.appExistsInProfile("profile", "nope")).thenReturn(false);
 
         FormValidation result = descriptor.doCheckApplicationId(item, "profile", "nope");
 
@@ -110,7 +118,7 @@ public class ThresholdConditionSecurityTest {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         descriptor.lastAppsRefresh = Calendar.getInstance(); // skip refreshApps()
         ComboBoxModel expected = new ComboBoxModel();
-        given(VulnerabilityTrendHelper.getApplicationIdsComboBoxModel("profile")).willReturn(expected);
+        mockedHelper.when(() -> VulnerabilityTrendHelper.getApplicationIdsComboBoxModel("profile")).thenReturn(expected);
 
         ComboBoxModel result = descriptor.doFillApplicationIdItems(item, "profile");
 
@@ -141,7 +149,7 @@ public class ThresholdConditionSecurityTest {
     public void doFillThresholdVulnTypeItemsReturnsTypesWhenItemHasConfigurePermission() throws IOException {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
-        given(VulnerabilityTrendHelper.getVulnerabilityTypes("profile")).willReturn(expected);
+        mockedHelper.when(() -> VulnerabilityTrendHelper.getVulnerabilityTypes("profile")).thenReturn(expected);
 
         ListBoxModel result = descriptor.doFillThresholdVulnTypeItems(item, "profile");
 

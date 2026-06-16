@@ -3,21 +3,20 @@ package com.aspectsecurity.contrast.contrastjenkins;
 import hudson.model.Item;
 import hudson.util.ListBoxModel;
 import jenkins.model.Jenkins;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Jenkins.class, VulnerabilityTrendHelper.class})
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class ContrastAgentStepSecurityTest {
 
     @Mock
@@ -28,14 +27,23 @@ public class ContrastAgentStepSecurityTest {
 
     private ContrastAgentStep.ContrastAgentStepDescriptorImpl descriptor;
 
+    private MockedStatic<Jenkins> mockedJenkins;
+    private MockedStatic<VulnerabilityTrendHelper> mockedHelper;
+
     @Before
     public void setUp() {
-        PowerMockito.mockStatic(Jenkins.class);
-        PowerMockito.mockStatic(VulnerabilityTrendHelper.class);
+        mockedJenkins = Mockito.mockStatic(Jenkins.class);
+        mockedHelper = Mockito.mockStatic(VulnerabilityTrendHelper.class);
 
-        when(Jenkins.getActiveInstance()).thenReturn(jenkins);
+        mockedJenkins.when(Jenkins::getActiveInstance).thenReturn(jenkins);
 
         descriptor = new ContrastAgentStep.ContrastAgentStepDescriptorImpl();
+    }
+
+    @After
+    public void tearDown() {
+        mockedJenkins.close();
+        mockedHelper.close();
     }
 
     @Test
@@ -51,7 +59,7 @@ public class ContrastAgentStepSecurityTest {
     public void doFillProfileItemsReturnsProfilesWhenNoItemAndAdmin() {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
-        given(VulnerabilityTrendHelper.getProfileNames()).willReturn(expected);
+        mockedHelper.when(VulnerabilityTrendHelper::getProfileNames).thenReturn(expected);
 
         ListBoxModel result = descriptor.doFillProfileItems(null);
 
@@ -71,7 +79,7 @@ public class ContrastAgentStepSecurityTest {
     public void doFillProfileItemsReturnsProfilesWhenItemPresentAndHasConfigurePermission() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
-        given(VulnerabilityTrendHelper.getProfileNames()).willReturn(expected);
+        mockedHelper.when(VulnerabilityTrendHelper::getProfileNames).thenReturn(expected);
 
         ListBoxModel result = descriptor.doFillProfileItems(item);
 

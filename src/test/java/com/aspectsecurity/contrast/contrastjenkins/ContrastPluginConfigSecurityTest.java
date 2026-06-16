@@ -6,29 +6,27 @@ import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
 import hudson.util.Secret;
 import jenkins.model.Jenkins;
-import org.acegisecurity.AccessDeniedException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mock;
 
-// Secret.class is included in @PrepareForTest so we can mock Secret.fromString,
-// which otherwise requires a running Jenkins ConfidentialStore to decrypt values.
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Jenkins.class, VulnerabilityTrendHelper.class, Secret.class})
+// Secret.class is mocked statically to avoid ConfidentialStore dependency at test time.
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class ContrastPluginConfigSecurityTest {
 
     @Mock
@@ -42,20 +40,31 @@ public class ContrastPluginConfigSecurityTest {
 
     private ContrastPluginConfig.ContrastPluginConfigDescriptor descriptor;
 
+    private MockedStatic<Jenkins> mockedJenkins;
+    private MockedStatic<VulnerabilityTrendHelper> mockedHelper;
+    private MockedStatic<Secret> mockedSecret;
+
     @Before
     public void setUp() {
-        PowerMockito.mockStatic(Jenkins.class);
-        PowerMockito.mockStatic(VulnerabilityTrendHelper.class);
-        PowerMockito.mockStatic(Secret.class);
+        mockedJenkins = Mockito.mockStatic(Jenkins.class);
+        mockedHelper = Mockito.mockStatic(VulnerabilityTrendHelper.class);
+        mockedSecret = Mockito.mockStatic(Secret.class);
 
-        when(Jenkins.getActiveInstance()).thenReturn(jenkins);
+        mockedJenkins.when(Jenkins::getActiveInstance).thenReturn(jenkins);
 
         // Return a mock Secret from fromString to avoid ConfidentialStore dependency.
         // getPlainText() must return non-empty so the empty-value guards in the method pass.
-        when(Secret.fromString(anyString())).thenReturn(mockSecret);
+        mockedSecret.when(() -> Secret.fromString(anyString())).thenReturn(mockSecret);
         when(mockSecret.getPlainText()).thenReturn("test-value");
 
         descriptor = new ContrastPluginConfigStub.ContrastPluginConfigDescriptorStub();
+    }
+
+    @After
+    public void tearDown() {
+        mockedJenkins.close();
+        mockedHelper.close();
+        mockedSecret.close();
     }
 
     @Test
@@ -90,12 +99,10 @@ public class ContrastPluginConfigSecurityTest {
 
     @Test
     public void testDoTestConnectionAcceptsValidHttpsUrl() throws Exception {
-        // URL validation passes; SDK call fails with IOException (no real server).
-        // The error from the connection attempt proves URL validation did not block the request.
         ContrastSDK mockSDK = mock(ContrastSDK.class);
-        given(VulnerabilityTrendHelper.createSDK(anyString(), anyString(), anyString(), anyString()))
-                .willReturn(mockSDK);
-        given(mockSDK.getProfileDefaultOrganizations()).willThrow(new IOException("Connection refused"));
+        mockedHelper.when(() -> VulnerabilityTrendHelper.createSDK(anyString(), anyString(), anyString(), anyString()))
+                .thenReturn(mockSDK);
+        when(mockSDK.getProfileDefaultOrganizations()).thenThrow(new IOException("Connection refused"));
 
         FormValidation result = descriptor.doTestTeamServerConnection(
                 "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
@@ -108,9 +115,9 @@ public class ContrastPluginConfigSecurityTest {
     @Test
     public void testDoTestConnectionAcceptsValidHttpUrl() throws Exception {
         ContrastSDK mockSDK = mock(ContrastSDK.class);
-        given(VulnerabilityTrendHelper.createSDK(anyString(), anyString(), anyString(), anyString()))
-                .willReturn(mockSDK);
-        given(mockSDK.getProfileDefaultOrganizations()).willThrow(new IOException("Connection refused"));
+        mockedHelper.when(() -> VulnerabilityTrendHelper.createSDK(anyString(), anyString(), anyString(), anyString()))
+                .thenReturn(mockSDK);
+        when(mockSDK.getProfileDefaultOrganizations()).thenThrow(new IOException("Connection refused"));
 
         FormValidation result = descriptor.doTestTeamServerConnection(
                 "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
@@ -143,7 +150,7 @@ public class ContrastPluginConfigSecurityTest {
     public void doFillTeamServerProfileNameItemsReturnsProfilesWhenNoItemAndAdmin() {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
-        given(VulnerabilityTrendHelper.getProfileNames()).willReturn(expected);
+        mockedHelper.when(VulnerabilityTrendHelper::getProfileNames).thenReturn(expected);
 
         ListBoxModel result = descriptor.doFillTeamServerProfileNameItems(null);
 
@@ -163,7 +170,7 @@ public class ContrastPluginConfigSecurityTest {
     public void doFillTeamServerProfileNameItemsReturnsProfilesWhenItemPresentAndHasConfigurePermission() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
-        given(VulnerabilityTrendHelper.getProfileNames()).willReturn(expected);
+        mockedHelper.when(VulnerabilityTrendHelper::getProfileNames).thenReturn(expected);
 
         ListBoxModel result = descriptor.doFillTeamServerProfileNameItems(item);
 
@@ -183,7 +190,7 @@ public class ContrastPluginConfigSecurityTest {
     public void doFillThresholdVulnTypeItemsReturnsTypesWhenNoItemAndAdmin() throws IOException {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
-        given(VulnerabilityTrendHelper.getVulnerabilityTypes("profile")).willReturn(expected);
+        mockedHelper.when(() -> VulnerabilityTrendHelper.getVulnerabilityTypes("profile")).thenReturn(expected);
 
         ListBoxModel result = descriptor.doFillThresholdVulnTypeItems(null, "profile");
 
@@ -203,7 +210,7 @@ public class ContrastPluginConfigSecurityTest {
     public void doFillThresholdVulnTypeItemsReturnsTypesWhenItemPresentAndHasConfigurePermission() throws IOException {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
-        given(VulnerabilityTrendHelper.getVulnerabilityTypes("profile")).willReturn(expected);
+        mockedHelper.when(() -> VulnerabilityTrendHelper.getVulnerabilityTypes("profile")).thenReturn(expected);
 
         ListBoxModel result = descriptor.doFillThresholdVulnTypeItems(item, "profile");
 
