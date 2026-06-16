@@ -218,6 +218,16 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
+    public void testDoTestConnectionRejectsUrlWithPrefixBeforeContrastApiPath() throws Exception {
+        FormValidation result = descriptor.doTestTeamServerConnection(
+                "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
+                "https://example.com/evil/Contrast/api");
+
+        assertEquals(FormValidation.Kind.ERROR, result.kind);
+        assertTrue(result.getMessage().contains("/Contrast/api"));
+    }
+
+    @Test
     public void testDoTestConnectionRejectsUrlWithBlankHost() throws Exception {
         FormValidation result = descriptor.doTestTeamServerConnection(
                 "user", Secret.fromString("apikey"), Secret.fromString("svckey"),

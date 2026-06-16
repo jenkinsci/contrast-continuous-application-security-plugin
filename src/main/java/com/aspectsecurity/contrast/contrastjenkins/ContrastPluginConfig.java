@@ -178,7 +178,7 @@ public class ContrastPluginConfig extends JobProperty<AbstractProject<?, ?>> {
                 if (StringUtils.isEmpty(parsedUrl.getHost())) {
                     return FormValidation.error("Connection error: Contrast URL is not a valid URL.");
                 }
-                if (!parsedUrl.getPath().endsWith("/Contrast/api")) {
+                if (!parsedUrl.getPath().equals("/Contrast/api")) {
                     return FormValidation.error("Connection error: Contrast URL does not end with /Contrast/api.");
                 }
             } catch (MalformedURLException e) {

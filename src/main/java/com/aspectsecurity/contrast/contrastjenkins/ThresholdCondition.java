@@ -330,6 +330,9 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
             if (jenkins != null) {
                 ContrastPluginConfig.ContrastPluginConfigDescriptor contrastPluginConfigDescriptor = jenkins.getDescriptorByType(ContrastPluginConfig.ContrastPluginConfigDescriptor.class);
                 TeamServerProfile teamServerProfile = VulnerabilityTrendHelper.getProfile(teamServerProfileName, contrastPluginConfigDescriptor);
+                if (teamServerProfile == null) {
+                    return;
+                }
 
                 ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(teamServerProfile.getUsername(), teamServerProfile.getServiceKey(),
                         teamServerProfile.getApiKey(), teamServerProfile.getTeamServerUrl());

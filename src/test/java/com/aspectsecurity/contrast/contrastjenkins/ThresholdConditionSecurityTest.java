@@ -96,6 +96,29 @@ public class ThresholdConditionSecurityTest {
     // -------- doFillApplicationIdItems --------
 
     @Test
+    public void doFillApplicationIdItemsReturnsEmptyWhenNoItemAndAdmin() {
+        when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(true);
+        descriptor.lastAppsRefresh = Calendar.getInstance();
+        ComboBoxModel expected = new ComboBoxModel();
+        mockedHelper.when(() -> VulnerabilityTrendHelper.getApplicationIdsComboBoxModel("profile")).thenReturn(expected);
+
+        ComboBoxModel result = descriptor.doFillApplicationIdItems(null, "profile");
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void doFillApplicationIdItemsReturnsEmptyGracefullyWhenProfileNotFound() {
+        when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
+        mockedHelper.when(() -> VulnerabilityTrendHelper.getProfile("unknown", null)).thenReturn(null);
+        mockedHelper.when(() -> VulnerabilityTrendHelper.getApplicationIdsComboBoxModel("unknown")).thenReturn(new ComboBoxModel());
+
+        ComboBoxModel result = descriptor.doFillApplicationIdItems(item, "unknown");
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
     public void doFillApplicationIdItemsReturnsEmptyWhenNoItemAndNotAdmin() {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(false);
 
