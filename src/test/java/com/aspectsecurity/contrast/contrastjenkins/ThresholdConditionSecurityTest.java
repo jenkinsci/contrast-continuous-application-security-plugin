@@ -5,24 +5,27 @@ import hudson.util.ComboBoxModel;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
 import jenkins.model.Jenkins;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.util.Calendar;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.Silent.class)
-public class ThresholdConditionSecurityTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class ThresholdConditionSecurityTest {
 
     @Mock
     private Jenkins jenkins;
@@ -35,8 +38,8 @@ public class ThresholdConditionSecurityTest {
     private MockedStatic<Jenkins> mockedJenkins;
     private MockedStatic<VulnerabilityTrendHelper> mockedHelper;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         mockedJenkins = Mockito.mockStatic(Jenkins.class);
         mockedHelper = Mockito.mockStatic(VulnerabilityTrendHelper.class);
 
@@ -46,8 +49,8 @@ public class ThresholdConditionSecurityTest {
         descriptor = new ThresholdConditionStub.ThresholdConditionDescriptorStub();
     }
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    void tearDown() {
         mockedJenkins.close();
         mockedHelper.close();
     }
@@ -55,7 +58,7 @@ public class ThresholdConditionSecurityTest {
     // -------- doCheckApplicationId --------
 
     @Test
-    public void doCheckApplicationIdSkipsLookupWhenNoItemAndNotAdmin() {
+    void doCheckApplicationIdSkipsLookupWhenNoItemAndNotAdmin() {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(false);
 
         FormValidation result = descriptor.doCheckApplicationId(null, "profile", "app");
@@ -64,7 +67,7 @@ public class ThresholdConditionSecurityTest {
     }
 
     @Test
-    public void doCheckApplicationIdSkipsLookupWhenItemPresentButNoConfigurePermission() {
+    void doCheckApplicationIdSkipsLookupWhenItemPresentButNoConfigurePermission() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(false);
 
         FormValidation result = descriptor.doCheckApplicationId(item, "profile", "app");
@@ -73,7 +76,7 @@ public class ThresholdConditionSecurityTest {
     }
 
     @Test
-    public void doCheckApplicationIdRunsLookupWhenItemHasConfigurePermission() {
+    void doCheckApplicationIdRunsLookupWhenItemHasConfigurePermission() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         mockedHelper.when(() -> VulnerabilityTrendHelper.appExistsInProfile("profile", "")).thenReturn(false);
 
@@ -83,7 +86,7 @@ public class ThresholdConditionSecurityTest {
     }
 
     @Test
-    public void doCheckApplicationIdReturnsAppNotFoundWarningWhenAuthorized() {
+    void doCheckApplicationIdReturnsAppNotFoundWarningWhenAuthorized() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         mockedHelper.when(() -> VulnerabilityTrendHelper.appExistsInProfile("profile", "nope")).thenReturn(false);
 
@@ -96,7 +99,7 @@ public class ThresholdConditionSecurityTest {
     // -------- doFillApplicationIdItems --------
 
     @Test
-    public void doFillApplicationIdItemsReturnsEmptyWhenNoItemAndAdmin() {
+    void doFillApplicationIdItemsReturnsEmptyWhenNoItemAndAdmin() {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(true);
         descriptor.lastAppsRefresh = Calendar.getInstance();
         ComboBoxModel expected = new ComboBoxModel();
@@ -108,7 +111,7 @@ public class ThresholdConditionSecurityTest {
     }
 
     @Test
-    public void doFillApplicationIdItemsReturnsEmptyGracefullyWhenProfileNotFound() {
+    void doFillApplicationIdItemsReturnsEmptyGracefullyWhenProfileNotFound() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         mockedHelper.when(() -> VulnerabilityTrendHelper.getProfile("unknown", null)).thenReturn(null);
         mockedHelper.when(() -> VulnerabilityTrendHelper.getApplicationIdsComboBoxModel("unknown")).thenReturn(new ComboBoxModel());
@@ -119,7 +122,7 @@ public class ThresholdConditionSecurityTest {
     }
 
     @Test
-    public void doFillApplicationIdItemsReturnsEmptyWhenNoItemAndNotAdmin() {
+    void doFillApplicationIdItemsReturnsEmptyWhenNoItemAndNotAdmin() {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(false);
 
         ComboBoxModel result = descriptor.doFillApplicationIdItems(null, "profile");
@@ -128,7 +131,7 @@ public class ThresholdConditionSecurityTest {
     }
 
     @Test
-    public void doFillApplicationIdItemsReturnsEmptyWhenItemPresentButNoConfigurePermission() {
+    void doFillApplicationIdItemsReturnsEmptyWhenItemPresentButNoConfigurePermission() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(false);
 
         ComboBoxModel result = descriptor.doFillApplicationIdItems(item, "profile");
@@ -137,7 +140,7 @@ public class ThresholdConditionSecurityTest {
     }
 
     @Test
-    public void doFillApplicationIdItemsReturnsAppsWhenItemHasConfigurePermission() {
+    void doFillApplicationIdItemsReturnsAppsWhenItemHasConfigurePermission() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         descriptor.lastAppsRefresh = Calendar.getInstance(); // skip refreshApps()
         ComboBoxModel expected = new ComboBoxModel();
@@ -151,7 +154,7 @@ public class ThresholdConditionSecurityTest {
     // -------- doFillThresholdVulnTypeItems --------
 
     @Test
-    public void doFillThresholdVulnTypeItemsReturnsEmptyWhenNoItemAndNotAdmin() throws IOException {
+    void doFillThresholdVulnTypeItemsReturnsEmptyWhenNoItemAndNotAdmin() throws IOException {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(false);
 
         ListBoxModel result = descriptor.doFillThresholdVulnTypeItems(null, "profile");
@@ -160,7 +163,7 @@ public class ThresholdConditionSecurityTest {
     }
 
     @Test
-    public void doFillThresholdVulnTypeItemsReturnsEmptyWhenItemPresentButNoConfigurePermission() throws IOException {
+    void doFillThresholdVulnTypeItemsReturnsEmptyWhenItemPresentButNoConfigurePermission() throws IOException {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(false);
 
         ListBoxModel result = descriptor.doFillThresholdVulnTypeItems(item, "profile");
@@ -169,7 +172,7 @@ public class ThresholdConditionSecurityTest {
     }
 
     @Test
-    public void doFillThresholdVulnTypeItemsReturnsTypesWhenItemHasConfigurePermission() throws IOException {
+    void doFillThresholdVulnTypeItemsReturnsTypesWhenItemHasConfigurePermission() throws IOException {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
         mockedHelper.when(() -> VulnerabilityTrendHelper.getVulnerabilityTypes("profile")).thenReturn(expected);

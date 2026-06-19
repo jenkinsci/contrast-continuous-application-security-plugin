@@ -6,28 +6,32 @@ import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
 import hudson.util.Secret;
 import jenkins.model.Jenkins;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 // Secret.class is mocked statically to avoid ConfidentialStore dependency at test time.
-@RunWith(MockitoJUnitRunner.Silent.class)
-public class ContrastPluginConfigSecurityTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class ContrastPluginConfigSecurityTest {
 
     @Mock
     private Jenkins jenkins;
@@ -44,8 +48,8 @@ public class ContrastPluginConfigSecurityTest {
     private MockedStatic<VulnerabilityTrendHelper> mockedHelper;
     private MockedStatic<Secret> mockedSecret;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         mockedJenkins = Mockito.mockStatic(Jenkins.class);
         mockedHelper = Mockito.mockStatic(VulnerabilityTrendHelper.class);
         mockedSecret = Mockito.mockStatic(Secret.class);
@@ -60,15 +64,15 @@ public class ContrastPluginConfigSecurityTest {
         descriptor = new ContrastPluginConfigStub.ContrastPluginConfigDescriptorStub();
     }
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    void tearDown() {
         mockedJenkins.close();
         mockedHelper.close();
         mockedSecret.close();
     }
 
     @Test
-    public void testDoTestConnectionRejectsMalformedUrl() throws Exception {
+    void testDoTestConnectionRejectsMalformedUrl() throws Exception {
         FormValidation result = descriptor.doTestTeamServerConnection(
                 "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
                 "not-a-valid-url");
@@ -78,7 +82,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void testDoTestConnectionRejectsNonHttpProtocol() throws Exception {
+    void testDoTestConnectionRejectsNonHttpProtocol() throws Exception {
         FormValidation result = descriptor.doTestTeamServerConnection(
                 "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
                 "file:///etc/passwd/Contrast/api");
@@ -88,7 +92,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void testDoTestConnectionRejectsUrlWithoutContrastApiPath() throws Exception {
+    void testDoTestConnectionRejectsUrlWithoutContrastApiPath() throws Exception {
         FormValidation result = descriptor.doTestTeamServerConnection(
                 "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
                 "https://example.com/wrong/path");
@@ -98,7 +102,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void testDoTestConnectionAcceptsValidHttpsUrl() throws Exception {
+    void testDoTestConnectionAcceptsValidHttpsUrl() throws Exception {
         ContrastSDK mockSDK = mock(ContrastSDK.class);
         mockedHelper.when(() -> VulnerabilityTrendHelper.createSDK(anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(mockSDK);
@@ -113,7 +117,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void testDoTestConnectionAcceptsValidHttpUrl() throws Exception {
+    void testDoTestConnectionAcceptsValidHttpUrl() throws Exception {
         ContrastSDK mockSDK = mock(ContrastSDK.class);
         mockedHelper.when(() -> VulnerabilityTrendHelper.createSDK(anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(mockSDK);
@@ -127,18 +131,18 @@ public class ContrastPluginConfigSecurityTest {
         assertTrue(result.getMessage().contains("Unable to connect to Contrast"));
     }
 
-    @Test(expected = AccessDeniedException.class)
-    public void testDoTestConnectionDeniedForNonAdmin() throws Exception {
+    @Test
+    void testDoTestConnectionDeniedForNonAdmin() {
         doThrow(new AccessDeniedException("Access denied"))
-                .when(jenkins).checkPermission(Jenkins.ADMINISTER);
+            .when(jenkins).checkPermission(Jenkins.ADMINISTER);
 
-        descriptor.doTestTeamServerConnection(
+        assertThrows(AccessDeniedException.class, () -> descriptor.doTestTeamServerConnection(
                 "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
-                "https://contrast.example.com/Contrast/api");
+                "https://contrast.example.com/Contrast/api"));
     }
 
     @Test
-    public void doFillTeamServerProfileNameItemsReturnsEmptyWhenNoItemAndNotAdmin() {
+    void doFillTeamServerProfileNameItemsReturnsEmptyWhenNoItemAndNotAdmin() {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(false);
 
         ListBoxModel result = descriptor.doFillTeamServerProfileNameItems(null);
@@ -147,7 +151,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void doFillTeamServerProfileNameItemsReturnsProfilesWhenNoItemAndAdmin() {
+    void doFillTeamServerProfileNameItemsReturnsProfilesWhenNoItemAndAdmin() {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
         mockedHelper.when(VulnerabilityTrendHelper::getProfileNames).thenReturn(expected);
@@ -158,7 +162,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void doFillTeamServerProfileNameItemsReturnsEmptyWhenItemPresentButNoConfigurePermission() {
+    void doFillTeamServerProfileNameItemsReturnsEmptyWhenItemPresentButNoConfigurePermission() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(false);
 
         ListBoxModel result = descriptor.doFillTeamServerProfileNameItems(item);
@@ -167,7 +171,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void doFillTeamServerProfileNameItemsReturnsProfilesWhenItemPresentAndHasConfigurePermission() {
+    void doFillTeamServerProfileNameItemsReturnsProfilesWhenItemPresentAndHasConfigurePermission() {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
         mockedHelper.when(VulnerabilityTrendHelper::getProfileNames).thenReturn(expected);
@@ -178,7 +182,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void doFillThresholdVulnTypeItemsReturnsEmptyWhenNoItemAndNotAdmin() throws IOException {
+    void doFillThresholdVulnTypeItemsReturnsEmptyWhenNoItemAndNotAdmin() throws IOException {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(false);
 
         ListBoxModel result = descriptor.doFillThresholdVulnTypeItems(null, "profile");
@@ -187,7 +191,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void doFillThresholdVulnTypeItemsReturnsTypesWhenNoItemAndAdmin() throws IOException {
+    void doFillThresholdVulnTypeItemsReturnsTypesWhenNoItemAndAdmin() throws IOException {
         when(jenkins.hasPermission(Jenkins.ADMINISTER)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
         mockedHelper.when(() -> VulnerabilityTrendHelper.getVulnerabilityTypes("profile")).thenReturn(expected);
@@ -198,7 +202,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void doFillThresholdVulnTypeItemsReturnsEmptyWhenItemPresentButNoConfigurePermission() throws IOException {
+    void doFillThresholdVulnTypeItemsReturnsEmptyWhenItemPresentButNoConfigurePermission() throws IOException {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(false);
 
         ListBoxModel result = descriptor.doFillThresholdVulnTypeItems(item, "profile");
@@ -207,7 +211,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void doFillThresholdVulnTypeItemsReturnsTypesWhenItemPresentAndHasConfigurePermission() throws IOException {
+    void doFillThresholdVulnTypeItemsReturnsTypesWhenItemPresentAndHasConfigurePermission() throws IOException {
         when(item.hasPermission(Item.CONFIGURE)).thenReturn(true);
         ListBoxModel expected = new ListBoxModel();
         mockedHelper.when(() -> VulnerabilityTrendHelper.getVulnerabilityTypes("profile")).thenReturn(expected);
@@ -218,7 +222,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void testDoTestConnectionRejectsUrlWithPrefixBeforeContrastApiPath() throws Exception {
+    void testDoTestConnectionRejectsUrlWithPrefixBeforeContrastApiPath() throws Exception {
         FormValidation result = descriptor.doTestTeamServerConnection(
                 "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
                 "https://example.com/evil/Contrast/api");
@@ -228,7 +232,7 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void testDoTestConnectionRejectsUrlWithBlankHost() throws Exception {
+    void testDoTestConnectionRejectsUrlWithBlankHost() throws Exception {
         FormValidation result = descriptor.doTestTeamServerConnection(
                 "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
                 "https:///Contrast/api");
@@ -238,13 +242,13 @@ public class ContrastPluginConfigSecurityTest {
     }
 
     @Test
-    public void testDoTestConnectionPathErrorUsesUppercaseURL() throws Exception {
+    void testDoTestConnectionPathErrorUsesUppercaseURL() throws Exception {
         FormValidation result = descriptor.doTestTeamServerConnection(
                 "user", Secret.fromString("apikey"), Secret.fromString("svckey"),
                 "https://example.com/wrong/path");
 
         assertEquals(FormValidation.Kind.ERROR, result.kind);
-        assertTrue("expected message to use 'URL' not 'Url': " + result.getMessage(),
-                result.getMessage().contains("URL does not end with"));
+        assertTrue(result.getMessage().contains("URL does not end with"),
+                "expected message to use 'URL' not 'Url': " + result.getMessage());
     }
 }
