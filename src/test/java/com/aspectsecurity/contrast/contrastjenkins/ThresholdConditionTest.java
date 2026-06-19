@@ -1,36 +1,37 @@
 package com.aspectsecurity.contrast.contrastjenkins;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
-import junit.framework.TestCase;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class ThresholdConditionTest extends TestCase {
+class ThresholdConditionTest {
 
     private ThresholdConditionStub.ThresholdConditionDescriptorStub descriptor;
 
-    @Before
-    @Override
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         descriptor = new ThresholdConditionStub.ThresholdConditionDescriptorStub();
     }
 
     @Test
-    public void testDoFillThresholdSeverityItems() {
+    void testDoFillThresholdSeverityItems() {
         ListBoxModel result = descriptor.doFillThresholdSeverityItems();
-        assertTrue(result.size() > 0);
+        assertFalse(result.isEmpty());
     }
 
     @Test
-    public void testDoCheckThresholdCountValid() {
+    void testDoCheckThresholdCountValid() {
         FormValidation result = descriptor.doCheckThresholdCount("10");
-        assertEquals(result.kind, FormValidation.Kind.OK);
+        assertEquals(FormValidation.Kind.OK, result.kind);
     }
 
     @Test
-    public void testDoCheckThresholdCountInvalid() {
+    void testDoCheckThresholdCountInvalid() {
         FormValidation result = descriptor.doCheckThresholdCount("blah");
-        assertEquals(result.kind, FormValidation.Kind.ERROR);
+        assertEquals(FormValidation.Kind.ERROR, result.kind);
     }
 }

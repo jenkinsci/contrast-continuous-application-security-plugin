@@ -1,41 +1,41 @@
 package com.aspectsecurity.contrast.contrastjenkins;
 
-import hudson.util.FormValidation;
-import junit.framework.TestCase;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ContrastPluginConfigTest extends TestCase {
+import hudson.util.FormValidation;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class ContrastPluginConfigTest {
 
     private ContrastPluginConfig.ContrastPluginConfigDescriptor descriptor;
 
-    @Before
-    @Override
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         descriptor = new ContrastPluginConfigStub.ContrastPluginConfigDescriptorStub();
     }
 
     @Test
-    public void testDoCheckUsernameValid() {
+    void testDoCheckUsernameValid() {
         FormValidation result = descriptor.doCheckUsername("contrast_admin");
-        assertEquals(result.kind, FormValidation.Kind.OK);
+        assertEquals(FormValidation.Kind.OK, result.kind);
     }
 
     @Test
-    public void testDoCheckUsernameInvalid() {
+    void testDoCheckUsernameInvalid() {
         FormValidation result = descriptor.doCheckUsername("");
-        assertEquals(result.kind, FormValidation.Kind.ERROR);
+        assertEquals(FormValidation.Kind.ERROR, result.kind);
     }
 
     @Test
-    public void testDoCheckApiKeyValid() {
+    void testDoCheckApiKeyValid() {
         FormValidation result = descriptor.doCheckApiKey("ABCDEFG");
-        assertEquals(result.kind, FormValidation.Kind.OK);
+        assertEquals(FormValidation.Kind.OK, result.kind);
     }
 
     @Test
-    public void testDoCheckApiKeyInvalid() {
+    void testDoCheckApiKeyInvalid() {
         FormValidation result = descriptor.doCheckApiKey("");
-        assertEquals(result.kind, FormValidation.Kind.ERROR);
+        assertEquals(FormValidation.Kind.ERROR, result.kind);
     }
 }
