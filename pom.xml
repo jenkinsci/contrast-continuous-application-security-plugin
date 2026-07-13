@@ -24,6 +24,17 @@
 
   <properties>
     <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
+    <jenkins.version>2.60.3</jenkins.version>
+    <!-- Java Level to use. Java 8 required when using core >= 3.44 -->
+    <java.level>8</java.level>
+    <!-- Jenkins Test Harness version you use to test the plugin. -->
+    <!-- For Jenkins version >= 1.580.1 use JTH 2.x or higher. -->
+    <jenkins-test-harness.version>2.56</jenkins-test-harness.version>
+    <!-- Other properties you may want to use:
+         ~ hpi-plugin.version: The HPI Maven Plugin version used by the plugin..
+         ~ stapler-plugin.version: The Stapler Maven plugin version required by the plugin.
+    -->
+    <powermock.version>1.7.4</powermock.version>
     <jenkins.version>2.479.3</jenkins.version>
     <spotbugs.skip>true</spotbugs.skip>
   </properties>
@@ -69,8 +80,12 @@
         <dependency>
           <groupId>org.jenkins-ci.plugins.workflow</groupId>
           <artifactId>workflow-aggregator</artifactId>
-          <version>608.v67378e9d3db_1</version>
-          <scope>test</scope>
+          <version>596.v8c21c963d92d</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>scm-api</artifactId>
+            <version>1.3</version>
         </dependency>
       </dependencies>
     </profile>
@@ -105,12 +120,12 @@
     <dependency>
       <groupId>com.contrastsecurity</groupId>
       <artifactId>contrast-sdk-java</artifactId>
-      <version>3.4.1</version>
+      <version>3.4.2</version>
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>matrix-project</artifactId>
-      <version>1.14</version>
+      <version>822.824.v14451b_c0fd42</version>
     </dependency>
     <dependency>
       <groupId>net.sf.opencsv</groupId>
