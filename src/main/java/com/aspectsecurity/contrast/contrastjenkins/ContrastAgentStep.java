@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import hudson.AbortException;
 import hudson.Extension;
 import hudson.FilePath;
+import hudson.model.Item;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.util.IOUtils;
@@ -16,6 +17,7 @@ import org.jenkinsci.plugins.workflow.steps.AbstractStepDescriptorImpl;
 import org.jenkinsci.plugins.workflow.steps.AbstractStepImpl;
 import org.jenkinsci.plugins.workflow.steps.AbstractSynchronousStepExecution;
 import org.jenkinsci.plugins.workflow.steps.StepContextParameter;
+import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
@@ -83,7 +85,14 @@ public class ContrastAgentStep extends AbstractStepImpl {
 
 
         @SuppressWarnings("unused")
-        public ListBoxModel doFillProfileItems() {
+        public ListBoxModel doFillProfileItems(@AncestorInPath Item item) {
+            if (item == null) {
+                if (!Jenkins.getActiveInstance().hasPermission(Jenkins.ADMINISTER)) {
+                    return new ListBoxModel();
+                }
+            } else if (!item.hasPermission(Item.CONFIGURE)) {
+                return new ListBoxModel();
+            }
             return VulnerabilityTrendHelper.getProfileNames();
         }
 
