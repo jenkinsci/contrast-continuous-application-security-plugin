@@ -7,15 +7,18 @@ import hudson.Extension;
 import hudson.RelativePath;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
+import hudson.model.Item;
 import hudson.util.ComboBoxModel;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
 import jenkins.model.Jenkins;
 import lombok.Getter;
 import lombok.Setter;
+import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.interceptor.RequirePOST;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -276,7 +279,11 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
          * @param value This parameter receives the value that the user has typed.
          * @return Indicates the outcome of the validation. This is sent to the browser.
          */
-        public FormValidation doCheckApplicationId(@QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName, @QueryParameter String value) {
+        @RequirePOST
+        public FormValidation doCheckApplicationId(@AncestorInPath Item item, @QueryParameter("teamServerProfileName") @RelativePath("..") final String teamServerProfileName, @QueryParameter String value) {
+            if (!hasFillPermission(item)) {
+                return FormValidation.ok();
+            }
             if (VulnerabilityTrendHelper.appExistsInProfile(teamServerProfileName, value)) {
                 TeamServerProfile profile = VulnerabilityTrendHelper.getProfile(teamServerProfileName);
                 ContrastSDK contrastSDK = VulnerabilityTrendHelper.createSDK(profile.getUsername(), profile.getServiceKey(), profile.getApiKey(), profile.getTeamServerUrl());
@@ -295,7 +302,13 @@ public class ThresholdCondition extends AbstractDescribableImpl<ThresholdConditi
                 return FormValidation.warning("Application not found.");
             }
             return FormValidation.ok();
+        }
 
+        private static boolean hasFillPermission(Item item) {
+            if (item == null) {
+                return Jenkins.getActiveInstance().hasPermission(Jenkins.ADMINISTER);
+            }
+            return item.hasPermission(Item.CONFIGURE);
         }
 
         /**
